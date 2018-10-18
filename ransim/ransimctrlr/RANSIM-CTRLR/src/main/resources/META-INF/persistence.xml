@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ============LICENSE_START=======================================================
+  ONAP-PAP-REST
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ============LICENSE_END=========================================================
+  -->
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+         version="2.0">
+	<persistence-unit name="ransimctrlrdb" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>org.onap.ransim.rest.api.models.CellDetails</class>
+		<class>org.onap.ransim.rest.api.models.CellNeighbor</class>
+		<class>org.onap.ransim.rest.api.models.NetconfServers</class>
+		
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mariadb://mariadb:3306/ransim_db"/>
+			<property name="javax.persistence.jdbc.user" value="root"/>
+			<property name="javax.persistence.jdbc.password" value="secret"/>
+      			<property name="eclipselink.target-database" value="MySQL"/>
+      			<property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+      			<property name="eclipselink.logging.level" value="FINEST"/>
+		</properties>
+	</persistence-unit>
+</persistence>

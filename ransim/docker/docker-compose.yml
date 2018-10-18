@@ -1,0 +1,27 @@
+version: '2'
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: ${MTU}
+services:
+   mariadb:
+      image: mariadb:10.0.34
+      environment:
+       - MYSQL_ROOT_PASSWORD=secret
+      container_name: mariadb
+      hostname: mariadb
+      command: ['--lower-case-table-names=1']
+      volumes:
+         - ./config/db:/docker-entrypoint-initdb.d
+      ports:
+       - "43306:3306"
+   ransim:
+      image: onap/ransim:latest
+      container_name: ransim
+      hostname: ransimsvr
+      ports:
+       - "8081:8081"
+      command: ransim
+      volumes:
+       - ./config/ransim:/tmp/ransim-install/config

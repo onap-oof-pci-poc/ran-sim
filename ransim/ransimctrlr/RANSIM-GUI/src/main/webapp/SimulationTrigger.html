@@ -1,0 +1,109 @@
+<!-- 
+ * ============LICENSE_START=======================================================
+ * Ran Simulator Controller
+ * ================================================================================
+ * Copyright (C) 2018 Wipro Limited.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */ 
+ -->
+
+<html>
+   <head>
+      <title>Simulator Configuration</title>
+      <script src="angular.min.js"></script>      
+      <style>
+         table, th , td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
+         }
+         
+         table tr:nth-child(odd) {
+            background-color: #f2f2f2;
+         }
+         
+         table tr:nth-child(even) {
+            background-color: #ffffff;
+         }
+      </style>
+   </head>
+   <body><center>
+      <h2>Simulator Configuration</h2>
+      <div align="center" ng-app = "mainApp" ng-controller = "configController">         
+         <form name = "configForm" novalidate >
+            <table border = "0" align=center>
+               <tr>
+                  <td>Cluster Level::</td>
+                  <td><input name = "clusterLevel" type = "number" ng-model = "configui.clusterLevel" required>
+                     <br><span style = "color:red" ng-show = "configForm.clusterLevel.$dirty && configForm.clusterLevel.$invalid">
+                        <span ng-show = "configForm.clusterLevel.$error.required">Cluster Level is mandatory.</span>
+                     </span>
+                  </td>
+               </tr>               
+               <tr>
+                  <td>Grid Size:</td>
+                  <td><input name = "gridSize"  type = "number" ng-model = "configui.gridSize" required>
+                     <br><span style = "color:red" ng-show = "configForm.gridSize.$dirty && configForm.gridSize.$invalid">
+                        <span ng-show = "configForm.gridSize.$error.required">Grid Size is mandatory.</span>
+                     </span>
+                  </td>
+               </tr>  
+               <tr>
+                  <td>No. of Clusters: </td><td><input name = "numberOfClusters" type = "number" ng-model = "configui.numberOfClusters" required>
+                     <br><span style = "color:red" ng-show = "configForm.numberOfClusters.$dirty && configForm.numberOfClusters.$invalid">
+                        <span ng-show = "configForm.numberOfClusters.$error.required">No. of Clusters is mandatory.</span>
+                     </span>
+                  </td>
+               </tr>               
+               <tr>
+                  <td colspan=2 align=right>                  
+                     <button ng-model = "configure" ng-disabled = "configForm.clusterLevel.$dirty &&
+                        configForm.clusterLevel.$invalid || configForm.gridSize.$dirty &&
+                        configForm.gridSize.$invalid || configForm.numberOfClusters.$dirty &&
+                        configForm.configui.numberOfClusters.$invalid" ng-click="triggerSimulatorConfig()">Configure</button>
+					   <button ng-model = "close" ng-click = "close()">Close</button>
+                  </td>
+               </tr>					
+            </table>
+         </form>
+      </div>
+      <script>
+         var mainApp = angular.module("mainApp", []);
+         mainApp.controller('configController',['$scope', '$http', function($scope, $http) {
+            $scope.triggerSimulatorConfig = function(){	
+				if ($scope.configui==undefined) {
+					alert("Mandatory fields are empty!");
+					return;
+				}
+				var dataObj = JSON.stringify($scope.configui);
+				alert("Start Simulation DataObj : "+dataObj);
+				
+                var res = $http.post('http://ransimsvr:8081/ransim/api/StartSimulation', dataObj)
+					.then(function successCallback(response){
+						alert( "Simulation successfully triggered");
+						window.close();
+					}, function errorCallback(response){
+						alert( "Simulation Failed");
+						window.close();
+					});
+          				
+			};			
+			$scope.close = function(){	
+				window.close();
+			}
+         }]);
+      </script>      
+   <center></body>
+</html>

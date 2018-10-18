@@ -1,0 +1,450 @@
+<!-- 
+ * ============LICENSE_START=======================================================
+ * Ran Simulator Controller
+ * ================================================================================
+ * Copyright (C) 2018 Wipro Limited.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */ 
+ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,target-densitydpi=device-dpi, user-scalable=no" />
+    <style>
+        .show {
+            z-index: 1000;
+            position: absolute;
+            padding: 2px;
+            display: block;
+            margin: 0;
+            list-style-type: none;
+            list-style: none;
+        }
+        
+        .hide {
+            display: none;
+        }
+        
+        .btn-group .button {
+            background-color: LightGrey;
+            color: black;
+            border: 1px solid Black;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100px;
+            display: block;
+        }
+        
+        .btn-group .button:not (:last-child) {
+            border-bottom: none;
+        }
+        
+        .btn-group .button:hover {
+            background-color: lightblue;
+            color: white;
+        }
+    </style>
+    <script>
+        var childWindow;
+
+        function init() {
+            getCellTopology();
+        }
+
+        function getCellTopology() {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var topology = JSON.parse(this.responseText);
+                    drawTopology(topology);
+                }
+            };
+            xmlhttp.open("GET", "http://ransimsvr:8081/ransim/api/GetTopology",
+                true);
+            xmlhttp.send();
+        }
+
+        function drawTopology(topoObj) {
+            console.log("topoObj");
+            console.log(topoObj);
+            var width = window.innerWidth;
+            var height = window.innerWidth;
+            var myCanvas = document.getElementById("myCanvas");
+            myCanvas.width = width;
+            myCanvas.height = height;
+
+            console.log("width" + width);
+            console.log("height" + height);
+            var context = myCanvas.getContext("2d");
+            context.clearRect(0, 0, width, height);
+            context.fillStyle = "#FFFFDF";
+            context.fillRect(0, 0, width, height);
+            var RADIUS = 11;
+            var noProblemColor = "#32CD32"; //GREEN
+            var xScaleUnit = width / ((topoObj.maxScreenX - topoObj.minScreenX) * 2)
+            var yScaleUnit = height / ((topoObj.maxScreenY - topoObj.minScreenY) * 2)
+
+            var ScreenConfig = {
+                "xScaleUnit": xScaleUnit,
+                "yScaleUnit": yScaleUnit,
+                "noProblemColor": noProblemColor,
+                "RADIUS": RADIUS,
+                "context": context
+            }
+
+            for (i in topoObj.cellTopology) {
+                var nodeId = topoObj.cellTopology[i].nodeId;
+                var physicalCellId = topoObj.cellTopology[i].physicalCellId;
+                var confColor = noProblemColor;
+                if (typeof topoObj.cellTopology[i].color != 'undefined') {
+                    confColor = topoObj.cellTopology[i].color;
+                }
+
+                var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX + 20) * xScaleUnit;
+                var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY + 20) * yScaleUnit;
+
+                if (topoObj.cellTopology[i].sectorNumber == 1) {
+                    cellX -= RADIUS;
+                } else if (topoObj.cellTopology[i].sectorNumber == 2) {
+                    cellX += RADIUS;
+                } else if (topoObj.cellTopology[i].sectorNumber == 3) {
+                    cellY += 1.8 * RADIUS;
+                }
+
+                context.fillStyle = confColor;
+                context.beginPath();
+                context.arc(cellX, cellY, RADIUS, 0, Math.PI * 2, true);
+                context.strokeStyle = "black";
+                context.stroke();
+                context.closePath();
+                context.fill();
+                context.font = "10px Comic Sans MS";
+                context.fillStyle = "black";
+                context.textAlign = "center";
+                fillMultiLineText(context, physicalCellId, cellX, cellY);
+            }
+            ScreenConfig.context.save();
+            document.getElementById("modified").innerHTML = 'a';
+
+            myCanvas.addEventListener('click', function() {
+                document.getElementById("rmenu").className = "hide";
+                ScreenConfig.context.restore();
+                if (document.getElementById("modified").innerHTML != 'a') {
+                    drawTopology(topoObj);
+                }
+            });
+
+            myCanvas.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                var canvas = document.getElementById("myCanvas");
+                var BB = canvas.getBoundingClientRect();
+                const pos = {
+                    x: (e.clientX - BB.left),
+                    y: (e.clientY - BB.top)
+                };
+
+                var isClickedOnCell = false;
+                for (i in topoObj.cellTopology) {
+                    var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX + 20) * ScreenConfig.xScaleUnit;
+                    var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY + 20) * ScreenConfig.yScaleUnit;
+                    var rt = 0;
+                    if (isIntersect(pos, topoObj.cellTopology[i], cellX, cellY, ScreenConfig)) {
+						isClickedOnCell = true;
+                        var nodeVal = topoObj.cellTopology[i].nodeId;
+                        var cellVal = topoObj.cellTopology[i].physicalCellId;
+                        var pnfName = topoObj.cellTopology[i].serverId;
+                        if (pnfName === 'undefined' || pnfName === '') {
+                            pnfName = 'Not Set';
+                        }
+                        
+                        if (topoObj.cellTopology[i].sectorNumber == 1) {
+                            cellX -= ScreenConfig.RADIUS;
+                        } else if (topoObj.cellTopology[i].sectorNumber == 2) {
+                            cellX += ScreenConfig.RADIUS;
+                        } else if (topoObj.cellTopology[i].sectorNumber == 3) {
+                            cellY += 1.8 * ScreenConfig.RADIUS;
+                        }
+
+                        
+                        document.getElementById("rmenu").className = "show";
+                        document.getElementById('rmenu').style.top = pos.y + "px"; 
+                        document.getElementById('rmenu').style.left = pos.x + "px"; 
+                        
+                        var htmlText1 = '<div class="btn-group">';
+
+                        htmlText1 +=
+                            '<button class="button" id="cellDetails">Show Cell Details</button>';
+                        htmlText1 +=
+                            '<button class="button" id="showNeighbours">Show Neighbors</button>';
+                        htmlText1 +=
+                            '<button class="button" id="modifyNode">Modify</button>';
+                        htmlText1 +=
+                            '<button class="button" id="deleteNode">Delete</button>';
+                        htmlText1 += '</div>';
+                        document.getElementById("rmenu").innerHTML = htmlText1;
+                        rt++;
+
+                        var x = cellX;
+                        var y = cellY;
+                        document.getElementById("cellDetails").addEventListener("click",
+                            function() {
+                                alert("Cell Id:" + nodeVal + "\nPhysical Cell Id:" + cellVal + "\nPnf Name:" + pnfName);
+                            });
+                        document.getElementById("showNeighbours").addEventListener("click",
+                            function() {
+                                showNeighbours(nodeVal, cellVal, x, y, RADIUS,
+                                    ScreenConfig, topoObj);
+                            });
+                        document.getElementById("modifyNode").addEventListener("click",
+                            function() {
+                                modifyNode(nodeVal, cellVal);
+                            });
+                        document.getElementById("deleteNode").addEventListener("click",
+                            function() {
+                                deleteNode(nodeVal, cellVal);
+                            });
+                    }
+                }
+                if (!isClickedOnCell) {
+                    document.getElementById("rmenu").className = "hide";
+                }
+
+            });
+        }
+
+        function showNeighbours(nodeId, pcId, cellX, cellY, RADIUS, ScreenConfig, topoObj) {
+            var formVal = {
+                "nodeId": nodeId
+            }
+            var dataObj = JSON.stringify(formVal);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                   var neighbour = JSON.parse(this.responseText);
+                    drawNeighbors(neighbour, nodeId, pcId, cellX, cellY, RADIUS, ScreenConfig, topoObj);
+                }
+            };
+            xmlhttp.open("POST", "http://ransimsvr:8081/ransim/api/GetNeighborList",
+                true);
+            xmlhttp.setRequestHeader('Content-Type', 'application/json')
+            xmlhttp.send(dataObj);
+
+            document.getElementById("rmenu").className = "hide";
+        }
+
+        function drawNeighbors(neighbour, cellNodeId, pcId, cellX, cellY, RADIUS,
+            ScreenConfig, topoObj) {
+            document.getElementById("modified").innerHTML = 'b';
+           
+            for (i in topoObj.cellTopology) {
+                var n = topoObj.cellTopology[i].nodeId;
+                var p = topoObj.cellTopology[i].physicalCellId;
+                if (typeof topoObj.cellTopology[i].color != 'undefined') {
+                    confColor = topoObj.cellTopology[i].color;
+                }
+                var x = (topoObj.cellTopology[i].screenX - topoObj.minScreenX + 20) * ScreenConfig.xScaleUnit;
+                var y = (topoObj.cellTopology[i].screenY - topoObj.minScreenY + 20) * ScreenConfig.yScaleUnit;
+
+                if (topoObj.cellTopology[i].sectorNumber == 1) {
+                    x -= RADIUS;
+                } else if (topoObj.cellTopology[i].sectorNumber == 2) {
+                    x += RADIUS;
+                } else if (topoObj.cellTopology[i].sectorNumber == 3) {
+                    y += 1.8 * RADIUS;
+                }
+
+                ScreenConfig.context.fillStyle = "#BFBFBF";
+                ScreenConfig.context.beginPath();
+                ScreenConfig.context.arc(x, y, RADIUS, 0, Math.PI * 2, true);
+                ScreenConfig.context.strokeStyle = "black";
+                ScreenConfig.context.stroke();
+                ScreenConfig.context.closePath();
+                ScreenConfig.context.fill();
+                ScreenConfig.context.font = "10px Comic Sans MS";
+                ScreenConfig.context.fillStyle = "black";
+                ScreenConfig.context.textAlign = "center";
+                fillMultiLineText(ScreenConfig.context, p, x, y);
+            }
+
+            for (i in neighbour.neighborList) {
+                var neighbourNodeId = neighbour.neighborList[i].nodeId;
+                var neighbourPhysicalCellId = neighbour.neighborList[i].physicalCellId;
+                var confuColor = ScreenConfig.noProblemColor;
+                var collCol = 0;
+                var confCol = 0;
+                if (typeof neighbour.neighborList[i].color != 'undefined') {
+                    confuColor = neighbour.neighborList[i].color;
+                }
+                ScreenConfig.context.beginPath();
+                ScreenConfig.context.moveTo(cellX, cellY);
+                var nbrCellX = (neighbour.neighborList[i].screenX - topoObj.minScreenX + 20) * ScreenConfig.xScaleUnit;
+                var nbrCellY = (neighbour.neighborList[i].screenY - topoObj.minScreenY + 20) * ScreenConfig.yScaleUnit;
+
+                if (neighbour.neighborList[i].sectorNumber == 1) {
+                    nbrCellX -= ScreenConfig.RADIUS;
+                } else if (neighbour.neighborList[i].sectorNumber == 2) {
+                    nbrCellX += ScreenConfig.RADIUS;
+                } else if (neighbour.neighborList[i].sectorNumber == 3) {
+                    nbrCellY += 1.8 * ScreenConfig.RADIUS;
+                }
+
+                if (neighbour.neighborList[i].physicalCellId == pcId) {
+                    collCol = 1;
+                }
+
+                for (j in neighbour.neighborList) {
+                    if (i != j) {
+                        if (neighbour.neighborList[i].physicalCellId == neighbour.neighborList[j].physicalCellId) {
+                            confCol = 1;
+                        }
+                    }
+                }
+
+                if ((collCol == 1) && (confCol == 1)) {
+                    confuColor = "#C30000";
+                } else if ((collCol == 1) && (confCol == 0)) {
+                    confuColor = "#FF0000";
+                } else if ((collCol == 0) && (confCol == 1)) {
+                    confuColor = "#E88B00";
+                } else {
+                    confuColor = "#008000";
+                }
+
+                console.log("336. neighbourPCI: " + neighbourPhysicalCellId + " collCol:" + collCol + "confCol: " + confCol);
+                ScreenConfig.context.lineTo(nbrCellX, nbrCellY);
+                ScreenConfig.context.strokeStyle = confuColor;
+                ScreenConfig.context.lineWidth = 2;
+                ScreenConfig.context.stroke();
+                ScreenConfig.context.closePath();
+
+                ScreenConfig.context.fillStyle = confuColor;
+                ScreenConfig.context.beginPath();
+                ScreenConfig.context.arc(nbrCellX, nbrCellY, RADIUS, 0, Math.PI * 2, true);
+                ScreenConfig.context.strokeStyle = "black";
+                ScreenConfig.context.stroke();
+                ScreenConfig.context.closePath();
+                ScreenConfig.context.fill();
+                ScreenConfig.context.font = "10px Comic Sans MS";
+                ScreenConfig.context.fillStyle = "black";
+                ScreenConfig.context.textAlign = "center";
+                fillMultiLineText(ScreenConfig.context, neighbourPhysicalCellId, nbrCellX, nbrCellY);
+            }
+
+            ScreenConfig.context.fillStyle = "#00FFFF";
+            ScreenConfig.context.beginPath();
+            ScreenConfig.context.arc(cellX, cellY, RADIUS, 0, Math.PI * 2, true);
+            ScreenConfig.context.strokeStyle = "black";
+            ScreenConfig.context.stroke();
+            ScreenConfig.context.closePath();
+            ScreenConfig.context.fill();
+            ScreenConfig.context.font = "10px Comic Sans MS";
+            ScreenConfig.context.fillStyle = "black";
+            ScreenConfig.context.textAlign = "center";
+            fillMultiLineText(ScreenConfig.context, pcId, cellX, cellY);
+        }
+
+        function modifyNode(cid, pcid) {
+            var formVal = {
+                "newPhysicalCellId": pcid,
+                "nodeId": cid
+            }
+            var dataObj = JSON.stringify(formVal);
+            //var dataObj = JSON.stringify(formVal);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var neighbour = JSON.parse(this.responseText);
+                    var neighbourNodeIds = '';
+                    for (i in neighbour.neighborList) {
+                        if (neighbourNodeIds.length == 0)
+                            neighbourNodeIds += neighbour.neighborList[i].nodeId;
+                        else
+                            neighbourNodeIds += ',' + neighbour.neighborList[i].nodeId;
+                    }
+                    var neighbrList = escape(neighbourNodeIds);
+                    childWindow = window.open('modifyCell.html?cid=' + cid +
+                        '&pcid=' + pcid + '&neighbrList=' + neighbrList, '',
+                        'menubar=no, locationbar=no, toolbar=no, width=600px, height=500px'
+                    );
+                    var timer = setInterval(checkChild, 500);
+					document.getElementById("rmenu").className = "hide";
+                }
+            };
+            xmlhttp.open("POST", "http://ransimsvr:8081/ransim/api/GetNeighborList",
+                true);
+            xmlhttp.setRequestHeader('Content-Type', 'application/json')
+            xmlhttp.send(dataObj);
+        }
+
+        function checkChild() {
+            if (childWindow.closed) {
+                //alert("Child window closed");   
+                document.location.reload()
+                clearInterval(timer);
+            }
+        }
+
+        function deleteNode(cid, pcid) {
+            var formVal = {
+                "newPhysicalCellId": pcid,
+                "nodeId": cid
+            }
+            var dataObj = JSON.stringify(formVal);
+            childWindow = window.open('deleteCell.html?cid=' + cid +
+                        '&pcid=' + pcid, '',
+                        'menubar=no, locationbar=no, toolbar=no, width=600px, height=250px'
+             		);
+             var timer = setInterval(checkChild, 500);  
+				document.getElementById("rmenu").className = "hide";
+        }
+
+        function isIntersect(point, currCell, cellX, cellY, ScreenConfig) {
+            //var cellX = currCell.screenX * ScreenConfig.xScaleUnit;
+            //var cellY = currCell.screenY * ScreenConfig.yScaleUnit;
+
+            if (currCell.sectorNumber == 1) {
+                cellX -= ScreenConfig.RADIUS;
+            } else if (currCell.sectorNumber == 2) {
+                cellX += ScreenConfig.RADIUS;
+            } else if (currCell.sectorNumber == 3) {
+                cellY += 1.8 * ScreenConfig.RADIUS;
+            }
+            console.log('isIntersect x:' + cellX + ' y:' + cellY + ' point.x:' + point.x + ' point.y:' + point.y);
+            return (Math.sqrt((point.x - cellX) ** 2 + (point.y - cellY) ** 2) < ScreenConfig.RADIUS);
+        }
+
+        function fillMultiLineText(context, textVal, x, y) {
+            var lineHeight = context.measureText("M").width;
+            var lines = textVal.toString().split("\n");
+            for (var i = 0; i < lines.length; ++i) {
+                context.fillText(lines[i], x, y);
+                y += lineHeight;
+            }
+        }
+    </script>
+</head>
+
+<body onLoad="init();" style="margin: 0px">
+    <div class="hide" id="rmenu"></div>
+    <div class="hide" id="modified"></div>
+    <canvas id="myCanvas" />
+</body>
+
+</html>
