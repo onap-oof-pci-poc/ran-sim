@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.onap.ransim</groupId>
+  <artifactId>enodebsim-api</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20181015122013</lastUpdated>
+  </versioning>
+</metadata>
