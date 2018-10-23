@@ -1,0 +1,2 @@
+#!/bin/sh -
+kill `ps aux | grep 'java.*enodebsim-distribution-1.18.10.jar' | grep -v grep | awk '{print $2}'`

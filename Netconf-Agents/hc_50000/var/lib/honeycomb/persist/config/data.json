@@ -1,0 +1,610 @@
+{
+  "enodebsim:radio-access": {    "fap-service": [
+      {
+      "alias": "Chn102",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 0
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 4,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn201", 
+                  "cid":"Chn201", 
+                  "phy-cell-id":5 
+              }
+,
+              {
+                  "plmnid":"Chn202", 
+                  "cid":"Chn202", 
+                  "phy-cell-id":2 
+              }
+,
+              {
+                  "plmnid":"Chn103", 
+                  "cid":"Chn103", 
+                  "phy-cell-id":7 
+              }
+,
+              {
+                  "plmnid":"Chn203", 
+                  "cid":"Chn203", 
+                  "phy-cell-id":8 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn104",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 7
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 5,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn205", 
+                  "cid":"Chn205", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn105", 
+                  "cid":"Chn105", 
+                  "phy-cell-id":8 
+              }
+,
+              {
+                  "plmnid":"Chn204", 
+                  "cid":"Chn204", 
+                  "phy-cell-id":3 
+              }
+,
+              {
+                  "plmnid":"Chn103", 
+                  "cid":"Chn103", 
+                  "phy-cell-id":7 
+              }
+,
+              {
+                  "plmnid":"Chn203", 
+                  "cid":"Chn203", 
+                  "phy-cell-id":8 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn202",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 2
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 6,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn102", 
+                  "cid":"Chn102", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn201", 
+                  "cid":"Chn201", 
+                  "phy-cell-id":5 
+              }
+,
+              {
+                  "plmnid":"Chn302", 
+                  "cid":"Chn302", 
+                  "phy-cell-id":4 
+              }
+,
+              {
+                  "plmnid":"Chn301", 
+                  "cid":"Chn301", 
+                  "phy-cell-id":6 
+              }
+,
+              {
+                  "plmnid":"Chn303", 
+                  "cid":"Chn303", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn203", 
+                  "cid":"Chn203", 
+                  "phy-cell-id":8 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn106",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 9
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 5,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn206", 
+                  "cid":"Chn206", 
+                  "phy-cell-id":7 
+              }
+,
+              {
+                  "plmnid":"Chn207", 
+                  "cid":"Chn207", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn205", 
+                  "cid":"Chn205", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn105", 
+                  "cid":"Chn105", 
+                  "phy-cell-id":8 
+              }
+,
+              {
+                  "plmnid":"Chn107", 
+                  "cid":"Chn107", 
+                  "phy-cell-id":6 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn105",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 8
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 3,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn104", 
+                  "cid":"Chn104", 
+                  "phy-cell-id":7 
+              }
+,
+              {
+                  "plmnid":"Chn106", 
+                  "cid":"Chn106", 
+                  "phy-cell-id":9 
+              }
+,
+              {
+                  "plmnid":"Chn205", 
+                  "cid":"Chn205", 
+                  "phy-cell-id":0 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn203",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 8
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 6,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn102", 
+                  "cid":"Chn102", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn104", 
+                  "cid":"Chn104", 
+                  "phy-cell-id":7 
+              }
+,
+              {
+                  "plmnid":"Chn202", 
+                  "cid":"Chn202", 
+                  "phy-cell-id":2 
+              }
+,
+              {
+                  "plmnid":"Chn303", 
+                  "cid":"Chn303", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn204", 
+                  "cid":"Chn204", 
+                  "phy-cell-id":3 
+              }
+,
+              {
+                  "plmnid":"Chn103", 
+                  "cid":"Chn103", 
+                  "phy-cell-id":7 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn109",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 13
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 2,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn209", 
+                  "cid":"Chn209", 
+                  "phy-cell-id":35 
+              }
+,
+              {
+                  "plmnid":"Chn108", 
+                  "cid":"Chn108", 
+                  "phy-cell-id":3 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn201",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 5
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 3,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn102", 
+                  "cid":"Chn102", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn202", 
+                  "cid":"Chn202", 
+                  "phy-cell-id":2 
+              }
+,
+              {
+                  "plmnid":"Chn301", 
+                  "cid":"Chn301", 
+                  "phy-cell-id":6 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn103",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 7
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 3,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn104", 
+                  "cid":"Chn104", 
+                  "phy-cell-id":7 
+              }
+,
+              {
+                  "plmnid":"Chn102", 
+                  "cid":"Chn102", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn203", 
+                  "cid":"Chn203", 
+                  "phy-cell-id":8 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn204",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 3
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 6,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn104", 
+                  "cid":"Chn104", 
+                  "phy-cell-id":7 
+              }
+,
+              {
+                  "plmnid":"Chn305", 
+                  "cid":"Chn305", 
+                  "phy-cell-id":6 
+              }
+,
+              {
+                  "plmnid":"Chn304", 
+                  "cid":"Chn304", 
+                  "phy-cell-id":3 
+              }
+,
+              {
+                  "plmnid":"Chn205", 
+                  "cid":"Chn205", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn303", 
+                  "cid":"Chn303", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn203", 
+                  "cid":"Chn203", 
+                  "phy-cell-id":8 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn108",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 3
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 5,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn207", 
+                  "cid":"Chn207", 
+                  "phy-cell-id":0 
+              }
+,
+              {
+                  "plmnid":"Chn209", 
+                  "cid":"Chn209", 
+                  "phy-cell-id":35 
+              }
+,
+              {
+                  "plmnid":"Chn208", 
+                  "cid":"Chn208", 
+                  "phy-cell-id":9 
+              }
+,
+              {
+                  "plmnid":"Chn109", 
+                  "cid":"Chn109", 
+                  "phy-cell-id":13 
+              }
+,
+              {
+                  "plmnid":"Chn107", 
+                  "cid":"Chn107", 
+                  "phy-cell-id":6 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn107",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver1001",
+        "phy-cell-id-in-use": 6
+      },
+      "device-type": "standalone",
+      "capabilities": {
+        "gps-equipped": "true",
+        "max-tx-power": "12345"
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "max-lte-cell-entries" : 4,
+              "lte-cell-number-of-entries" : 3,
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"Chn106", 
+                  "cid":"Chn106", 
+                  "phy-cell-id":9 
+              }
+,
+              {
+                  "plmnid":"Chn108", 
+                  "cid":"Chn108", 
+                  "phy-cell-id":3 
+              }
+,
+              {
+                  "plmnid":"Chn207", 
+                  "cid":"Chn207", 
+                  "phy-cell-id":0 
+              }
+              ]
+            }
+          }
+      }
+      }
+    }
+    ]
+  }
+}

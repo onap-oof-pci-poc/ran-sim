@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>io.fd.honeycomb</groupId>
+  <artifactId>translate-utils</artifactId>
+  <versioning>
+    <versions>
+      <version>1.18.10-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20181015122013</lastUpdated>
+  </versioning>
+</metadata>

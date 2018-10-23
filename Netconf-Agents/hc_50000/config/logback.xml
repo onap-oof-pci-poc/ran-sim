@@ -1,0 +1,33 @@
+ <configuration scan="true">
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%date{"yyyy-MM-dd HH:mm:ss.SSS z"} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  <appender name="honeycomb.log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>var/log/honeycomb/honeycomb.log</file>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>var/log/honeycomb/logs/honeycomb.%d.log.zip</fileNamePattern>
+      <maxHistory>1</maxHistory>
+    </rollingPolicy>
+
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>10MB</maxFileSize>
+    </triggeringPolicy>
+
+    <encoder>
+      <pattern>%date{"yyyy-MM-dd HH:mm:ss.SSS z"} [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="debug">
+    <!--appender-ref ref="STDOUT" /-->
+    <appender-ref ref="honeycomb.log" />
+  </root>
+
+  <logger name="org.opendaylight" level="DEBUG"/>
+  <logger name="io.fd" level="DEBUG"/>
+  <logger name="org.onap" level="DEBUG"/>
+</configuration>
