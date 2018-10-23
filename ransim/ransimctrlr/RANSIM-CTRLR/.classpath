@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/websocket/javax.websocket-api/1.1/javax.websocket-api-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/eclipse/persistence/javax.persistence/2.1.0/javax.persistence-2.1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/eclipse/persistence/eclipselink/2.6.0/eclipselink-2.6.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/eclipse/persistence/commonj.sdo/2.1.1/commonj.sdo-2.1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/glassfish/javax.json/1.0.4/javax.json-1.0.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-core/2.9.5/jackson-core-2.9.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-databind/2.9.5/jackson-databind-2.9.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/h2database/h2/1.4.186/h2-1.4.186.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/log4j/apache-log4j-extras/1.2.17/apache-log4j-extras-1.2.17.jar"/>
+	<classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.4/commons-io-2.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/guava/guava/19.0/guava-19.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/mariadb/jdbc/mariadb-java-client/2.1.1/mariadb-java-client-2.1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/4.3.3.RELEASE/spring-test-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/4.3.3.RELEASE/spring-core-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/awaitility/awaitility/3.0.0/awaitility-3.0.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-library/1.3/hamcrest-library-1.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/objenesis/objenesis/2.5.1/objenesis-2.5.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-client/1.18/jersey-client-1.18.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-core/1.18/jersey-core-1.18.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.12/junit-4.12.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/mockito/mockito-core/1.9.5/mockito-core-1.9.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-mock/2.0.8/spring-mock-2.0.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/mockrunner/mockrunner/0.3.1/mockrunner-0.3.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/powermock/powermock-api-mockito/1.5.6/powermock-api-mockito-1.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/mockito/mockito-all/1.9.5/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/powermock/powermock-api-support/1.5.6/powermock-api-support-1.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/powermock/powermock-core/1.5.6/powermock-core-1.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/powermock/powermock-reflect/1.5.6/powermock-reflect-1.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/javassist/javassist/3.18.2-GA/javassist-3.18.2-GA.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/powermock/powermock-module-junit4/1.5.6/powermock-module-junit4-1.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/powermock/powermock-module-junit4-common/1.5.6/powermock-module-junit4-common-1.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/4.3.3.RELEASE/spring-web-4.3.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-web/4.3.3.RELEASE/spring-web-4.3.3.RELEASE-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/4.3.3.RELEASE/spring-aop-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/4.3.3.RELEASE/spring-beans-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/4.3.3.RELEASE/spring-context-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-expression/4.3.3.RELEASE/spring-expression-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/4.3.3.RELEASE/spring-webmvc-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/springfox/springfox-swagger2/2.5.0/springfox-swagger2-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/swagger/swagger-annotations/1.5.9/swagger-annotations-1.5.9.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/swagger/swagger-models/1.5.9/swagger-models-1.5.9.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/springfox/springfox-spi/2.5.0/springfox-spi-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/springfox/springfox-core/2.5.0/springfox-core-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/fasterxml/classmate/1.3.1/classmate-1.3.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/plugin/spring-plugin-core/1.2.0.RELEASE/spring-plugin-core-1.2.0.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/plugin/spring-plugin-metadata/1.2.0.RELEASE/spring-plugin-metadata-1.2.0.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/springfox/springfox-schema/2.5.0/springfox-schema-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/springfox/springfox-swagger-common/2.5.0/springfox-swagger-common-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/springfox/springfox-spring-web/2.5.0/springfox-spring-web-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/mapstruct/mapstruct/1.0.0.Final/mapstruct-1.0.0.Final.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/springfox/springfox-swagger-ui/2.5.0/springfox-swagger-ui-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.3.03/xml-apis-1.3.03.jar"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

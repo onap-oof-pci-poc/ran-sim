@@ -1,0 +1,444 @@
+<!-- 
+ * ============LICENSE_START=======================================================
+ * Ran Simulator Controller
+ * ================================================================================
+ * Copyright (C) 2018 Wipro Limited.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */ 
+ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="angular.min.js"></script>
+  <style>
+    .show {
+      z-index: 1000;
+      position: absolute;
+      padding: 2px;
+      display: block;
+      margin: 0;
+      list-style-type: none;
+      list-style: none;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .btn-group .button {
+      background-color: LightGrey;
+      color: black;
+      border: 1px solid Black;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100px;
+      display: block;
+    }
+
+    .btn-group .button:not (:last-child) {
+      border-bottom:
+
+        none;
+
+
+    }
+
+    .btn-group .button:hover {
+      background-color: lightblue;
+      color: white;
+    }
+  </style>
+  <script>
+  document.body.addEventListener("wheel", e=>{
+      if(e.ctrlKey)
+        event.preventDefault();//prevent zoom
+    });  
+  function init() {
+      getCellTopology();
+    }
+    
+    function getCellTopology() {
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var topology = JSON.parse(this.responseText);
+          drawTopology(topology);
+        }
+      };
+      xmlhttp.open("GET",
+        "http://ransimsvr:8081/ransim/api/GetTopology", true);
+      xmlhttp.send();
+
+      /*
+	var topologyJson = {
+	"gridSize": 40,
+    "cellTopology": [
+        { "networkId":"123456", "nodeId":"55", "physicalCellId":"70", "gridX":1, "gridY":1, "confusion":true, "color":"#FF0000" },
+		{ "networkId":"123456", "nodeId":"58", "physicalCellId":"72", "gridX":1, "gridY":4 },
+		{ "networkId":"123456", "nodeId":"57", "physicalCellId":"73", "gridX":1, "gridY":3 },
+		{ "networkId":"123456", "nodeId":"56", "physicalCellId":"71", "gridX":1, "gridY":2 },
+		{ "networkId":"123456", "nodeId":"65", "physicalCellId":"70", "gridX":3, "gridY":2, "confusion":true, "color":"#FF0000" }
+	]}
+	drawTopology(topologyJson);
+	*/
+    }
+
+    function drawTopology(topoObj) {
+      var width = window.innerHeight;
+      var height = window.innerHeight;
+      var myCanvas = document.getElementById("myCanvas");
+      myCanvas.width = width;
+      myCanvas.height = height;
+
+      var context = myCanvas.getContext("2d");
+      context.clearRect(0, 0, width, height);
+      context.fillStyle = "#FFFFFF";
+      context.fillRect(0, 0, width, height);
+      var gridSize = topoObj.gridSize;
+
+      var rad = height / (2 * gridSize);
+      var gaps = rad * 2;
+      var widthCount = parseInt(width / gaps);
+      var heightCount = parseInt(height / gaps);
+      var aColors = "#32CD32";
+      var aColorsLength = 1;
+      var arr = new Array();
+      for (var x = 0; x < gridSize; x++) {
+        arr[x] = new Array();
+        for (var y = 0; y < gridSize; y++) {
+
+          context.fillStyle = "#D3D3D3";
+
+          context.beginPath();
+
+          context.lineWidth = 5;
+          var a = 1.5 * rad;
+          var b = 0.86 * rad;
+          if (x % 2 == 0) {
+            context.moveTo((x + 1) * a + rad, (2 * y + 1) * b);
+            var s = 6;
+            for (var p = 1; p < s; p++) {
+              context.lineTo(((x + 1) * a) + (rad * Math.cos(p *
+                2 * Math.PI / s)), (2 * y + 1) * b + (
+                rad * Math.sin(p * 2 * Math.PI / s)));
+            }
+          } else {
+
+            context.moveTo((x + 1) * a + rad, (2 * y + 2) * b);
+            var s = 6;
+            for (var p = 1; p < s; p++) {
+              context.lineTo(((x + 1) * a) + (rad * Math.cos(p *
+                  2 * Math.PI / s)), ((2 * y + 2) * b) +
+                (
+                  rad * Math.sin(p * 2 * Math.PI / s)));
+            }
+          }
+          context.strokeStyle = "black";
+          context.stroke();
+
+          context.closePath();
+          context.fill();
+          arr[x][y] = (x + 1) + ":" + (y + 1);
+        }
+      }
+
+      myCanvas.addEventListener('contextmenu', (e) => {
+        const pos = {
+          x: e.clientX,
+          y: e.clientY
+        };
+        for (var x = 0; x < gridSize; x++) {
+          for (var y = 0; y < gridSize; y++) {
+            if (isIntersectDefault(pos, x, y, rad, gaps)) {
+              var val = arr[x][y];
+              document.getElementById("rmenu").className =
+                "show";
+              document.getElementById('rmenu').style.top =
+                pos.y + "px"; //or whatever 
+              document.getElementById('rmenu').style.left =
+                pos.x + "px"; // or whatever
+
+              var htmlText1 = '<div class="btn-group">';
+              htmlText1 +=
+                '<button class="button" id="createNode">Create</button>';
+              htmlText1 += '</div>';
+              document.getElementById("rmenu").innerHTML =
+                htmlText1;
+
+              document.getElementById("createNode").addEventListener(
+                "click",
+                function() {
+                  createNode(val);
+                });
+            }
+          }
+        }
+        e.preventDefault();
+      });
+
+      for (i in topoObj.cellTopology) {
+        var nodeId = topoObj.cellTopology[i].nodeId;
+        var physicalCellId = topoObj.cellTopology[i].physicalCellId;
+        var row = topoObj.cellTopology[i].gridX;
+        --row;
+        var col = topoObj.cellTopology[i].gridY;
+        --col;
+        var collision = topoObj.cellTopology[i].pciCollisionDetected;
+        if (typeof topoObj.cellTopology[i].pciCollisionDetected != 'undefined') {
+          collision = topoObj.cellTopology[i].pciCollisionDetected;
+        }
+	var confusion = topoObj.cellTopology[i].pciConfusionDetected;
+        if (typeof topoObj.cellTopology[i].pciConfusionDetected != 'undefined') {
+          confusion = topoObj.cellTopology[i].pciConfusionDetected;
+        }
+
+        var confuColor = aColors;
+        if (typeof topoObj.cellTopology[i].color != 'undefined') {
+          confuColor = topoObj.cellTopology[i].color;
+        }
+        //alert(nodeId+" "+physicalCellId+" "+col+" "+row+" "+confusion+" "+confuColor+" ");
+
+        if (collision) {
+	   if (confusion) {
+          context.fillStyle = "#FF0000";
+          } else {
+          context.fillStyle = "#FF4500";
+        }
+          
+        } else if (confusion){
+          context.fillStyle = "#CCCC00";
+        } else {
+          context.fillStyle = "#32CD32";
+        }
+        context.beginPath();
+        context.lineWidth = 5;
+        var a = 1.5 * rad;
+        var b = 0.86 * rad;
+        if (col % 2 == 0) {
+          context.moveTo((col + 1) * a + rad, (2 * row + 1) * b);
+          var s = 6;
+          for (var p = 1; p < s; p++) {
+            context.lineTo(((col + 1) * a) + (rad * Math.cos(p * 2 *
+              Math.PI / s)), (2 * row + 1) * b + (
+              rad * Math.sin(p * 2 * Math.PI / s)));
+          }
+        } else {
+
+          context.moveTo((col + 1) * a + rad, (2 * row + 2) * b);
+          var s = 6;
+          for (var p = 1; p < s; p++) {
+            context.lineTo(((col + 1) * a) + (rad * Math.cos(p * 2 *
+              Math.PI / s)), ((2 * row + 2) * b) + (
+              rad * Math.sin(p * 2 * Math.PI / s)));
+          }
+        }
+        context.strokeStyle = "black";
+        context.stroke();
+        //alert(nodeId+" Circle X " + (rad+gaps*col) + " Y: "+ (rad+gaps*row));
+        context.closePath();
+        context.fill();
+
+        context.font = "12px Comic Sans MS";
+        context.fillStyle = "white";
+        context.textAlign = "center";
+        //fillMultiLineText(context,"cid:"+nodeId+"\npcid:"+physicalCellId, rad+gaps*col,rad+ gaps*row);
+
+        if (col % 2 == 0) {
+          context.fillText("" + nodeId + "," + physicalCellId, (col +
+            1) * a, rad + (2 * row) * b);
+        } else {
+          context.fillText("" + nodeId + "," + physicalCellId, (col +
+            1) * a, (2 * row + 2) * b);
+        }
+      }
+
+      myCanvas.addEventListener('click', (e) => {
+          const pos = {
+            x: e.clientX,
+            y: e.clientY
+          };
+          alert('click1 e.clientX:'+e.clientX);
+          for (i in topoObj.cellTopology) {
+            if (isIntersect(pos, topoObj.cellTopology[i], rad,
+                gaps)) {
+            	alert('click2 i:'+i);
+              var nodeVal = topoObj.cellTopology[i].nodeId;
+              var cellVal = topoObj.cellTopology[i].physicalCellId;
+              var networkId = topoObj.cellTopology[i].networkId;
+              var serverId = topoObj.cellTopology[i].serverId;
+              var htmlText1 = 'networkId:'+networkId +' serverId:'+serverId;
+              alert('click2 htmlText1:'+htmlText1);
+              document.getElementById("CellDetails").innerHTML =
+              htmlText1;
+              return;
+            }
+          }
+      });
+        	
+      
+      myCanvas.addEventListener('contextmenu', (e) => {
+        const pos = {
+          x: e.clientX,
+          y: e.clientY
+        };
+        for (i in topoObj.cellTopology) {
+          if (isIntersect(pos, topoObj.cellTopology[i], rad,
+              gaps)) {
+            var nodeVal = topoObj.cellTopology[i].nodeId;
+            var cellVal = topoObj.cellTopology[i].physicalCellId;
+            //alert('click on circle: ' + topoObj.cellTopology[i].nodeId);
+            //alert(pos.x + " "+pos.y);
+            document.getElementById("rmenu").className =
+              "show";
+            document.getElementById('rmenu').style.top =
+              pos.y + "px"; //or whatever 
+            document.getElementById('rmenu').style.left =
+              pos.x + "px"; // or whatever
+
+            var htmlText1 = '<div class="btn-group">';
+            htmlText1 +=
+              '<button class="button" id="modifyNode">Modify</button>';
+            htmlText1 +=
+              '<button class="button" id="deleteNode">Delete</button>';
+            htmlText1 += '</div>';
+            document.getElementById("rmenu").innerHTML =
+              htmlText1;
+
+            document.getElementById("modifyNode").addEventListener(
+              "click",
+              function() {
+                modifyNode(nodeVal, cellVal);
+              });
+            document.getElementById("deleteNode").addEventListener(
+              "click",
+              function() {
+                deleteNode(nodeVal, cellVal);
+              });
+            e.preventDefault();
+            return;
+          }
+        }
+        e.preventDefault();
+      });
+    }
+
+    function createNode(cellInfo) {
+      var point = cellInfo.split(":");
+      var gridX = point[0];
+      var gridY = point[1];
+      //alert("Cell X : "+gridX+" Y: "+ gridY);
+      window.childWin = window.open('createCell.html?gridX=' + gridX +
+        '&gridY=' + gridY, '',
+        'menubar=no, locationbar=no, toolbar=no, width=600px, height=250px'
+      );
+      window.intervalId = window.setInterval(
+        'window.checkIfChildWindowIsClosed()', 5 * 1000);
+    }
+
+    function modifyNode(cid, pcid) {
+      //alert("Modify CID "+cid + " PCID " + pcid);
+      window.childWin = window.open('modifyCell.html?cid=' + cid +
+        '&pcid=' + pcid, '',
+        'menubar=no, locationbar=no, toolbar=no, width=600px, height=250px'
+      );
+      window.intervalId = window.setInterval(
+        'window.checkIfChildWindowIsClosed()', 5 * 1000);
+    }
+
+    function deleteNode(cid, pcid) {
+      //alert("Delete CID "+cid + " PCID " + pcid);
+      window.childWin = window.open('deleteCell.html?cid=' + cid +
+        '&pcid=' + pcid, '',
+        'menubar=no, locationbar=no, toolbar=no, width=600px, height=250px'
+      );
+      window.intervalId = window.setInterval(
+        'window.checkIfChildWindowIsClosed()', 5 * 1000);
+    }
+
+    //add check function to window
+    window.checkIfChildWindowIsClosed = function() {
+      if (window.childWin.closed) {
+        window.clearInterval(window.intervalId);
+        location.reload();
+      }
+    }
+
+    document.addEventListener('click', function() {
+      document.getElementById("rmenu").className = "hide";
+    });
+
+    function isIntersectDefault(point, row, col, rad, gaps) {
+
+      var a = 1.5 * rad;
+      var b = 0.86 * rad;
+
+      if (col % 2 == 0) {
+
+        var x = (col + 1) * a;
+        var y = (2 * row + 1) * b;
+      } else {
+
+        var x = (col + 1) * a;
+        var y = (2 * row + 2) * b;
+      }
+
+      return Math.sqrt((point.x - x) ** 2 + (point.y - y) ** 2) < rad;
+    }
+
+    function isIntersect(point, circle, rad, gaps) {
+      var row = circle.gridX;
+      --row;
+      var col = circle.gridY;
+      --col;
+      var a = 1.5 * rad;
+      var b = 0.86 * rad;
+      if (col % 2 == 0) {
+
+        var x = (col + 1) * a;
+        var y = (2 * row + 1) * b;
+      } else {
+
+        var x = (col + 1) * a;
+        var y = (2 * row + 2) * b;
+      }
+
+      return Math.sqrt((point.x - x) ** 2 + (point.y - y) ** 2) < rad;
+    }
+
+    function fillMultiLineText(context, textVal, x, y) {
+      context.fillText(textVal, x, y);
+      //For multiple lines
+      var lineHeight = context.measureText("M").width * 1.2;
+      var lines = textVal;
+      for (var i = 0; i < lines.length; ++i) {
+        context.fillText(lines[i], x, y);
+        y += lineHeight;
+      }
+    }
+  </script>
+</head>
+
+<body onLoad="init();" style="margin: 0px">
+  <div class="hide" id="rmenu"></div>
+  <canvas id="myCanvas" />
+</body>
+
+</html>

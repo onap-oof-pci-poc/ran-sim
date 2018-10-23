@@ -1,0 +1,140 @@
+<!-- 
+ * ============LICENSE_START=======================================================
+ * Ran Simulator Controller
+ * ================================================================================
+ * Copyright (C) 2018 Wipro Limited.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */ 
+ -->
+
+<!DOCTYPE html>
+<html>
+<script src="angular.min.js"></script>
+<body>
+
+<p>A typical arithmetic operation takes two numbers and produces a new number.</p>
+
+<p id="demo"></p>
+
+<script>
+
+	
+		var xy2ll = translate_xyToLatLng(10, 10);
+		var slat=xy2ll.slat;  /* in decimal degrees */
+      		var slon=xy2ll.slon;
+		console.log("slat: " + slat);
+		console.log("slon: " + slon);
+
+		alert("xy2ll: " + xy2ll);
+
+		var ll2xy = translate_latLongToXY(slat, slon);
+		var xx = ll2xy.x;
+		var yy = ll2xy.y;
+
+		console.log("xx: " + xx);
+		console.log("yy: " + yy);
+
+		alert("ll2xy: " + ll2xy);
+
+		var y = 10;
+		document.getElementById("demo").innerHTML = y;
+	
+
+function DEG_TO_RADIANS(x)
+{ 
+	RADIANS = 57.2957795; 
+    return (x/RADIANS); 
+}
+function METERS_DEGLON(x)
+    {  
+       with (Math)
+       {
+          var d2r=DEG_TO_RADIANS(x);
+          return((111415.13 * cos(d2r))- (94.55 * cos(3.0*d2r)) + (0.12 * cos(5.0*d2r)));
+       }
+    }
+function METERS_DEGLAT(x)
+{
+   with (Math)
+   {
+      var d2r=DEG_TO_RADIANS(x);
+      return(111132.09 - (566.05 * cos(2.0*d2r))+ (1.20 * cos(4.0*d2r)) - (0.002 * cos(6.0*d2r)));
+   }
+}
+    
+    function translate_xyToLatLng(xx, yy)
+    {
+         
+          var xx,yy,r,ct,st,angle;
+          angle = 0;
+
+         
+             /* X,Y to Lat/Lon Coordinate Translation  */
+             //pxpos_mtrs = porg.x;  
+             //pypos_mtrs = porg.y;
+    	 	//xx = x;
+    		// yy = y;
+    		 r = Math.sqrt(xx*xx + yy*yy);
+
+    		 if(r)
+    		 {
+                ct = xx/r;
+    		    st = yy/r;
+    		    xx = r * ( (ct * Math.cos(angle))+ (st * Math.sin(angle)) );
+    		    yy = r * ( (st * Math.cos(angle))- (ct * Math.sin(angle)) );
+    		 }
+
+    		 var plon = xx/METERS_DEGLON(0);
+    	 	var plat =  yy/METERS_DEGLAT(0);
+
+             var sll={};
+         sll={slat:plat, slon:plon};
+         return(sll);
+          
+         
+      
+    }
+
+   
+     function translate_latLongToXY(lat, lon) 
+    {
+         xx = (lon - 0)*METERS_DEGLON(0);
+	 yy = (lat - 0)*METERS_DEGLAT(0);
+
+	r = Math.sqrt(xx*xx + yy*yy);
+
+        /* alert('LL_TO_XY: xx=' + xx + ' yy=' + yy + ' r=' + r);
+        return false;*/
+
+	if(r)
+	{
+	    ct = xx/r;
+            st = yy/r;
+	    xx = r * ( (ct * Math.cos(0)) + (st * Math.sin(0)) );
+	    yy = r * ( (st * Math.cos(0)) - (ct * Math.sin(0)) );
+	}
+	//pxpos_mtrs = xx + porg.xoffset_mtrs;
+	//pypos_mtrs = yy + porg.yoffset_mtrs;
+      
+        var sxy={};
+        sxy={x:xx, y:yy};
+
+        return(sxy);
+     }
+</script>
+
+</body>
+</html>
+

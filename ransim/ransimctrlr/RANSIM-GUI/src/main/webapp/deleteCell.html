@@ -1,0 +1,145 @@
+<!-- 
+ * ============LICENSE_START=======================================================
+ * Ran Simulator Controller
+ * ================================================================================
+ * Copyright (C) 2018 Wipro Limited.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */ 
+ -->
+<html>
+
+<head>
+    <title>Delete Cell Configuration</title>
+    <script src="angular.min.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        
+        table tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <h2>Delete Cell Configuration</h2>
+        <div data-ng-init="onloadFun()" ng-app="mainApp" ng-controller="configController">
+            <form name="configForm" novalidate>
+                <table border="0" align=center>
+                    <tr>
+                        <td>
+                            <input name="nodeId" type="hidden" ng-model="nodeId" required disabled> Do you really want to delete the Cell {{nodeId}}?
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align=right>
+                            <button ng-disabled="configForm.nodeId.$dirty &&
+                        configForm.nodeId.$invalid" ng-click="deleteCell()">Delete</button>
+                            <button ng-click="close()">Cancel</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <script>
+            var mainApp = angular.module("mainApp", []);
+            mainApp.controller('configController', ['$scope', '$http', '$location',
+                function($scope, $http, $location) {
+                    $scope.deleteCell = function() {
+                        //alert($scope.nodeId);
+                        var formVal = {
+                            "nodeId": $scope.nodeId
+                        }
+                        var dataObj = JSON.stringify(formVal);
+                        //alert("Delete DataObj : " + dataObj);
+
+                        var res = $http.post(
+                                'http://ransimsvr:8081/ransim/api/DeleteACell', dataObj
+                            )
+                            .then(function successCallback(response) {
+                                //alert("Success message: " + JSON.stringify(response));
+                                alert("Delete Successful");
+                                window.close();
+                            }, function errorCallback(response) {
+                                //alert("Failure message: " + JSON.stringify(response));
+                                alert("Delete Failed");
+                                window.close();
+                            });
+
+                        /*var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+            	  alert( "Success message: "+JSON.stringify(this.responseText));	
+				  alert("deleted Successfully");
+				  window.close();
+              } else if (this.readyState == 4 && this.status > 200) {
+            	  alert( "Failure message: "+JSON.stringify(this.responseText));	
+				  alert("delete Failed");
+				  window.close();
+              }
+             xmlhttp.open("POST",
+              "http://ransimsvr:8081/ransim/api/DeleteACell", true);
+             xmlhttp.setRequestHeader('Content-Type', 'application/json')
+             xmlhttp.send(dataObj);                
+             };
+             */
+
+                    };
+                    $scope.close = function() {
+                        window.close();
+                    }
+                    $scope.onloadFun = function() {
+                        parts = {
+                                "queryvars": {}
+                            },
+                            absUrl = $location.absUrl(),
+                            // extract and parse url
+                            elements = absUrl.split("?");
+
+                        // parse quesry string
+                        parts["queryString"] = elements[1];
+                        if (elements[1]) {
+                            parts["hashString"] = (parts["queryString"].split("#"))[1];
+                            parts["requestParams"] = ((parts["queryString"].split("#"))[
+                                0]).split("&");
+
+                            parts["requestParams"].forEach(function(queryStringVariable) {
+                                var __variable = queryStringVariable.split("=");
+                                parts.queryvars[__variable[0]] = __variable[1];
+                            });
+                            //alert("Parts : "+JSON.stringify(parts));
+                            if (parts.queryvars["cid"] !== "undefined") {
+                                alert("CID : " + parts.queryvars["cid"]);
+                                $scope.nodeId = parts.queryvars["cid"];
+                            }
+                        }
+                    }
+                }
+            ]);
+        </script>
+        <center>
+</body>
+
+</html>

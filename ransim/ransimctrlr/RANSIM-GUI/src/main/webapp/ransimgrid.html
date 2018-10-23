@@ -1,0 +1,576 @@
+<!-- 
+ * ============LICENSE_START=======================================================
+ * Ran Simulator Controller
+ * ================================================================================
+ * Copyright (C) 2018 Wipro Limited.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */ 
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.show {
+	z-index: 1000;
+	position: absolute;
+	padding: 2px;
+	display: block;
+	margin: 0;
+	list-style-type: none;
+	list-style: none;
+}
+
+.hide {
+	display: none;
+}
+
+.btn-group .button {
+	background-color: LightGrey;
+	color: black;
+	border: 1px solid Black;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+	width: 100px;
+	display: block;
+}
+
+.btn-group
+ 
+.button
+:not
+ 
+(
+:last-child
+ 
+)
+{
+border-bottom
+:
+ 
+none
+;
+
+
+}
+.btn-group .button:hover {
+	background-color: lightblue;
+	color: white;
+}
+</style>
+<script>	
+function init(){
+	//alert(init);
+  getCellTopology();
+}
+
+function getCellTopology() {
+	
+	 //alert(getCellTopology);
+	 var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var topology = JSON.parse(this.responseText);
+			drawTopology(topology);
+		}
+	};
+	xmlhttp.open("GET", "http://ransimsvr:8081/ransim/api/GetTopology", true);
+	xmlhttp.send();   
+	/* 
+	 var topologyJson = {
+			"gridSize": 10,
+		    "cellTopology": [
+		        {"nodeId":55, "physicalCellId":"70", "gridX":1, "gridY":1, "confusion":true, "color":"#FF0000" },
+				{"nodeId":58, "physicalCellId":"72", "gridX":1, "gridY":4 },
+				{"nodeId":57, "physicalCellId":"73", "gridX":1, "gridY":3 },
+				{"nodeId":56, "physicalCellId":"71", "gridX":1, "gridY":2 },
+				{"nodeId":65, "physicalCellId":"70", "gridX":3, "gridY":2, "confusion":true, "color":"#FF0000" }
+			]}
+			drawTopology(topologyJson);
+	  */
+	/* var topologyJson = {"gridSize":10,
+			 "cellTopology":[
+				{"nodeId":51,"physicalCellId":20,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":5,"gridY":1,"serverId":"ncserver1003"},
+				{"nodeId":52,"physicalCellId":4,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":5,"gridY":2,"serverId":"ncserver1003"},
+				{"nodeId":61,"physicalCellId":10,"pciCollisionDetected":true,"pciConfusionDetected":false,"gridX":6,"gridY":1,"serverId":"ncserver1004"},
+				{"nodeId":62,"physicalCellId":5,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":6,"gridY":2,"serverId":"ncserver1004"},
+				{"nodeId":63,"physicalCellId":6,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":6,"gridY":3,"serverId":"ncserver1004"},
+				{"nodeId":68,"physicalCellId":9,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":6,"gridY":8,"serverId":"ncserver1004"},
+				{"nodeId":71,"physicalCellId":2,"pciCollisionDetected":true,"pciConfusionDetected":false,"gridX":7,"gridY":1,"serverId":"ncserver1005"},
+				{"nodeId":72,"physicalCellId":8,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":7,"gridY":2,"serverId":"ncserver1005"},
+				{"nodeId":73,"physicalCellId":1,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":7,"gridY":3,"serverId":"ncserver1005"},
+				{"nodeId":76,"physicalCellId":2,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":7,"gridY":6,"serverId":"ncserver1005"},
+				{"nodeId":77,"physicalCellId":5,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":7,"gridY":7,"serverId":"ncserver1005"},
+				{"nodeId":78,"physicalCellId":3,"pciCollisionDetected":false,"pciConfusionDetected":true,"gridX":7,"gridY":8,"serverId":"ncserver1005"},
+				{"nodeId":79,"physicalCellId":4,"pciCollisionDetected":true,"pciConfusionDetected":false,"gridX":7,"gridY":9,"serverId":"ncserver1005"},
+				{"nodeId":80,"physicalCellId":15,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":7,"gridY":10,"serverId":"ncserver1005"},
+				{"nodeId":81,"physicalCellId":13,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":8,"gridY":1,"serverId":"ncserver1005"},
+				{"nodeId":82,"physicalCellId":14,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":8,"gridY":2,"serverId":"ncserver1005"},
+				{"nodeId":83,"physicalCellId":3,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":8,"gridY":3,"serverId":"ncserver1005"},
+				{"nodeId":86,"physicalCellId":6,"pciCollisionDetected":true,"pciConfusionDetected":true,"gridX":8,"gridY":6,"serverId":"ncserver1006"},
+				{"nodeId":87,"physicalCellId":4,"pciCollisionDetected":false,"pciConfusionDetected":true,"gridX":8,"gridY":7,"serverId":"ncserver1006"},
+				{"nodeId":88,"physicalCellId":0,"pciCollisionDetected":false,"pciConfusionDetected":true,"gridX":8,"gridY":8,"serverId":"ncserver1006"},
+				{"nodeId":89,"physicalCellId":1,"pciCollisionDetected":false,"pciConfusionDetected":true,"gridX":8,"gridY":9,"serverId":"ncserver1006"},
+				{"nodeId":90,"physicalCellId":7,"pciCollisionDetected":false,"pciConfusionDetected":true,"gridX":8,"gridY":10,"serverId":"ncserver1006"},
+				{"nodeId":91,"physicalCellId":11,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":9,"gridY":1,"serverId":"ncserver1006"},
+				{"nodeId":96,"physicalCellId":5,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":9,"gridY":6,"serverId":"ncserver1006"},
+				{"nodeId":97,"physicalCellId":1,"pciCollisionDetected":true,"pciConfusionDetected":false,"gridX":9,"gridY":7,"serverId":"ncserver1006"},
+				{"nodeId":98,"physicalCellId":2,"pciCollisionDetected":false,"pciConfusionDetected":true,"gridX":9,"gridY":8,"serverId":"ncserver1006"},
+				{"nodeId":99,"physicalCellId":3,"pciCollisionDetected":false,"pciConfusionDetected":true,"gridX":9,"gridY":9,"serverId":"ncserver1006"},
+				{"nodeId":100,"physicalCellId":4,"pciCollisionDetected":false,"pciConfusionDetected":true,"gridX":9,"gridY":10,"serverId":"ncserver1007"},
+				{"nodeId":107,"physicalCellId":8,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":10,"gridY":7,"serverId":"ncserver1007"},
+				{"nodeId":108,"physicalCellId":9,"pciCollisionDetected":true,"pciConfusionDetected":true,"gridX":10,"gridY":8,"serverId":"ncserver1007"},
+				{"nodeId":109,"physicalCellId":1,"pciCollisionDetected":false,"pciConfusionDetected":false,"gridX":10,"gridY":9,"serverId":"ncserver1007"}
+				]}
+				drawTopology(topologyJson); */
+	 
+	
+}
+
+function drawTopology(topoObj){
+	//alert("topoObj");
+	var width = window.innerHeight;
+  var height = window.innerHeight;//100;
+  var myCanvas = document.getElementById("myCanvas");
+    myCanvas.width = width;
+    myCanvas.height = height;
+    
+  var context = myCanvas.getContext("2d");
+    context.clearRect(0,0,width,height);
+    context.fillStyle = "#FFFFFF";
+    context.fillRect(0,0,width,height);
+    
+    //var gridSize = 15;
+    var gridSize = topoObj.gridSize;
+	
+    var rad=height/(2 * gridSize);//10;
+    var gaps= rad*2;
+   // alert(rad);
+    var widthCount = parseInt(width/gaps); 
+    var heightCount = parseInt(height/gaps); 
+    //var aColors=["#43A9D1","#EFA63B","#EF7625","#5E4130","#EEE","#DDD"];
+	var aColors="#32CD32";
+    var aColorsLength = 1;
+	var arr = new Array();
+	var a=1.5*rad;
+	var b=0.86*rad;
+	
+	
+   /*  for(var x=0; x<gridSize;x++) {
+	  arr[x]=new Array();
+      for(var y=0; y<gridSize;y++) {
+        context.fillStyle = "#D3D3D3";
+        context.beginPath();
+	
+        context.arc(rad+gaps*x,rad+ gaps*y, rad, 0, Math.PI*2, true); 
+        context.closePath();
+        context.fill();
+		arr[x][y] = (x+1) + ":" + (y+1);
+		
+		context.font = "12px Comic Sans MS";
+		context.fillStyle = "white";
+		context.textAlign = "center";
+		fillMultiLineText(context,"X:"+y+"\nY:"+x, rad+gaps*x,rad+ gaps*y);
+		
+      }
+    }  */
+	
+	myCanvas.addEventListener('contextmenu', (e) => {
+		const pos = {
+			x: e.clientX,
+			y: e.clientY
+		};
+		for(var x=0; x<gridSize;x++) {
+		  for(var y=0; y<gridSize;y++) {
+			if (isIntersectDefault(pos, x, y, rad, gaps)) {	
+				var val = arr[x][y];			
+				document.getElementById("rmenu").className = "show";
+				document.getElementById('rmenu').style.top = pos.y+"px"; //or whatever 
+				document.getElementById('rmenu').style.left = pos.x+"px"; // or whatever
+							
+				var htmlText1 = '<div class="btn-group">';
+				htmlText1 += '<button class="button" id="createNode">Create</button>';
+				htmlText1 += '</div>';
+				document.getElementById("rmenu").innerHTML = htmlText1;
+				
+				document.getElementById("createNode").addEventListener("click", function(){
+					createNode(val);
+				});
+			}
+		  }
+		}
+		 e.preventDefault();
+	});
+	
+	for (i in topoObj.cellTopology) {
+		var nodeId = topoObj.cellTopology[i].nodeId;
+		var physicalCellId = topoObj.cellTopology[i].physicalCellId;
+		var row = topoObj.cellTopology[i].gridX;
+		--row;	
+		var col = topoObj.cellTopology[i].gridY;
+		--col;
+		 var collision = topoObj.cellTopology[i].pciCollisionDetected;
+	        if (typeof topoObj.cellTopology[i].pciCollisionDetected != 'undefined') {
+	          collision = topoObj.cellTopology[i].pciCollisionDetected;
+	        }
+		var confusion = topoObj.cellTopology[i].pciConfusionDetected;
+	        if (typeof topoObj.cellTopology[i].pciConfusionDetected != 'undefined') {
+	          confusion = topoObj.cellTopology[i].pciConfusionDetected;
+	        }
+
+	        var confuColor = aColors;
+	        if (typeof topoObj.cellTopology[i].color != 'undefined') {
+	          confuColor = topoObj.cellTopology[i].color;
+	        }
+	        //alert(nodeId+" "+physicalCellId+" "+col+" "+row+" "+confusion+" "+confuColor+" ");
+
+	     /*if (collision) {
+		   if (confusion) {
+	          context.fillStyle = "#FF1493";
+	          } else {
+	          context.fillStyle = "#FF0000";
+	        }
+	          
+	        } else if (confusion){
+	          context.fillStyle = "#CCCC00";
+	        } else {
+	          context.fillStyle = "#32CD32";
+	       }*/
+		if (confusion) {
+			context.fillStyle = confuColor;
+		} else {
+			context.fillStyle = aColors;
+
+        context.beginPath();
+        context.arc(rad+gaps*col,rad+gaps*row, rad/2, 0, Math.PI*2, true); 
+        
+		//alert(nodeId+" Circle X " + (rad+gaps*col) + " Y: "+ (rad+gaps*row));
+		 context.strokeStyle = "black";
+          context.stroke();
+        context.closePath();
+        context.fill();
+        
+        /* context.beginPath();
+        context.moveTo(rad+gaps*col, rad+gaps*row);
+        context.lineTo(rad+gaps*col,rad+gaps*row - rad/2);
+        context.strokeStyle = "black";
+        context.stroke();
+		context.closePath(); */
+      
+		context.font = "12px Comic Sans MS";
+		context.fillStyle = "white";
+		context.textAlign = "center";
+		context.fillText(physicalCellId, rad+gaps*col,rad+ gaps*row );
+		//fillMultiLineText(context,nodeId, rad+gaps*col,rad+ gaps*row);
+	}
+
+	myCanvas.addEventListener('contextmenu', (e) => {
+		const pos = {
+			x: e.clientX,
+			y: e.clientY
+		};
+		for (i in topoObj.cellTopology) {
+			if (isIntersect(pos, topoObj.cellTopology[i], rad, gaps)) {
+				
+				var nodeVal = topoObj.cellTopology[i].nodeId;
+				var cellVal = topoObj.cellTopology[i].physicalCellId;
+				var row = topoObj.cellTopology[i].gridX;
+				--row;	
+				var col = topoObj.cellTopology[i].gridY;
+				--col;
+				//alert('click on circle: ' + topoObj.cellTopology[i].nodeId);
+				//alert(pos.x + " "+pos.y);
+				document.getElementById("rmenu").className = "show";
+				document.getElementById('rmenu').style.top = pos.y+"px"; //or whatever 
+				document.getElementById('rmenu').style.left = pos.x+"px"; // or whatever
+							
+				var htmlText1 = '<div class="btn-group">';
+				htmlText1 += '<button class="button" id="showNeighbours">showNeighbours</button>';
+				//htmlText1 += '<button class="button" id="deleteNode">Delete</button>';
+				htmlText1 += '</div>';
+				document.getElementById("rmenu").innerHTML = htmlText1;
+				
+				document.getElementById("showNeighbours").addEventListener("click", function(){
+					alert(topoObj.cellTopology[i].nodeId);
+					//alert(col);
+					//alert(i);
+					//change(topoObj,row,col);
+					 var formVal = {
+						"nodeId": nodeVal
+					}
+					var dataObj = JSON.stringify(formVal);
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							alert("responseText:"+this.responseText);
+							var neighbour = JSON.parse(this.responseText);
+							showNeighbours(neighbour,topoObj, nodeVal,cellVal,row,col);
+							alert("calling show neighbours");
+						}
+					};
+					xmlhttp.open("POST", "http://ransimsvr:8081/ransim/api/GetNeighborList", true);
+					xmlhttp.setRequestHeader('Content-Type', 'application/json')
+					xmlhttp.send(dataObj);   
+				});
+				/* document.getElementById("deleteNode").addEventListener("click", function(){
+					deleteNode(nodeVal, cellVal);				
+				}); */ 
+			}
+		}
+		 e.preventDefault();
+	});
+  }
+  
+  function showNeighbours(neighbour, topoObj, cellNodeId, cellPhysicalCellId,cellRow,cellCol){
+	  
+	  alert("inside show neighbours");
+	  var width = window.innerHeight;
+	  var height = window.innerHeight;//100;
+	  var myCanvas = document.getElementById("myCanvas");
+	    myCanvas.width = width;
+	    myCanvas.height = height;
+	    
+	  var context = myCanvas.getContext("2d");
+	    context.clearRect(0,0,width,height);
+	    context.fillStyle = "#FFFFFF";
+	    context.fillRect(0,0,width,height);
+	    
+	    //var gridSize = 15;
+	    var gridSize = topoObj.gridSize;
+	    //alert(gridSize);
+	    
+	    var rad=height/(2 * gridSize);//10;
+	    var gaps= rad*2;
+	    
+	    context.fillStyle = "#0000FF";
+	    context.beginPath();
+        context.arc(rad+gaps*cellCol,rad+gaps*cellRow, rad/2, 0, Math.PI*2, true); 
+        
+	    context.strokeStyle = "black";
+        context.stroke();
+        context.closePath();
+        context.fill();
+      
+    
+		context.font = "12px Comic Sans MS";
+		context.fillStyle = "white";
+		context.textAlign = "center";
+		context.fillText(cellPhysicalCellId, rad+gaps*col,rad+ gaps*row );
+	     
+	   
+	    
+	    /* var res = $http.post('http://ransimsvr:8081/ransim/api/GetNeighborList', dataObj)
+	    var neighbour = JSON.parse(res); */
+	  
+		
+		for (i in neighbour.neighborList) {
+			var neighbourNodeId = neighbour.neighborList[i].nodeId;
+			var neighbourPhysicalCellId = neighbour.neighborList[i].physicalCellId;
+			var row = neighbour.neighborList[i].gridX;
+			--row;	
+			var col = neighbour.neighborList[i].gridY;
+			--col;
+			 var collision = neighbour.neighborList[i].pciCollisionDetected;
+		        if (typeof neighbour.neighborList[i].pciCollisionDetected != 'undefined') {
+		          collision = neighbour.neighborList[i].pciCollisionDetected;
+		        }
+			var confusion = neighbour.neighborList[i].pciConfusionDetected;
+		        if (typeof neighbour.neighborList[i].pciConfusionDetected != 'undefined') {
+		          confusion = neighbour.neighborList[i].pciConfusionDetected;
+		        }
+
+		        /*  var confuColor = aColors;
+		        if (typeof neighbour.neighborList[i].color != 'undefined') {
+		          confuColor = neighbour.neighborList[i].color;
+		        } */ 
+		        //alert(nodeId+" "+physicalCellId+" "+col+" "+row+" "+confusion+" "+confuColor+" ");
+
+		     if (collision) {
+			   if (confusion) {
+		          context.fillStyle = "#FF1493";
+		          } else {
+		          context.fillStyle = "#FF0000";
+		        }
+		          
+		        } else if (confusion){
+		          context.fillStyle = "#CCCC00";
+		        } else {
+		          context.fillStyle = "#32CD32";
+		       }
+	        context.beginPath();
+	        context.arc(rad+gaps*col,rad+gaps*row, rad/2, 0, Math.PI*2, true); 
+	        
+			//alert(nodeId+" Circle X " + (rad+gaps*col) + " Y: "+ (rad+gaps*row));
+			 context.strokeStyle = "black";
+	          context.stroke();
+	        context.closePath();
+	        context.fill();
+	        
+	        context.beginPath();
+	        context.moveTo(rad+gaps*cellCol,rad+gaps*cellRow);
+	        
+	        context.lineTo(rad+gaps*col, rad+gaps*row);
+	        context.strokeStyle = "black";
+	        context.stroke();
+			context.closePath();
+	      
+			context.font = "12px Comic Sans MS";
+			context.fillStyle = "white";
+			context.textAlign = "center";
+			context.fillText(neighbourPhysicalCellId, rad+gaps*col,rad+ gaps*row );
+			//fillMultiLineText(context,nodeId, rad+gaps*col,rad+ gaps*row);
+		} 
+		
+		
+  }
+  
+   
+  
+  function change(topoObj,row,col){
+	  
+	  var width = window.innerHeight;
+	  var height = window.innerHeight;//100;
+	  var myCanvas = document.getElementById("myCanvas");
+	    myCanvas.width = width;
+	    myCanvas.height = height;
+	    
+	  var context = myCanvas.getContext("2d");
+	    context.clearRect(0,0,width,height);
+	    context.fillStyle = "#FFFFFF";
+	    context.fillRect(0,0,width,height);
+	    
+	    //var gridSize = 15;
+	    var gridSize = topoObj.gridSize;
+	    //alert(gridSize);
+	    
+	    var rad=height/(2 * gridSize);//10;
+	    var gaps= rad*2;
+	    
+	   // alert(rad);
+	  
+	    //var row = topoObj.cellTopology[i].gridX;
+		//--row;	
+		//alert(topoObj.cellTopology[i].nodeId);
+		//var col = topoObj.cellTopology[i].gridY;
+		//--col;
+		//alert(col);
+		//alert(i);
+		//context.arc(rad+gaps*col,rad+ gaps*row, rad/2, 0, Math.PI*2, true); 
+        //alert(rad+ gaps*row);
+	    context.fillStyle = "#D3D3D3";
+        context.beginPath();
+	
+        context.arc(rad+gaps*col,rad+ gaps*row, rad/2, 0, Math.PI*2, true); 
+        
+        context.closePath();
+        context.fill(); 
+	    
+	  
+  }
+  
+  function createNode(cellInfo) {
+	var point = cellInfo.split(":");
+	var gridX = point[0];
+	var gridY = point[1];
+	alert("Cell X : "+gridX+" Y: "+ gridY);
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var topology = JSON.parse(this.responseText);
+			drawTopology(topology);
+		} else {
+			alert('createNode failed with '+ this.status);
+		}
+	};
+	xmlhttp.open("GET", "http://ransimsvr:8081/ransim/api/createACell", true);
+	xmlhttp.send();
+  }
+  
+  function modifyNode(cid, pcid) {
+	alert("Modify CID "+cid + " PCID " + pcid);
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var topology = JSON.parse(this.responseText);
+			drawTopology(topology);
+		} else {
+			alert('ModifyCell failed with '+ this.status);
+		}
+	};
+	xmlhttp.open("GET", "http://ransimsvr:8081/ransim/api/ModifyCell", true);
+	xmlhttp.send();					
+  }
+  
+  function deleteNode(cid, pcid) {
+	alert("Delete CID "+cid + " PCID " + pcid);
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var topology = JSON.parse(this.responseText);
+			drawTopology(topology);
+		} else {
+			alert('deleteNode failed with '+ this.status);
+		}
+	};
+	xmlhttp.open("GET", "http://ransimsvr:8081/ransim/api/DeleteCell", true);
+	xmlhttp.send();	
+  }
+  
+  document.addEventListener('click', function() {
+    document.getElementById("rmenu").className = "hide";
+  });
+  
+  /*
+    $(document).bind("click", function(event) {
+        document.getElementById("rmenu").className = "hide";
+    });
+ */
+ 
+  function isIntersectDefault(point, row, col, rad, gaps) {	
+	var x = (rad+gaps*col);
+	var y = (rad+gaps*row);
+	return Math.sqrt((point.x-x) ** 2 + (point.y-y) ** 2) < rad;
+  }
+  
+  function isIntersect(point, circle, rad, gaps) {
+	var row = circle.gridX;
+	--row;
+	var col = circle.gridY;
+	--col;
+	var x = (rad+gaps*col);
+	var y = (rad+gaps*row);
+	return Math.sqrt((point.x-x) ** 2 + (point.y-y) ** 2) < rad;
+  }
+  
+  function fillMultiLineText(context, textVal, x, y) {
+	  context.fillText(textVal, x, y);
+      //For multiple lines
+      var lineHeight = context.measureText("M").width * 1.2;
+      var lines = textVal;
+      for (var i = 0; i < lines.length; ++i) {
+        context.fillText(lines[i], x, y);
+        y += lineHeight;
+      }
+  }
+  </script>
+</head>
+<body onLoad="init();" style="margin: 0px">
+	<div class="hide" id="rmenu"></div>
+	<canvas id="myCanvas" />
+</body>
+</html>
