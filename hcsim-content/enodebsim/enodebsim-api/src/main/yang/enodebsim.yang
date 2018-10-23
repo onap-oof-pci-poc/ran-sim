@@ -1,0 +1,753 @@
+module bbf-tr-196-2-0-3-full {
+  namespace "urn:onf:otcc:wireless:yang:radio-access";
+  prefix ran;
+
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+
+  organization
+    "ONF (Open Networking Foundation) Open Transport Working Group - Wireless Project";
+  contact
+    "WG Web: <https://www.opennetworking.org/technical-communities/areas/specification/1931-optical-transport>
+     WG List:  <mailto:wireless-transport@login.opennetworking.org>
+     WG Chair: Lyndon Ong         <mailto:lyong@ciena.com>
+     WG Chair: Giorgio Cazzaniga  <mailto:giorgio.cazzaniga@sm-optics.com>
+     Editors:  Ramakrishnan, Shanthakumar (Shanth) <Shanthakumar.Ramakrishnan@commscope.com>                    Martin Skorupski   <mailto:martin.skorupski@highstreet-technologies.com>";
+  description
+    "This module contains a collection of YANG definitions for managing radio access network (RAN) devices.";
+
+  revision 2018-04-08 {
+    description
+      "Initial version, used only for ONAP PoC 2018-06-25";
+    reference
+      "ONF TR ???: A YANG Data Model for Radio Access Networks.
+       BBF TR-196 2.0.3 full";
+  }
+
+  revision 2018-09-20 {
+    description
+      "Updated and to be used only for ONAP PCI Optimization PoC 2018-09-20
+      Incorporated container for fap-service and added pnf-name leaf node";
+    reference
+      "ONF TR ???: A YANG Data Model for Radio Access Networks.
+       BBF TR-196 2.0.3 full";
+  }
+
+
+
+container radio-access {
+
+
+  leaf fap-service-number-of-entries {
+    type uint64;
+    description
+      "{{numentries}}";
+    reference "BBF TR-196 2.0.3 full - FAPServiceNumberOfEntries";
+  }
+
+  list fap-service {
+    key "alias";
+    uses fap-service-g;
+    container x-0005b9-lte {
+      uses x-0005b9-lte-g;
+    }
+    container capabilities {
+      uses capabilities-g;
+      description
+        "Container for object class FAPService.{i}.Capabilities.";
+      container capabilities-lte {
+        uses capabilities-lte-g;
+        description
+          "Container for object class FAPService.{i}.Capabilities.LTE.";
+      }
+    }
+    container cell-config {
+      uses cell-config-g;
+      description
+        "Container for object class FAPService.{i}.CellConfig.";
+      container lte {
+        uses lte-g;
+        description
+          "Container for object class FAPService.{i}.CellConfig.LTE.";
+        container lte-ran {
+          uses lte-ran-g;
+          description
+            "Container for object class FAPService.{i}.CellConfig.LTE.RAN.";
+          container lte-ran-common {
+            uses lte-ran-common-g;
+            description
+              "Container for object class FAPService.{i}.CellConfig.LTE.RAN.Common.";
+          }
+          container lte-ran-rf {
+            uses lte-ran-rf-g;
+            description
+              "Container for object class FAPService.{i}.CellConfig.LTE.RAN.RF.";
+          }
+          container lte-ran-neighbor-list-in-use {
+            uses lte-ran-neighbor-list-in-use-g;
+            description
+              "Container for object class FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.";
+            list lte-ran-neighbor-list-in-use-lte-cell {
+              key "plmnid cid";
+              uses lte-ran-neighbor-list-in-use-lte-cell-g;
+              description
+                "List of object class FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.";
+            }
+          }
+		}
+      }
+    }
+    description
+      "List of object class FAPService.{i}.";
+  }
+}
+
+  grouping fap-service-g {
+    description
+      "The Femto Access Point (FAP) Service Object.";
+    leaf alias {
+      type string {
+        length "1..64";
+      }
+      description
+        "{{datatype|expand}}";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Alias";
+    }
+    leaf device-type {
+      type enumeration {
+        enum "standalone" {
+          value 1;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.DeviceType - Standalone";
+        }
+        enum "integrated" {
+          value 2;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.DeviceType - Integrated";
+        }
+      }
+      description
+        "The type of FAP device.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.DeviceType";
+    }
+    leaf dn-prefix {
+      type string {
+        length "0..256";
+      }
+      config false;
+      description
+        "The Distinguished Name prefix (DNPrefix) is an operator-configurable prefix string that is pre-pended to object distinguished names in the {{bibref|TR-157a5}} alarm object. See {{bibref|3GPP-TS.32.300}} for the formal definition and examples of DNPrefix as applied to 3GPP alarm objects";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.DNPrefix";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.";
+  }
+
+  grouping x-0005b9-lte-g {
+    leaf phy-cell-id-in-use {
+      type uint64;
+      default 0;
+    }
+    leaf pnf-name {
+      type string {
+        length "0..256";
+      }
+      description
+        "PNF name ";
+    }
+  }
+
+  grouping capabilities-g {
+    description
+      "This object contains parameters relating to the hardware capabilities of the FAP device.";
+    leaf gps-equipped {
+      type boolean;
+      description
+        "Indicates whether the FAP is equipped with a GPS receiver or not.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.GPSEquipped";
+    }
+    leaf max-tx-power {
+      type uint64;
+      units "dBm";
+      description
+        "Indicates the maximum possible transmit power in {{units}} that the FAP hardware can support.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.MaxTxPower";
+    }
+    leaf-list supported-systems {
+      type enumeration {
+        enum "umts" {
+          value 1;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.SupportedSystems - UMTS";
+        }
+        enum "lte" {
+          value 2;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.SupportedSystems - LTE";
+        }
+        enum "cdma1x" {
+          value 3;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.SupportedSystems - CDMA1x";
+        }
+        enum "cdmahrpd" {
+          value 4;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.SupportedSystems - CDMAHRPD";
+        }
+      }
+      description
+        "{{list}} Each entry is a type of system that the FAP supports. {{enum}}";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.SupportedSystems";
+    }
+    leaf beacon {
+      type boolean;
+      description
+        "Indicates whether FAP can support beacon transmission.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.Beacon";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.";
+  }
+
+  grouping capabilities-lte-g {
+    description
+      "This object contains parameters relating to the system and RF aspect of the FAP device that supports the LTE system.";
+    leaf duplex-mode {
+      type enumeration {
+        enum "fdd-mode" {
+          value 1;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.DuplexMode - FDDMode";
+        }
+        enum "tdd-mode" {
+          value 2;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.DuplexMode - TDDMode";
+        }
+      }
+      description
+        "Indicates the mode supported by the LTE FAP. {{enum}}";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.DuplexMode";
+    }
+    leaf-list bands-supported {
+      type uint8 {
+        range "1..21 | 33..40";
+      }
+      //min-elements 1;
+      max-elements "16";
+      description
+        "{{list}} Indicates the LTE bands that the LTE FAP supports {{bibref|3GPP-TS.36.101|Section 5.5}}. At least one band MUST be supported and multiple bands MAY be supported. Each individual band is identified by arabic number (1, 2,...). The order of the band indicators in the string has no significance. In case a new band is defined in the 3GPP standard in a future release of {{bibref|3GPP-TS.36.101}}, the corresponding new band number will be included in the valid band indicators. The followings are examples of valid values: :\"1\" (specifies only band-1 is supported) :\"1,2,11\" (specifies 3 bands are supported) :\"2,11,1\" (specifies 3 bands are supported)";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.BandsSupported";
+    }
+    leaf nnsf-supported {
+      type boolean;
+      description
+        "Indicates whether LTE FAP supports the NAS Node Selection Function (NNSF) or not. NNSF is described in {{bibref|3GPP-TS.36.300|Section 19.2.1.7 and Section 4.6.1}}.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.NNSFSupported";
+    }
+    leaf umts-rx-supported {
+      type boolean;
+      description
+        "Indicates whether the LTE FAP hardware supports the receiving function of UMTS or not.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.UMTSRxSupported";
+    }
+    leaf-list umts-rx-bands-supported {
+      type string;
+      max-elements "16";
+      description
+        "{{list}} Indicates the UMTS receive bands that the LTE FAP supports {{bibref|3GPP-TS.25.104}}, Release 8. If {{param|UMTSRxSupported}} is {{true}}, then at least one band MUST be supported and multiple bands MAY be supported. Each individual band is identified by its upper case Roman numeral. The order of the band indicators in the string has no significance. In case a new band is defined in the 3GPP standard in a future release of {{bibref|3GPP-TS.25.104}}, the corresponding new upper case Roman numeral will be included in the valid band indicators. The followings are examples of valid values: :\"I\" (specifies only band-I is supported) :\"I,II,V\" (specifies 3 bands are supported) :\"II,VII,I\" (specifies 3 bands are supported)";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.UMTSRxBandsSupported";
+    }
+    leaf gsm-rx-supported {
+      type boolean;
+      description
+        "Indicates whether the LTE FAP hardware supports the receiving function of GSM or not.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxSupported";
+    }
+    leaf-list gsm-rx-bands-supported {
+      type enumeration {
+        enum "t-gsm380" {
+          value 1;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - T-GSM380";
+        }
+        enum "t-gsm410" {
+          value 2;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - T-GSM410";
+        }
+        enum "gsm450" {
+          value 3;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - GSM450";
+        }
+        enum "gsm480" {
+          value 4;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - GSM480";
+        }
+        enum "gsm710" {
+          value 5;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - GSM710";
+        }
+        enum "gsm750" {
+          value 6;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - GSM750";
+        }
+        enum "t-gsm810" {
+          value 7;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - T-GSM810";
+        }
+        enum "gsm850" {
+          value 8;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - GSM850";
+        }
+        enum "p-gsm900" {
+          value 9;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - P-GSM900";
+        }
+        enum "e-gsm900" {
+          value 10;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - E-GSM900";
+        }
+        enum "r-gsm900" {
+          value 11;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - R-GSM900";
+        }
+        enum "t-gsm900" {
+          value 12;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - T-GSM900";
+        }
+        enum "dcs1800" {
+          value 13;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - DCS1800";
+        }
+        enum "pcs1900" {
+          value 14;
+          description
+            "none";
+          reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported - PCS1900";
+        }
+      }
+      description
+        "{{list}} Indicates the GSM receive bands that the LTE FAP supports {{bibref|3GPP-TS.45.005}}. If {{param|GSMRxSupported}} is {{true}}, then at least one band MUST be supported and multiple bands MAY be supported. {{bibref|3GPP-TS.45.005}} defines 14 GSM bands. {{enum}} The order of the band indicators in the string has no significance. The following is an example of a valid value. :\"GSM850,PCS1900\"";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.GSMRxBandsSupported";
+    }
+    leaf cdma2000-rx-supported {
+      type boolean;
+      description
+        "Indicates whether the LTE FAP hardware supports the receiving function of CDMA2000 or not.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.CDMA2000RxSupported";
+    }
+    leaf-list cdma2000-rx-bands-supported {
+      type string;
+      max-elements "16";
+      description
+        "{{list}} Indicates the CDMA2000 receive bands that the LTE FAP supports. If {{param|CDMA2000RxSupported}} is {{true}}, then at least one band MUST be supported and multiple bands MAY be supported. The order of the band indicators in the string has no significance. Bandclass is a 1 or 2-digit number as defined in {{bibref|3GPP2-C.S0057-B}}. The following are example values: :\"0\" (specifies US Cellular) :\"1,3,14\" (specifies US PCS, Japan Cellular and US PCS 1.9Ghz) specifies 3 bands are supported)";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.CDMA2000RxBandsSupported";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.Capabilities.LTE.";
+  }
+
+  grouping cell-config-g {
+    description
+      "This object contains parameters relating to configuring the FAP.";
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.";
+  }
+
+  grouping lte-g {
+    description
+      "This object contains parameters relating to configuring the LTE FAP.";
+    leaf tunnel-number-of-entries {
+      type uint64;
+      description
+        "{{numentries}}";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.TunnelNumberOfEntries";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.";
+  }
+
+  grouping lte-ran-g {
+    description
+      "This object contains parameters relating to the LTE RAN level configuration.";
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.";
+  }
+
+  grouping lte-ran-common-g {
+    description
+      "This object contains parameters relating to the common configuration in LTE RAN.";
+    leaf cell-identity {
+      type string {
+        length "0..52";
+      }
+      config false;
+      description
+        "Cell Identity as specified in {{bibref|3GPP-TS.36.331|Section 6.3.4}}.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.Common.CellIdentity";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.Common.";
+  }
+
+  grouping lte-ran-rf-g {
+    description
+      "This object contains parameters relating to the RF, see {{bibref|3GPP-TS.32.592|Section 6.1.7.1}}.";
+    leaf-list earfcndl {
+      type uint16 {
+        range "0..65535";
+      }
+      config false;
+      //min-elements 1;
+      max-elements "128";
+      description
+        "{{list}} Each item is an E-UTRA Absolute Radio Frequency Channel Number in the downlink direction. In case there is more than one item in the list, the first item contains the most preferred value. Corresponds to parameter NDL specified in {{bibref|3GPP-TS.36.104|Table 5.7.3.1}}. If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.EARFCNDL";
+    }
+    leaf-list earfcnul {
+      type uint16 {
+        range "0..65535";
+      }
+      config false;
+      //min-elements 1;
+      max-elements "128";
+      description
+        "{{list}} Each item is an E-UTRA Absolute Radio Frequency Channel Number in the uplink direction. In case there is more than one item in the list, the first item contains the most preferred value. Corresponds to parameter NUL specified in {{bibref|3GPP-TS.36.104|Table 5.7.3.1}}. If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.EARFCNUL";
+    }
+    leaf freq-band-indicator {
+      type uint8 {
+        range "1..40";
+      }
+      config false;
+      description
+        "Frequency band indicator. Corresponds to parameter freqBandIndicator in SIB1 in {{bibref|3GPP-TS.36.331|Section 6.2.2}}.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.FreqBandIndicator";
+    }
+    leaf-list dl-bandwidth {
+      type uint8 {
+        range "6 | 15 | 25 | 50 | 75 | 100";
+      }
+      config false;
+      //min-elements 1;
+      max-elements "32";
+      description
+        "{{list}} Each item is a downlink transmission bandwidth, specified in number of Resource Blocks. In case there is more than one item in the list, the first item contains the most preferred value. Corresponds to parameter dl_Bandwidth in MIB (Master Information Block) in {{bibref|3GPP-TS.36.331|Section 6.2.2}}. and to parameter NRB in {{bibref|3GPP-TS.36.101|Table 5.6-1}}. If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.DLBandwidth";
+    }
+    leaf-list ul-bandwidth {
+      type uint8 {
+        range "6 | 15 | 25 | 50 | 75 | 100";
+      }
+      config false;
+      //min-elements 1;
+      max-elements "32";
+      description
+        "{{list}} Each item is an uplink transmission bandwidth, specified in number of Resource Blocks. In case there is more than one item in the list, the first item contains the most preferred value. Corresponds to parameter ul_Bandwidth in SIB2 in {{bibref|3GPP-TS.36.331|Section 6.3.1}}. and to parameter NRB in {{bibref|3GPP-TS.36.101|Table 5.6-1}}. If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.ULBandwidth";
+    }
+    leaf-list reference-signal-power {
+      type string;
+      config false;
+      //min-elements 1;
+      max-elements "512";
+      description
+        "{{list}} Each item is a downlink reference-signal transmit power, specified in dBm, with a numeric range between -60 and 50 inclusive. In case there is more than one item in the list, the first item contains the most preferred value. Defined as the linear average over the power contributions (in W) of all resource elements that carry cell-specific reference signals within the operating system bandwidth. Corresponds to parameter referenceSignalPower in PDSCH-Config IE in {{bibref|3GPP-TS.36.331|Section 6.3.2}}. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.ReferenceSignalPower";
+    }
+    leaf-list phy-cell-id {
+      type string;
+      config false;
+      //min-elements 1;
+      max-elements "512";
+      description
+        "{{list}} Each item is a physical cell ID with a numeric range between 0 and 503 inclusive. Represents the list of physical cell identities LTE FAP to choose from. In case there is more than one item in the list, the first item contains the most preferred value. As specified in {{bibref|3GPP-TS.36.211|Section 6.11}}. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of , accepts the value as an explicit configuration by the ACS.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.PhyCellID";
+    }
+    leaf-list psch-power-offset {
+      type string;
+      config false;
+      //min-elements 1;
+      max-elements "512";
+      description
+        "{{list}} Each item is a power offset, specified in dB, of the Primary Synchronization Channel with respect to the ReferenceSignalPower, with a numeric range between -350 and 150 inclusive. In case there is more than one item in the list, the first item contains the most preferred value. The value of {{param}} divided by 10 yields the actual value. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If supports self-configuration capability for {{param}} and more than one item is configured, then is expected to select one from the list and overwrite this parameter containing only the one selected. If does not support self-configuration capability for {{param}} and more than one item is configured, then accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of , accepts the value as an explicit configuration by the ACS.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.PSCHPowerOffset";
+    }
+    leaf-list ssch-power-offset {
+      type string;
+      config false;
+      //min-elements 1;
+      max-elements "512";
+      description
+        "{{list}} Each item is a power offset, specified in dB, of the Secondary Synchronization Channel with respect to the ReferenceSignalPower, with a numeric range between -350 and 150 inclusive. In case there is more than one item in the list, the first item contains the most preferred value. The value of {{param}} divided by 10 yields the actual value. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If supports self-configuration capability for {{param}} and more than one item is configured, then is expected to select one from the list and overwrite this parameter containing only the one selected. If does not support self-configuration capability for {{param}} and more than one item is configured, then accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of , accepts the value as an explicit configuration by the ACS.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.SSCHPowerOffset";
+    }
+    leaf-list pbch-power-offset {
+      type string;
+      config false;
+      //min-elements 1;
+      max-elements "512";
+      description
+        "{{list}} Each item is a power offset, specified in dB, of the Physical Broadcast Channel with respect to the ReferenceSignalPower, with a numeric range between -350 and 150 inclusive. In case there is more than one item in the list, the first item contains the most preferred value. The value of {{param}} divided by 10 yields the actual value. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If supports self-configuration capability for {{param}} and more than one item is configured, then is expected to select one from the list and overwrite this parameter containing only the one selected. If does not support self-configuration capability for {{param}} and more than one item is configured, then accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of , accepts the value as an explicit configuration by the ACS.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.PBCHPowerOffset";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.RF.";
+  }
+
+  grouping lte-ran-phy-g {
+    description
+      "This object contains parameters relating to the physical layer level configuration.";
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.PHY.";
+  }
+
+  grouping lte-ran-neighbor-list-g {
+    description
+      "This object contains parameters relating to the neighbor list.";
+    leaf max-lte-cell-entries {
+      type uint64;
+      description
+        "The maximum number of entries in the {{object|.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.}} table.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.MaxLTECellEntries";
+    }
+    leaf lte-cell-number-of-entries {
+      type uint64;
+      description
+        "{{numentries}}";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECellNumberOfEntries";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.";
+  }
+
+  grouping lte-ran-neighbor-list-lte-cell-g {
+    description
+      "Table containing the E-UTRA (i.e. intra-RAT) cell list provided by the ACS. The table contents MAY be added/deleted/modified during operation, in which case these changes shall be reflected in the broadcast information as soon as possible.";
+    leaf enable {
+      type boolean;
+      config false;
+      description
+        "Enables or disables this entry.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.Enable";
+    }
+    leaf alias {
+      type string {
+        length "1..64";
+      }
+      description
+        "{{datatype|expand}}";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.Alias";
+    }
+    leaf must-include {
+      type boolean;
+      config false;
+      description
+        "Indicates whether this instance of the neighbor shall be included or excluded in the FAP's NL configuration.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.MustInclude";
+    }
+    leaf plmnid {
+      type string {
+        length "0..6";
+      }
+      description
+        "PLMN ID consists of Mobile Country Code (MCC) and Mobile Network Code (MNC) {{bibref|3GPP-TS.23.003}}, {{bibref|3GPP-TS.24.008}}. Mobile Country Code consists of three digits and uniquely identifies the country of domicile of the subscriber. Mobile Network Code consists of two or three digits and identifies the Home PLMN within a country. For a 2-digit MNC the total string length of {{param}} is 5.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.PLMNID";
+    }
+    leaf cid {
+       type string {
+         length "0..52";
+      }
+      description
+        "Cell Identity. {{bibref|3GPP-TS.36.331|Section 6.3.4}}. Combination of {{param|PLMNID}} and {{param}} constitutes the Cell Global ID (CGI).";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.CID";
+    }
+    leaf eutra-carrier-arfcn {
+      type uint16 {
+        range "0..65535";
+      }
+      config false;
+      description
+        "Indicates the ARFCN of this carrier frequency. Corresponds to parameter dl-CarrierFreq in SIB5 in {{bibref|3GPP-TS.36.331|Section 6.3.1}}, and and parameter NDL in {{bibref|3GPP-TS.36.101|Section 5.7.3}}. If the value of {{param}} is the same with the one currently being used by the, then it implies that this neighbor cell is an intra-frequency cell; otherwise, it is an inter-frequency cell.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.EUTRACarrierARFCN";
+    }
+    leaf phy-cell-id {
+      type uint64 {
+        range "0..503";
+      }
+      config false;
+      description
+        "Physical cell ID, as specified in {{bibref|3GPP-TS.36.211|Section 6.11}}.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.PhyCellID";
+    }
+    leaf q-offset {
+      type int64;
+      config false;
+      description
+        "Indicate a cell-specific offset applicable to a specific neighbouring cell. It is used for evaluating the cell as a candidate for cell re-selection in idle mode. Corresponds to parameter q-OffsetCell broadcast in SIB4 for intra-frequency cells and in SIB5 for inter-frequency cells, specified in {{bibref|3GPP-TS.36.331|Section 6.3.1}}. For the value less than or equal to -8, and bigger than or equal to 8, only even numbers are valid. If the value is other than these, the CPE MUST reject the value.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.QOffset";
+    }
+    leaf cio {
+      type int64;
+      config false;
+      description
+        "Cell individual offset applicable to a specific neighbouring cell. It is used for evaluating triggering conditions for measurement reporting in connected mode. Specified by cellIndividualOffset in MeasObjectEUTRA IE in {{bibref|3GPP-TS.36.331|Section 6.3.5}}. For the value less than or equal to -8, and bigger than or equal to 8, only even numbers are valid. If the value is other than these, the CPE MUST reject the value.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.CIO";
+    }
+    leaf rs-tx-power {
+      type int64;
+      units "dBm";
+      config false;
+      description
+        "The downlink reference-signal transmit power, specified in {{units}}. Defined as the linear average over the power contributions (in W) of all resource elements that carry cell-specific reference signals within the operating system bandwidth. Corresponds to parameter referenceSignalPower in SIB4 as a part of PDSCH-Config IE in {{bibref|3GPP-TS.36.331|Section 6.3.2}}.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.RSTxPower";
+    }
+    leaf blacklisted {
+      type boolean;
+      config false;
+      description
+        "Indicates whether this neighbor cell is allowed for UEs as handover target or not. If {{true}}, handover is prohibited towards this cell. If {{false}}, handover is allowed toward this cell. The {{param}} parameter allows this cell to be prohibited as a handover target, while still allowing this cell to be included in the BCCH SIB4 or 5.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.Blacklisted";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.";
+  }
+
+
+  grouping lte-ran-neighbor-list-in-use-g {
+    description
+      "This object contains parameters relating to the neighbor list used by the FAP based on its self-configuration capability and {{object|.CellConfig.LTE.RAN.NeighborList.}} configuration of adding and excluding cells.";
+    leaf max-lte-cell-entries {
+      type uint64;
+      description
+        "The maximum number of entries in the {{object|.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.}} table.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.MaxLTECellEntries";
+    }
+    leaf lte-cell-number-of-entries {
+      type uint64;
+      description
+        "{{numentries}}";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECellNumberOfEntries";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.";
+  }
+
+  grouping lte-ran-neighbor-list-in-use-lte-cell-g {
+    description
+      "Table containing the LTE EUTRA (i.e. intra-RAT) cell list.";
+    leaf plmnid {
+      type string {
+        length "0..6";
+      }
+      description
+        "PLMN ID consists of Mobile Country Code (MCC) and Mobile Network Code (MNC) {{bibref|3GPP-TS.23.003}}, {{bibref|3GPP-TS.24.008}}. Mobile Country Code consists of three digits and uniquely identifies the country of domicile of the subscriber. Mobile Network Code consists of two or three digits and identifies the Home PLMN within a country. For a 2-digit MNC the total string length of {{param}} is 5.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.PLMNID";
+    }
+    leaf cid {
+       type string {
+         length "0..52";
+      }
+      description
+        "Cell Identity. {{bibref|3GPP-TS.36.331|Section 6.3.4}}. Combination of {{param|PLMNID}} and {{param}} constitutes the Cell Global ID (CGI).";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.CID";
+    }
+    leaf eutra-carrier-arfcn {
+      type uint16 {
+        range "0..65535";
+      }
+      description
+        "Indicates the ARFCN of this carrier frequency. Corresponds to parameter dl-CarrierFreq in SIB5 in {{bibref|3GPP-TS.36.331|Section 6.3.1}}, and and parameter NDL in {{bibref|3GPP-TS.36.101|Section 5.7.3}}. If the value of {{param}} is the same with the one currently being used by the, then it implies that this neighbor cell is an intra-frequency cell; otherwise, it is an inter-frequency cell.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.EUTRACarrierARFCN";
+    }
+    leaf phy-cell-id {
+      type uint64 {
+        range "0..503";
+      }
+      description
+        "Physical cell ID, as specified in {{bibref|3GPP-TS.36.211|Section 6.11}}.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.PhyCellID";
+    }
+    leaf q-offset {
+      type int64;
+      description
+        "Indicate a cell-specific offset applicable to a specific neighbouring cell. It is used for evaluating the cell as a candidate for cell re-selection in idle mode. Corresponds to parameter q-OffsetCell broadcast in SIB4 for intra-frequency cells and in SIB5 for inter-frequency cells, specified in {{bibref|3GPP-TS.36.331|Section 6.3.1}}.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.QOffset";
+    }
+    leaf cio {
+      type int64;
+      description
+        "Cell individual offset applicable to a specific neighbouring cell. It is used for evaluating triggering conditions for measurement reporting in connected mode. Specified by cellIndividualOffset in MeasObjectEUTRA IE in {{bibref|3GPP-TS.36.331|Section 6.3.5}}.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.CIO";
+    }
+    leaf rs-tx-power {
+      type int64;
+      units "dBm";
+      description
+        "The downlink reference-signal transmit power, specified in {{units}}. Defined as the linear average over the power contributions (in W) of all resource elements that carry cell-specific reference signals within the operating system bandwidth. Corresponds to parameter referenceSignalPower in SIB4 as a part of PDSCH-Config IE in {{bibref|3GPP-TS.36.331|Section 6.3.2}}.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.RSTxPower";
+    }
+    leaf blacklisted {
+      type boolean;
+      description
+        "Indicates whether this neighbor cell is allowed for UEs as handover target or not. If {{true}}, handover is prohibited towards this cell. If {{false}}, handover is allowed toward this cell. The {{param}} parameter allows this cell to be prohibited as a handover target, while still allowing this cell to be included in the BCCH SIB4 or 5.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.Blacklisted";
+    }
+    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.";
+  }
+
+  notification nbrlist-change-notification {
+    description "RAN Neighbor List change notification.";
+      leaf fap-service-number-of-entries-changed {
+        type uint64;
+        description
+          "Number of cells for which neighbor list has changed";
+      }
+      list fap-service {
+        key "cell-identity";
+        leaf cell-identity {
+          type string {
+          length "0..52";
+          }
+        }
+        leaf lte-cell-number-of-entries {
+          type uint64;
+          description
+            "Number of cells in a neighbor list that was changed";
+        }
+        list lte-ran-neighbor-list-in-use-lte-cell-changed {
+          key "plmnid cid";
+          uses lte-ran-neighbor-list-in-use-lte-cell-g;
+          description
+            "Changed/Modified List of cells in a neighbor list for this fap service";
+      }
+    }
+  }
+
+}
