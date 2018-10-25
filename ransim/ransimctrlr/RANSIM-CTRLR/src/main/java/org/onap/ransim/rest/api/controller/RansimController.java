@@ -54,6 +54,7 @@ import org.onap.ransim.websocket.model.ModifyPci;
 import org.onap.ransim.websocket.model.Neighbor;
 import org.onap.ransim.websocket.model.SetConfigTopology;
 import org.onap.ransim.websocket.model.Topology;
+import org.onap.ransim.websocket.model.UpdateCell;
 import org.onap.ransim.websocket.server.RansimWebSocketServer;
 
 public class RansimController {
@@ -1352,14 +1353,22 @@ public class RansimController {
                 nbr.setPhysicalCellId(nbCell.getPhysicalCellId());
                 nbr.setPnfName(nbCell.getNodeName());
                 nbr.setServerId(nbCell.getServerId());
+                nbr.setPlmnId(nbCell.getNetworkId());
                 nbrList.add(nbr);
             }
-            ModifyPci modifyPci = new ModifyPci(currentCell.getServerId(), pciId, cellId, nbrList);
+            String pnfName = currentCell.getServerId();
+            String ipPort = serverIdIpPortMapping.get(pnfName);
+            if (ipPort==null) {
+              log.info("Netconf Agent IP and Port not found for the server id "+pnfName);
+            }
+            String[] ipPortArr = ipPort.split(":");
+            Topology oneCell = new Topology(pnfName, pciId, cellId, nbrList);
+            UpdateCell updatedPci = new UpdateCell(currentCell.getServerId(), ipPortArr[0], ipPortArr[1], oneCell);
             Gson gson = new Gson();
-            String jsonStr = gson.toJson(modifyPci);
+            String jsonStr = gson.toJson(updatedPci);
             dumpSessionDetails();
-            String ipPort = serverIdIpPortMapping.get(currentCell.getServerId());
             if (ipPort != null && !ipPort.trim().equals("")) {
+                log.info("handleModifyPciFromGui:ipPort >>>>>>> " + ipPort);
                 Session clSess = webSocketSessions.get(ipPort);
                 if (clSess != null) {
                     RansimWebSocketServer.sendUpdateCellMessage(jsonStr, clSess);
