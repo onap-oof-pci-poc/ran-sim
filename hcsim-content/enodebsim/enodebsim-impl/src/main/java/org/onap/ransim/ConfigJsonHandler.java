@@ -117,7 +117,11 @@ public class ConfigJsonHandler {
             LOG.info("ConfigJsonHandler.handleUpdateTopology jsonStr2:{}", jsonStr);
             UpdateCell updCell = new Gson().fromJson(jsonStr, UpdateCell.class);
             updateJsonObject(ncServerTopology, updCell);
-            NbrListChangeNotifnSender.sendNotification(updCell);
+            if(modCfgn.useNetconfDataChangeNotifn == false) {
+                NbrListChangeNotifnSender.sendNotification(updCell);
+            } else {
+                DataChangeNotifnSender.sendNotification(updCell);
+            }
         } else {
             LOG.info("ConfigJsonHandler.handleUpdateTopology jsonStr3:{}", jsonStr);
         }
@@ -173,7 +177,7 @@ public class ConfigJsonHandler {
         Neighbor aNeighbor = aCell.getNeighborList().get(j);
 
         sb.append("              {\n");
-        sb.append("                  \"plmnid\":\"").append(aNeighbor.getNodeId()).append("\", \n");
+        sb.append("                  \"plmnid\":\"").append(aNeighbor.getPlmnId()).append("\", \n");
         sb.append("                  \"cid\":\"").append(aNeighbor.getNodeId()).append("\", \n");
         sb.append("                  \"phy-cell-id\":").append(aNeighbor.getPhysicalCellId()).append(" \n");
         sb.append("              }\n");
@@ -270,7 +274,7 @@ public class ConfigJsonHandler {
                 Neighbor aNeighbor = aCell.getNeighborList().get(j);
 
                 sb.append("              {\n");
-                sb.append("                  \"plmnid\":\"").append(aNeighbor.getNodeId()).append("\", \n");
+                sb.append("                  \"plmnid\":\"").append(aNeighbor.getPlmnId()).append("\", \n");
                 sb.append("                  \"cid\":\"").append(aNeighbor.getNodeId()).append("\", \n");
                 sb.append("                  \"phy-cell-id\":").append(aNeighbor.getPhysicalCellId()).append(" \n");
                 sb.append("              }\n");

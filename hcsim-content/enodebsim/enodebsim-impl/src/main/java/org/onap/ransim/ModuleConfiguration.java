@@ -63,6 +63,10 @@ public final class ModuleConfiguration {
 
     @InjectConfig("ransimCtrlrPort")
     public int ransimCtrlrPort;
+
+    @InjectConfig("useNetconfDataChangeNotifn")
+    public boolean useNetconfDataChangeNotifn;
+ 
     Properties netconfConstants = new Properties();
 
     /**
@@ -87,6 +91,7 @@ public final class ModuleConfiguration {
             enodebsimPort = Integer.parseInt(netconfConstants.getProperty("enodebsimPort"));
             ransimCtrlrIp = netconfConstants.getProperty("ransimCtrlrIp");
             ransimCtrlrPort = Integer.parseInt(netconfConstants.getProperty("ransimCtrlrPort"));
+            useNetconfDataChangeNotifn = Boolean.parseBoolean(netconfConstants.getProperty("useNetconfDataChangeNotifn"));
         } catch (Exception e) {
             LOG.info("Properties file error", e);
         } finally {
