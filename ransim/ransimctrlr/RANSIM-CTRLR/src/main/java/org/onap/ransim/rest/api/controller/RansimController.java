@@ -1432,7 +1432,6 @@ public class RansimController {
             log.info("handleModifyPciFromGui:ipPort >>>>>>> " + ipPort);
 
             if (ipPort != null && !ipPort.trim().equals("")) {
-
                 String[] ipPortArr = ipPort.split(":");
                 Topology oneCell = new Topology(pnfName, pciId, cellId, nbrList);
                 UpdateCell updatedPci = new UpdateCell(currentCell.getServerId(), ipPortArr[0], ipPortArr[1], oneCell);
@@ -1443,13 +1442,10 @@ public class RansimController {
                     if (clSess != null) {
                         RansimWebSocketServer.sendUpdateCellMessage(jsonStr, clSess);
                     } else {
-                        log.info("No client session for " + ipPort);
+                        log.info("No client for " + currentCell.getServerId());
                     }
-                } else {
-                    log.info("No client for " + currentCell.getServerId());
                 }
             }
-
         } catch (Exception eu) {
             if (entitymanager.getTransaction().isActive()) {
                 entitymanager.getTransaction().rollback();
