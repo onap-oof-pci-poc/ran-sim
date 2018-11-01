@@ -62,6 +62,24 @@ public class RansimControllerServices {
 
     private static boolean isSimulationStarted = false;
 
+    private static RansimControllerServices rscServices = null;
+
+    private RansimControllerServices() {
+
+    }
+
+    /**
+     * To accesss variable of this class from another class.
+     *
+     * @return returns rscServices constructor
+     */
+    public static synchronized RansimControllerServices getRansimControllerServices() {
+        if (rscServices == null) {
+            rscServices = new RansimControllerServices();
+        }
+        return rscServices;
+    }
+
     RansimController rsCtrlr = RansimController.getRansimController();
 
     /**
@@ -80,26 +98,27 @@ public class RansimControllerServices {
             @ApiResponse(code = 500, message = "Cannot start the simulation") })
     public ResponseEntity<String> startSimulation(@RequestBody StartSimulationReq req) throws Exception {
 
-        if (isSimulationStarted) {
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
+        EntityManager entitymanager = emfactory.createEntityManager();
+        Query query = entitymanager.createQuery("from CellDetails cd", CellDetails.class);
+        if (!query.getResultList().isEmpty()) {
             return new ResponseEntity<>("Already simulation is running.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
-        EntityManager entitymanager = emfactory.createEntityManager();
         try {
             rsCtrlr.loadProperties();
 
             if (!rsCtrlr.hasEnoughRansimAgentsRunning(req.getGridSize() * req.getGridSize())) {
                 return new ResponseEntity<>("Not sufficient Ransim Agents running.", HttpStatus.INTERNAL_SERVER_ERROR);
             }
-
+            long startTimeStartSimulation = System.currentTimeMillis();
             rsCtrlr.generateCluster(req.getGridSize(), req.getGridType(), req.getNumberOfClusters(),
                     req.getClusterLevel());
-
             rsCtrlr.sendInitialConfigAll();
-            isSimulationStarted = true;
+            long endTimeStartSimulation = System.currentTimeMillis();
+            log.info("Time taken for start simulation : " + (endTimeStartSimulation - startTimeStartSimulation));
 
-            //return new ResponseEntity<>("Success", HttpStatus.OK);
+            // return new ResponseEntity<>("Success", HttpStatus.OK);
             return new ResponseEntity<String>(HttpStatus.OK);
 
         } catch (Exception eu) {
@@ -107,7 +126,8 @@ public class RansimControllerServices {
             if (entitymanager.getTransaction().isActive()) {
                 entitymanager.getTransaction().rollback();
             }
-            //return new ResponseEntity<>("Failure StartSimulatio", HttpStatus.INTERNAL_SERVER_ERROR);
+            // return new ResponseEntity<>("Failure StartSimulatio",
+            // HttpStatus.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             entitymanager.close();
@@ -242,13 +262,18 @@ public class RansimControllerServices {
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
         EntityManager entitymanager = emfactory.createEntityManager();
         try {
+            long startTimemodifyCell = System.currentTimeMillis();
+
             String nbrsStr = req.getNewNbrs();
             if (req.getNewNbrs() == null) {
                 nbrsStr = "";
             }
             int result = rsCtrlr.modifyCellFunction(req.getNodeId(), req.getNewPhysicalCellId(), nbrsStr);
+            log.info("Inside modify cell : " + (startTimemodifyCell));
             log.info("Result:********************" + result);
             rsCtrlr.handleModifyPciFromGui(req.getNodeId(), req.getNewPhysicalCellId());
+            long endTimemodifyCell = System.currentTimeMillis();
+            log.info("Time taken to modify cell : " + (endTimemodifyCell - startTimemodifyCell));
 
             if (result == 200) {
                 return new ResponseEntity<String>(HttpStatus.OK);
@@ -332,9 +357,13 @@ public class RansimControllerServices {
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
         EntityManager entitymanager = emfactory.createEntityManager();
         try {
+            long startTimeDeleteCell = System.currentTimeMillis();
             String result = rsCtrlr.deleteCellFunction(req.getNodeId());
             log.info("deleted in database...." + result);
-            //return new ResponseEntity<>(result, HttpStatus.OK);
+            // return new ResponseEntity<>(result, HttpStatus.OK);
+            long endTimeDeleteCell = System.currentTimeMillis();
+            log.info("Time taken to delete cell : " + (endTimeDeleteCell - startTimeDeleteCell));
+
             return new ResponseEntity<String>(HttpStatus.OK);
 
         } catch (Exception eu) {
@@ -342,7 +371,8 @@ public class RansimControllerServices {
             if (entitymanager.getTransaction().isActive()) {
                 entitymanager.getTransaction().rollback();
             }
-            //return new ResponseEntity<String>("Cannot delete the given cell", HttpStatus.INTERNAL_SERVER_ERROR);
+            // return new ResponseEntity<String>("Cannot delete the given cell",
+            // HttpStatus.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             entitymanager.close();
@@ -365,21 +395,24 @@ public class RansimControllerServices {
             @ApiResponse(code = 500, message = "Cannot stop simulation") })
     public ResponseEntity<String> stopSimulation() throws Exception {
         log.info("Inside stopSimulation...");
-        if (!isSimulationStarted) {
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
+        EntityManager entitymanager = emfactory.createEntityManager();
+
+        Query query = entitymanager.createQuery("from CellDetails cd", CellDetails.class);
+        if (query.getResultList() == null) {
             return new ResponseEntity<>("No simulation is running.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
-        EntityManager entitymanager = emfactory.createEntityManager();
         try {
             entitymanager.getTransaction().begin();
-
+            long startTimStopSimulation = System.currentTimeMillis();
             Query q3 = entitymanager.createQuery("DELETE FROM NetconfServers ns");
             q3.executeUpdate();
 
             Query q2 = entitymanager.createQuery("DELETE FROM CellNeighbor cn");
             q2.executeUpdate();
 
+            log.info("Stop simulation : " + (startTimStopSimulation));
             Query q1 = entitymanager.createQuery("DELETE FROM CellDetails cd");
             q1.executeUpdate();
 
@@ -388,6 +421,9 @@ public class RansimControllerServices {
 
             entitymanager.flush();
             entitymanager.getTransaction().commit();
+
+            long endTimStopSimulation = System.currentTimeMillis();
+            log.info("Time taken for stopping simulation : " + (endTimStopSimulation - startTimStopSimulation));
 
             isSimulationStarted = false;
             return new ResponseEntity<>("Success", HttpStatus.OK);

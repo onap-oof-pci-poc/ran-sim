@@ -45,6 +45,7 @@ import javax.persistence.TypedQuery;
 import javax.websocket.Session;
 
 import org.apache.log4j.Logger;
+import org.onap.ransim.rest.api.models.CellData;
 import org.onap.ransim.rest.api.models.CellDetails;
 import org.onap.ransim.rest.api.models.CellNeighbor;
 import org.onap.ransim.rest.api.models.NetconfServers;
@@ -254,6 +255,7 @@ public class RansimController {
 
         Set<CellDetails> newList = new HashSet<CellDetails>();
         try {
+            // long startTimeSetNetconfServers = System.currentTimeMillis();
             if (currentCell != null) {
                 NetconfServers server = entitymanager.find(NetconfServers.class, currentCell.getServerId());
 
@@ -276,6 +278,10 @@ public class RansimController {
             }
             entitymanager.flush();
             entitymanager.getTransaction().commit();
+            // long endTimeSetNetconfServers = System.currentTimeMillis();
+            // log.info("Time taken for reading from file : " + (endTimeSetNetconfServers -
+            // startTimeSetNetconfServers));
+
         } catch (Exception eu) {
             log.info("/setNetconfServers Function Error", eu);
             if (entitymanager.getTransaction().isActive()) {
@@ -328,8 +334,8 @@ public class RansimController {
             } else {
                 newList.addAll(neighborList.getNeighborList());
             }
-            posX = currentCell.getGridX();
-            posY = currentCell.getGridY();
+            posX = (int) currentCell.getGridX();
+            posY = (int) currentCell.getGridY();
             for (int x = (posX - 1); x <= (posX + 1); x++) {
                 for (int y = (posY - 1); y <= (posY + 1); y++) {
 
@@ -531,17 +537,19 @@ public class RansimController {
         File dumpFile = null;
         String cellDetailsString = "";
 
-        dumpFile = new File("SIM_Ran_config.json");
+        dumpFile = new File("ransim_dumpfile_1nov.json");
 
         BufferedReader br = null;
         try {
-
+            long startTimeReadingFromFile = System.currentTimeMillis();
+            log.info(startTimeReadingFromFile);
+            long startTimeStringBuilder = System.currentTimeMillis();
             log.info("Reading dump file");
             br = new BufferedReader(new FileReader(dumpFile));
 
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
-
+            log.info(startTimeStringBuilder);
             while (line != null) {
                 sb.append(line);
                 sb.append("\n");
@@ -549,11 +557,21 @@ public class RansimController {
             }
             cellDetailsString = sb.toString();
 
+            long endTimeStringBuilder = System.currentTimeMillis();
+            log.info("Time taken for string builder : " + (endTimeStringBuilder - startTimeStringBuilder));
+
+            long startTimeJsontoTopologyDump = System.currentTimeMillis();
             TopologyDump dumpTopo = new Gson().fromJson(cellDetailsString, TopologyDump.class);
             CellDetails cellsDb = new CellDetails();
+            long endTimeJsontoTopologyDump = System.currentTimeMillis();
+            log.info("Time taken for Json to TopologyDump : "
+                    + (endTimeJsontoTopologyDump - startTimeJsontoTopologyDump));
 
+            long startTimeTopologyDumpToDatabase = System.currentTimeMillis();
             for (int i = 0; i < dumpTopo.getCellList().size(); i++) {
                 log.info("Creating Cell:" + dumpTopo.getCellList().get(i).getCell().getNodeId());
+
+                log.info(startTimeTopologyDumpToDatabase);
                 cellsDb = new CellDetails();
                 entitymanager.getTransaction().begin();
                 cellsDb.setNodeId(dumpTopo.getCellList().get(i).getCell().getNodeId());
@@ -597,15 +615,28 @@ public class RansimController {
                         }
                     }
                 }
+                long endTimeTopologyDumpToDatabase = System.currentTimeMillis();
+                log.info("Time taken for server id mapping : "
+                        + (endTimeTopologyDumpToDatabase - startTimeTopologyDumpToDatabase));
 
                 entitymanager.merge(cellsDb);
                 entitymanager.flush();
                 entitymanager.getTransaction().commit();
+
                 setNetconfServers(cellsDb.getNodeId());
+
             }
+            long endTimeTopologyDumpToDatabase = System.currentTimeMillis();
+            log.info("Time taken for Topology Dump To Database : "
+                    + (endTimeTopologyDumpToDatabase - startTimeTopologyDumpToDatabase));
+            long endTimeReadingFromFile = System.currentTimeMillis();
+            log.info("Time taken for reading from file : " + (endTimeReadingFromFile - startTimeReadingFromFile));
+
             dumpSessionDetails();
 
             try {
+                long timeSetColloision = 0;
+                long startTimeReadingNeighbors = System.currentTimeMillis();
                 for (int i = 0; i < dumpTopo.getCellList().size(); i++) {
 
                     String cellNodeId = dumpTopo.getCellList().get(i).getCell().getNodeId();
@@ -624,7 +655,7 @@ public class RansimController {
                             neighborList.setNodeId(cellNodeId);
                         }
                         List<String> neighboursFromFile = dumpTopo.getCellList().get(i).getNeighbor();
-                        log.info("Creating Neighbor :" + neighboursFromFile + " for Cell :" + cellNodeId);
+                        log.info("Creating Neighbor for Cell :" + cellNodeId);
                         for (String a : neighboursFromFile) {
                             a = a.trim();
                             String neighborNodeId = (a);
@@ -635,14 +666,26 @@ public class RansimController {
                         entitymanager.merge(neighborList);
                         entitymanager.flush();
                         entitymanager.getTransaction().commit();
+
+                        long startTimeSetCollision = System.currentTimeMillis();
                         setCollisionConfusionFromFile(cellNodeId);
+                        // setCellColor(dumpTopo.getCellList().get(i).getCell().getNodeId());
+                        long endTimeSetCollision = System.currentTimeMillis();
+                        timeSetColloision = +(endTimeSetCollision - startTimeSetCollision);
+
                     }
 
                 }
+                log.info("Time taken for setting collision: " + (timeSetColloision));
 
-                for (int i = 0; i < dumpTopo.getCellList().size(); i++) {
-                    setCellColor(dumpTopo.getCellList().get(i).getCell().getNodeId());
-                }
+                long endTimeReadingNeighbors = System.currentTimeMillis();
+                log.info("Time taken for reading neighbors from file and setting confusion/collision: "
+                        + (endTimeReadingNeighbors - startTimeReadingNeighbors));
+
+                /*
+                 * for (int i = 0; i < dumpTopo.getCellList().size(); i++) {
+                 * setCellColor(dumpTopo.getCellList().get(i).getCell().getNodeId()); }
+                 */
             } catch (Exception e1) {
                 log.info("Exception generateClusterFromFile :", e1);
                 if (entitymanager.getTransaction().isActive()) {
@@ -652,44 +695,57 @@ public class RansimController {
 
             try {
 
+                long startTimeSectorNumber = System.currentTimeMillis();
                 for (int i = 0; i < dumpTopo.getCellList().size(); i++) {
 
-                    entitymanager.getTransaction().begin();
-
-                    CellDetails icell = entitymanager.find(CellDetails.class,
-                            dumpTopo.getCellList().get(i).getCell().getNodeId());
+                    CellData icellData = dumpTopo.getCellList().get(i);
+                    CellDetails icell = entitymanager.find(CellDetails.class, icellData.getCell().getNodeId());
 
                     int icount = icell.getSectorNumber();
-                    log.info("Setting sectorNumber for Cell :" + icell.getNodeId());
-                    for (int j = (i + 1); j < dumpTopo.getCellList().size(); j++) {
-                        int jcount;
-                        if (dumpTopo.getCellList().get(i).getCell().getLatitude()
-                                .equals(dumpTopo.getCellList().get(j).getCell().getLatitude())) {
-                            if (dumpTopo.getCellList().get(i).getCell().getLongitude()
-                                    .equals(dumpTopo.getCellList().get(j).getCell().getLongitude())) {
+                    /*
+                     * if (icount > 0) { continue; }
+                     */
 
-                                if (icount == 0) {
-                                    icount++;
-                                }
+                    if (icount == 0) {
+                        entitymanager.getTransaction().begin();
+                        log.info("Setting sectorNumber for Cell(i) :" + icell.getNodeId());
+                        int jcount = 0;
+                        for (int j = (i + 1); j < dumpTopo.getCellList().size(); j++) {
 
-                                CellDetails jcell = entitymanager.find(CellDetails.class,
-                                        dumpTopo.getCellList().get(j).getCell().getNodeId());
-                                jcount = jcell.getSectorNumber();
-                                if (jcount != 1) {
+                            CellData jcellData = dumpTopo.getCellList().get(j);
+                            if (icellData.getCell().getLatitude().equals(jcellData.getCell().getLatitude())) {
+                                if (icellData.getCell().getLongitude().equals(jcellData.getCell().getLongitude())) {
+
+                                    if (icount == 0) {
+                                        icount++;
+                                        jcount = icount + 1;
+                                    }
+
+                                    CellDetails jcell = entitymanager.find(CellDetails.class,
+                                            dumpTopo.getCellList().get(j).getCell().getNodeId());
+                                    // jcount = jcell.getSectorNumber();
+
+                                    jcell.setSectorNumber(jcount);
+                                    log.info("Setting sectorNumber for Cell(j) :" + jcell.getNodeId() + " icell: "
+                                            + icell.getNodeId() + " Sector number: " + jcount);
+                                    entitymanager.merge(jcell);
+                                    // entitymanager.flush();
                                     jcount++;
+                                    if (jcount > 3) {
+                                        break;
+                                    }
                                 }
-                                jcell.setSectorNumber(jcount);
-                                entitymanager.merge(jcell);
-                                entitymanager.flush();
-                                icount++;
                             }
                         }
+                        icell.setSectorNumber(icount);
+                        entitymanager.merge(icell);
+                        entitymanager.flush();
+                        entitymanager.getTransaction().commit();
                     }
-                    icell.setSectorNumber(icount);
-                    entitymanager.merge(icell);
-                    entitymanager.flush();
-                    entitymanager.getTransaction().commit();
+
                 }
+                long endTimeSectorNumber = System.currentTimeMillis();
+                log.info("Time taken for setting sector number: " + (endTimeSectorNumber - startTimeSectorNumber));
 
             } catch (Exception e3) {
                 log.info("Exception generateClusterFromFile :", e3);
@@ -747,6 +803,18 @@ public class RansimController {
 
             log.info("collision :" + currentCell.isPciCollisionDetected());
 
+            if (!currentCell.isPciCollisionDetected() && !currentCell.isPciConfusionDetected()) {
+                currentCell.setColor("#BFBFBF"); // GREY - No Issues
+            } else if (currentCell.isPciCollisionDetected() && currentCell.isPciConfusionDetected()) {
+                currentCell.setColor("#C30000"); // BROWN - Cell has both collision & confusion
+            } else if (currentCell.isPciCollisionDetected()) {
+                currentCell.setColor("#FF0000"); // RED - Cell has collision
+            } else if (currentCell.isPciConfusionDetected()) {
+                currentCell.setColor("#E88B00"); // ORANGE - Cell has confusion
+            } else {
+                currentCell.setColor("#BFBFBF"); // GREY - No Issues
+            }
+
             entitymanager.merge(currentCell);
             entitymanager.flush();
 
@@ -782,7 +850,7 @@ public class RansimController {
                     currentCell.setColor("#BFBFBF"); // GREY - No Issues
                 }
 
-                log.info("setCellColor :" + currentCell.getColor());
+                log.info("setCellColor :" + currentCell.getColor() + " for cell id:" + currentCell.getNodeId());
                 entitymanager.merge(currentCell);
                 entitymanager.flush();
 
@@ -841,8 +909,8 @@ public class RansimController {
                         newCell.setServerId(serverid);
                         newCell.setNodeId(nodeId);
                         if (collision == false) {
-                            newCell.setPhysicalCellId((newCell.getGridX() % clusterSize) * clusterSize
-                                    + (newCell.getGridY() % clusterSize));
+                            newCell.setPhysicalCellId(((int) newCell.getGridX() % clusterSize) * clusterSize
+                                    + ((int) newCell.getGridY() % clusterSize));
                         } else {
                             newCell.setPhysicalCellId(rand.nextInt(10));
                         }
@@ -952,8 +1020,8 @@ public class RansimController {
                         newCell.setNodeId(nodeId);
                         newCell.setServerId(serverid);
                         if (collision == false) {
-                            newCell.setPhysicalCellId((newCell.getGridX() % clusterSize) * clusterSize
-                                    + (newCell.getGridY() % clusterSize));
+                            newCell.setPhysicalCellId(((int) newCell.getGridX() % clusterSize) * clusterSize
+                                    + ((int) newCell.getGridY() % clusterSize));
                         } else {
                             newCell.setPhysicalCellId(rand.nextInt(10));
                         }
@@ -1134,11 +1202,11 @@ public class RansimController {
                     }
 
                     setCollisionConfusionFromFile(nodeId);
-                    setCellColor(nodeId);
+                    // setCellColor(nodeId);
 
                     for (CellDetails cd : affectedNbrList) {
                         setCollisionConfusionFromFile(cd.getNodeId());
-                        setCellColor(cd.getNodeId());
+                        // setCellColor(cd.getNodeId());
                     }
                 }
 
@@ -1280,6 +1348,7 @@ public class RansimController {
                     nbr.setPhysicalCellId(cellDetails.getPhysicalCellId());
                     nbr.setPnfName(cellDetails.getServerId());
                     nbr.setServerId(cellDetails.getServerId());
+                    nbr.setPlmnId(cellDetails.getNetworkId());
                     nbrList.add(nbr);
                 }
                 cell.setNeighborList(nbrList);
@@ -1356,27 +1425,26 @@ public class RansimController {
                 nbr.setPlmnId(nbCell.getNetworkId());
                 nbrList.add(nbr);
             }
+            // ModifyPci modifyPci = new ModifyPci(currentCell.getServerId(), pciId, cellId,
+            // nbrList);
             String pnfName = currentCell.getServerId();
             String ipPort = serverIdIpPortMapping.get(pnfName);
-            if (ipPort==null) {
-              log.info("Netconf Agent IP and Port not found for the server id "+pnfName);
-            }
-            String[] ipPortArr = ipPort.split(":");
-            Topology oneCell = new Topology(pnfName, pciId, cellId, nbrList);
-            UpdateCell updatedPci = new UpdateCell(currentCell.getServerId(), ipPortArr[0], ipPortArr[1], oneCell);
-            Gson gson = new Gson();
-            String jsonStr = gson.toJson(updatedPci);
-            dumpSessionDetails();
+            log.info("handleModifyPciFromGui:ipPort >>>>>>> " + ipPort);
+
             if (ipPort != null && !ipPort.trim().equals("")) {
-                log.info("handleModifyPciFromGui:ipPort >>>>>>> " + ipPort);
-                Session clSess = webSocketSessions.get(ipPort);
-                if (clSess != null) {
-                    RansimWebSocketServer.sendUpdateCellMessage(jsonStr, clSess);
-                } else {
-                    log.info("No client session for " + ipPort);
+                String[] ipPortArr = ipPort.split(":");
+                Topology oneCell = new Topology(pnfName, pciId, cellId, nbrList);
+                UpdateCell updatedPci = new UpdateCell(currentCell.getServerId(), ipPortArr[0], ipPortArr[1], oneCell);
+                Gson gson = new Gson();
+                String jsonStr = gson.toJson(updatedPci);
+                if (ipPort != null && !ipPort.trim().equals("")) {
+                    Session clSess = webSocketSessions.get(ipPort);
+                    if (clSess != null) {
+                        RansimWebSocketServer.sendUpdateCellMessage(jsonStr, clSess);
+                    } else {
+                        log.info("No client for " + currentCell.getServerId());
+                    }
                 }
-            } else {
-                log.info("No client for " + currentCell.getServerId());
             }
         } catch (Exception eu) {
             if (entitymanager.getTransaction().isActive()) {
