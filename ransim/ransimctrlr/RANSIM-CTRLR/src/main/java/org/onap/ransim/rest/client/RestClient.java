@@ -93,7 +93,7 @@ public class RestClient {
                 + "    </between-attempts-timeout-millis>\r\n" + "    <sleep-factor\r\n"
                 + "        xmlns=\"urn:opendaylight:netconf-node-topology\">1.5\r\n" + "    </sleep-factor>\r\n"
                 + "    <keepalive-delay\r\n" + "        xmlns=\"urn:opendaylight:netconf-node-topology\">120\r\n"
-                + "    </keepalive-delay>\r\n" + "</node> '";
+                + "    </keepalive-delay>\r\n" + "</node>";
         HttpHeaders headers = createHeaders(agentUsername, agentPassword);
 
         log.info("request : " + requestBody);
