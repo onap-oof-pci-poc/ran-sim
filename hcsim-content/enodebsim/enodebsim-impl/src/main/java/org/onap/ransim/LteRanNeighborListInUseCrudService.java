@@ -17,6 +17,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * ============LICENSE_END=========================================================
  */
 
 package org.onap.ransim;
@@ -30,6 +31,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -37,6 +39,8 @@ import javax.json.JsonObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.opendaylight.yang.gen.v1.urn.onf.otcc.wireless.yang.radio.access.rev180920.radio.access.FapService;
+import org.opendaylight.yang.gen.v1.urn.onf.otcc.wireless.yang.radio.access.rev180920.radio.access.FapServiceBuilder;
 import org.opendaylight.yang.gen.v1.urn.onf.otcc.wireless.yang.radio.access.rev180920.radio.access.fap.service.cell.config.lte.LteRan;
 import org.opendaylight.yang.gen.v1.urn.onf.otcc.wireless.yang.radio.access.rev180920.radio.access.fap.service.cell.config.lte.lte.ran.LteRanNeighborListInUse;
 import org.opendaylight.yang.gen.v1.urn.onf.otcc.wireless.yang.radio.access.rev180920.radio.access.fap.service.cell.config.lte.lte.ran.LteRanNeighborListInUseBuilder;
@@ -51,16 +55,16 @@ import org.opendaylight.yang.gen.v1.urn.onf.otcc.wireless.yang.radio.access.rev1
  *
  * TODO update javadoc
  */
-final class LteRanNeighborListInUseCrudService implements CrudService<LteRanNeighborListInUse> {
+final class LteRanNeighborListInUseLteCellCrudService implements CrudService<LteRanNeighborListInUseLteCell> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LteRanNeighborListInUseCrudService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LteRanNeighborListInUseLteCellCrudService.class);
 
     @Override
-    public void writeData(@Nonnull final InstanceIdentifier<LteRanNeighborListInUse> identifier
-            , @Nonnull final LteRanNeighborListInUse data
+    public void writeData(@Nonnull final InstanceIdentifier<LteRanNeighborListInUseLteCell> identifier
+            , @Nonnull final LteRanNeighborListInUseLteCell data
             , @Nonnull final WriteContext writeContext)
             throws WriteFailedException {
-        LOG.info("RANSIM LteRanNeighborListInUseCrudService writeData called");
+        LOG.info("RANSIM LteRanNeighborListInUseLteCellCrudService writeData called");
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -75,9 +79,9 @@ final class LteRanNeighborListInUseCrudService implements CrudService<LteRanNeig
     }
 
     @Override
-    public void deleteData(@Nonnull final InstanceIdentifier<LteRanNeighborListInUse> identifier, @Nonnull final LteRanNeighborListInUse data)
+    public void deleteData(@Nonnull final InstanceIdentifier<LteRanNeighborListInUseLteCell> identifier, @Nonnull final LteRanNeighborListInUseLteCell data)
             throws WriteFailedException {
-        LOG.info("RANSIM LteRanNeighborListInUseCrudService deleteData called");
+        LOG.info("RANSIM LteRanNeighborListInUseLteCellCrudService deleteData called");
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -92,9 +96,9 @@ final class LteRanNeighborListInUseCrudService implements CrudService<LteRanNeig
     }
 
     @Override
-    public void updateData(@Nonnull final InstanceIdentifier<LteRanNeighborListInUse> identifier, @Nonnull final LteRanNeighborListInUse dataOld,
-                           @Nonnull final LteRanNeighborListInUse dataNew) throws WriteFailedException {
-        LOG.info("RANSIM LteRanNeighborListInUseCrudService updateData called");
+    public void updateData(@Nonnull final InstanceIdentifier<LteRanNeighborListInUseLteCell> identifier, @Nonnull final LteRanNeighborListInUseLteCell dataOld,
+                           @Nonnull final LteRanNeighborListInUseLteCell dataNew) throws WriteFailedException {
+        LOG.info("RANSIM LteRanNeighborListInUseLteCellCrudService updateData called");
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -109,47 +113,22 @@ final class LteRanNeighborListInUseCrudService implements CrudService<LteRanNeig
     }
 
     @Override
-    public LteRanNeighborListInUse readSpecific(@Nonnull final InstanceIdentifier<LteRanNeighborListInUse> identifier
+    public LteRanNeighborListInUseLteCell readSpecific(@Nonnull final InstanceIdentifier<LteRanNeighborListInUseLteCell> identifier
             , @Nonnull final ReadContext ctx) throws ReadFailedException {
-        LOG.info("RANSIM LteRanNeighborListInUseCrudService readSpecific called");
-        int mlce = 0;
-        int lcnoe = 0;
-        List<LteRanNeighborListInUseLteCell> ngbrList = new ArrayList<LteRanNeighborListInUseLteCell>();
-        // load data by this key
-        // *Key class will always contain key of entity, in this case long value
-        if(ctx != null) {
-            JsonObject lrnllObj = (JsonObject) ctx.getModificationCache().get("lte-ran-neighbor-list-in-use");
-            if(lrnllObj != null) {
-            mlce = lrnllObj.getInt("max-lte-cell-entries");
-            lcnoe = lrnllObj.getInt("lte-cell-number-of-entries");
-            JsonArray jsArr = lrnllObj.getJsonArray("lte-ran-neighbor-list-in-use-lte-cell");
-            if(jsArr != null) {
-            for (int i = 0; i < jsArr.size(); i++) {
-                JsonObject nlObj = jsArr.getJsonObject(i);
-                LteRanNeighborListInUseLteCell ngbrEntry = new LteRanNeighborListInUseLteCellBuilder()
-                        .setPlmnid(nlObj.getString("plmnid"))
-                        .setCid(nlObj.getString("cid"))
-                        .setPhyCellId(BigInteger.valueOf(nlObj.getInt("phy-cell-id")))
-                        .build();
-                ngbrList.add(ngbrEntry );
-            }
-            }
-            }
-        }
-
-
-        return new LteRanNeighborListInUseBuilder()
-                .setLteCellNumberOfEntries(BigInteger.valueOf(lcnoe))
-                .setMaxLteCellEntries(BigInteger.valueOf(mlce))
-                .setLteRanNeighborListInUseLteCell(ngbrList)
-                .build();
+        LOG.info("RANSIM LteRanNeighborListInUseLteCellCrudService readSpecific called");
+        LteRanNeighborListInUseLteCell fs = new LteRanNeighborListInUseLteCellBuilder()
+        .setCid("a")
+        .setPhyCellId(BigInteger.ONE)
+        .setPlmnid("a")
+        .build();
+        return fs;
     }
 
     @Override
-    public List<LteRanNeighborListInUse> readAll() throws ReadFailedException {
-        LOG.info("RANSIM LteRanNeighborListInUseCrudService readAll called");
+    public List<LteRanNeighborListInUseLteCell> readAll() throws ReadFailedException {
+        LOG.info("RANSIM LteRanNeighborListInUseLteCellCrudService readAll called");
+        List<LteRanNeighborListInUseLteCell> fsList = new ArrayList<LteRanNeighborListInUseLteCell>();
         // read all data under parent node,in this case {@link ModuleState}
-        return Collections.singletonList(
-                readSpecific(InstanceIdentifier.create(LteRan.class).child(LteRanNeighborListInUse.class), null));
+        return fsList;
     }
 }

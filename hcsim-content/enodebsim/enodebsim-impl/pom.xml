@@ -30,6 +30,7 @@
     <properties>
         <honeycomb.infra.version>1.18.10-SNAPSHOT</honeycomb.infra.version>
         <jetty.version>9.3.5.v20151012</jetty.version>
+        <honeycomb.min.distro.version>1.18.07</honeycomb.min.distro.version>
     </properties>
 
     <dependencies>
@@ -38,6 +39,12 @@
             <artifactId>enodebsim-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+    <dependency>
+      <groupId>io.fd.honeycomb</groupId>
+      <artifactId>minimal-distribution</artifactId>
+      <version>${honeycomb.min.distro.version}</version>
+    </dependency>
+
         <dependency>
             <groupId>io.fd.honeycomb</groupId>
             <artifactId>notification-api</artifactId>

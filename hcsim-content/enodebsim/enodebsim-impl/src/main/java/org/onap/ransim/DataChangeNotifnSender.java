@@ -17,6 +17,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * ============LICENSE_END=========================================================
  */
 
 package org.onap.ransim;
@@ -97,7 +98,7 @@ public class DataChangeNotifnSender implements ManagedNotificationProducer {
                     UpdateCell updCell = new UpdateCell("1", "127.0.0.1", "50000"
                             , new Topology("ncserver1001", 1, "51", nbrs));
                     Thread.sleep(60000);
-                    //sendNotification(updCell);
+                    sendNotification(updCell);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;

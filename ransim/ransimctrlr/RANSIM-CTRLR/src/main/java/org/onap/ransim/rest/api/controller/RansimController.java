@@ -75,12 +75,14 @@ public class RansimController {
     boolean strictValidateRansimAgentsAvailability = false;
     Map<String, Session> webSocketSessions = new HashMap<String, Session>();
     Map<String, String> serverIdIpPortMapping = new HashMap<String, String>();
+    List<String> unassignedServerIds = new ArrayList<String>();
     Map<String, List<String>> serverIdIpNodeMapping = new HashMap<String, List<String>>();
     int nextServerIdNumber = 1001;
     String sdnrServerIp = "";
     int sdnrServerPort = 0;
     String sdnrServerUserid = "";
     String sdnrServerPassword = "";
+    String dumpFileName = "";
     long maxPciValueAllowed = 503;
 
     private RansimController() {
@@ -119,12 +121,17 @@ public class RansimController {
         webSocketSessions.put(ipPort, wsSession);
 
         if (!serverIdIpPortMapping.containsValue(ipPort)) {
-            String serverId = serverIdPrefix + nextServerIdNumber;
-            nextServerIdNumber++;
-            log.info("addWebSocketSessions: Adding serverId " + serverId + " for " + ipPort);
-            serverIdIpPortMapping.put(serverId, ipPort);
+            // String serverId = serverIdPrefix + nextServerIdNumber;
+            // nextServerIdNumber++;
+            if (unassignedServerIds.size() > 0) {
+                String serverId = unassignedServerIds.remove(0);
+                log.info("addWebSocketSessions: Adding serverId " + serverId + " for " + ipPort);
+                serverIdIpPortMapping.put(serverId, ipPort);
 
-            mapServerIdToNodes(serverId);
+                mapServerIdToNodes(serverId);
+            } else {
+                log.info("addWebSocketSessions: No serverIds pending to assign for " + ipPort);
+            }
 
         } else {
             for (String key : serverIdIpPortMapping.keySet()) {
@@ -175,6 +182,13 @@ public class RansimController {
      */
     public synchronized void removeWebSocketSessions(String ipPort) {
         if (webSocketSessions.containsKey(ipPort)) {
+            for (String serverId : serverIdIpPortMapping.keySet()) {
+                String ipPortVal = serverIdIpPortMapping.get(serverId);
+                if (ipPortVal.equals(ipPort)) {
+                    unassignedServerIds.add(serverId);
+                    break;
+                }
+            }
             Session wsSession = webSocketSessions.remove(ipPort);
             log.info(
                     "removeWebSocketSessions: Client session " + wsSession.getId() + " for " + ipPort + " is removed.");
@@ -223,6 +237,7 @@ public class RansimController {
             sdnrServerPort = Integer.parseInt(netconfConstants.getProperty("sdnrServerPort"));
             sdnrServerUserid = netconfConstants.getProperty("sdnrServerUserid");
             sdnrServerPassword = netconfConstants.getProperty("sdnrServerPassword");
+            dumpFileName = netconfConstants.getProperty("dumpFileName");
             maxPciValueAllowed = Long.parseLong(netconfConstants.getProperty("maxPciValueAllowed"));
         } catch (Exception e) {
             log.info("Properties file error", e);
@@ -537,7 +552,7 @@ public class RansimController {
         File dumpFile = null;
         String cellDetailsString = "";
 
-        dumpFile = new File("ransim_dumpfile_1nov.json");
+        dumpFile = new File(dumpFileName);
 
         BufferedReader br = null;
         try {
@@ -568,10 +583,15 @@ public class RansimController {
                     + (endTimeJsontoTopologyDump - startTimeJsontoTopologyDump));
 
             long startTimeTopologyDumpToDatabase = System.currentTimeMillis();
+            long totalTimeDatabase = 0;
+            long totalTimeServerIdMapping = 0;
+            long totalTimeSetServers = 0;
             for (int i = 0; i < dumpTopo.getCellList().size(); i++) {
                 log.info("Creating Cell:" + dumpTopo.getCellList().get(i).getCell().getNodeId());
 
+                long startTimedatabase = System.currentTimeMillis();
                 log.info(startTimeTopologyDumpToDatabase);
+                log.info(startTimedatabase);
                 cellsDb = new CellDetails();
                 entitymanager.getTransaction().begin();
                 cellsDb.setNodeId(dumpTopo.getCellList().get(i).getCell().getNodeId());
@@ -579,6 +599,9 @@ public class RansimController {
                 cellsDb.setLongitude(dumpTopo.getCellList().get(i).getCell().getLongitude());
                 cellsDb.setLatitude(dumpTopo.getCellList().get(i).getCell().getLatitude());
                 cellsDb.setServerId(dumpTopo.getCellList().get(i).getCell().getPnfName());
+                if (!unassignedServerIds.contains(cellsDb.getServerId())) {
+                    unassignedServerIds.add(cellsDb.getServerId());
+                }
                 cellsDb.setNetworkId(dumpTopo.getCellList().get(i).getCell().getNetworkId());
 
                 double lon = Float.valueOf(dumpTopo.getCellList().get(i).getCell().getLongitude());
@@ -599,31 +622,44 @@ public class RansimController {
                 cellsDb.setScreenX((float) (xx));
                 cellsDb.setScreenY((float) (yy));
 
-                if (cellsDb.getServerId() == null || cellsDb.equals("")) {
-                    for (String serverId : serverIdIpPortMapping.keySet()) {
-                        List<String> attachedNoeds = serverIdIpNodeMapping.get(serverId);
-                        if ((attachedNoeds == null) || (attachedNoeds.size() < numberOfCellsPerNcServer)) {
-                            cellsDb.setServerId(serverId);
-                            log.info("Attaching Cell:" + dumpTopo.getCellList().get(i).getCell().getNodeId() + " to "
-                                    + serverId);
-                            if (attachedNoeds == null) {
-                                attachedNoeds = new ArrayList<String>();
-                            }
-                            attachedNoeds.add(cellsDb.getNodeId());
-                            serverIdIpNodeMapping.put(serverId, attachedNoeds);
-                            break;
-                        }
-                    }
+                long endTimedatabase = System.currentTimeMillis();
+                totalTimeDatabase += (endTimedatabase - startTimedatabase);
+                log.info("time converting database: " + (endTimedatabase - startTimedatabase));
+                log.info("total time converting database: " + totalTimeDatabase);
+
+                long startTimeServerIdMapping = System.currentTimeMillis();
+                log.info(startTimeServerIdMapping);
+                List<String> attachedNoeds = serverIdIpNodeMapping.get(cellsDb.getServerId());
+                log.info("Attaching Cell:" + dumpTopo.getCellList().get(i).getCell().getNodeId() + " to "
+                        + cellsDb.getServerId());
+                if (attachedNoeds == null) {
+                    attachedNoeds = new ArrayList<String>();
                 }
-                long endTimeTopologyDumpToDatabase = System.currentTimeMillis();
-                log.info("Time taken for server id mapping : "
-                        + (endTimeTopologyDumpToDatabase - startTimeTopologyDumpToDatabase));
+                attachedNoeds.add(cellsDb.getNodeId());
+                serverIdIpNodeMapping.put(cellsDb.getServerId(), attachedNoeds);
+                if (attachedNoeds.size() > numberOfCellsPerNcServer) {
+                    log.warn("Attaching Cell:" + dumpTopo.getCellList().get(i).getCell().getNodeId() + " to "
+                            + cellsDb.getServerId() + ", But it is exceeding numberOfCellsPerNcServer "
+                            + numberOfCellsPerNcServer);
+                }
 
                 entitymanager.merge(cellsDb);
                 entitymanager.flush();
                 entitymanager.getTransaction().commit();
 
+                long endTimeServerIdMapping = System.currentTimeMillis();
+                totalTimeServerIdMapping += (endTimeServerIdMapping - startTimeServerIdMapping);
+
+                log.info("Total Time taken for server id mapping : " + totalTimeServerIdMapping);
+
+                long startTimeSetServers = System.currentTimeMillis();
+                log.info(startTimeServerIdMapping);
                 setNetconfServers(cellsDb.getNodeId());
+
+                long endTimeSetServers = System.currentTimeMillis();
+                totalTimeSetServers += (endTimeSetServers - startTimeSetServers);
+
+                log.info("Total Time taken to set netconf servers : " + totalTimeSetServers);
 
             }
             long endTimeTopologyDumpToDatabase = System.currentTimeMillis();
@@ -636,6 +672,9 @@ public class RansimController {
 
             try {
                 long timeSetColloision = 0;
+                long timeNeighborList = 0;
+                long timeEntityManagercommit = 0;
+                long timeEntityManagerflush = 0;
                 long startTimeReadingNeighbors = System.currentTimeMillis();
                 for (int i = 0; i < dumpTopo.getCellList().size(); i++) {
 
@@ -650,6 +689,8 @@ public class RansimController {
                     Set<CellDetails> newCell = new HashSet<CellDetails>();
 
                     if (currentCell != null) {
+                        long startTimeNeighborList = System.currentTimeMillis();
+                        log.info(startTimeNeighborList);
                         if (neighborList == null) {
                             neighborList = new CellNeighbor();
                             neighborList.setNodeId(cellNodeId);
@@ -662,16 +703,32 @@ public class RansimController {
                             CellDetails neighborCell = entitymanager.find(CellDetails.class, neighborNodeId);
                             newCell.add(neighborCell);
                         }
+                        long endTimeNeighborList = System.currentTimeMillis();
+                        timeNeighborList += (endTimeNeighborList - startTimeNeighborList);
+                        log.info("Total time for seting neighbor list: " + timeNeighborList);
+
                         neighborList.setNeighborList(newCell);
                         entitymanager.merge(neighborList);
+
+                        long startTimeEntityManagerflush = System.currentTimeMillis();
                         entitymanager.flush();
+                        long endTimeEntityManagerflush = System.currentTimeMillis();
+                        timeEntityManagerflush += (endTimeEntityManagerflush - startTimeEntityManagerflush);
+                        log.info("Total time for entity manager flush: " + timeEntityManagerflush);
+
+                        long startTimeEntityManagercommit = System.currentTimeMillis();
+                        log.info(startTimeEntityManagercommit);
                         entitymanager.getTransaction().commit();
+
+                        long endTimeEntityManagercommit = System.currentTimeMillis();
+                        timeEntityManagercommit += (endTimeEntityManagercommit - startTimeEntityManagercommit);
+                        log.info("Total time for entity manager commit: " + timeEntityManagercommit);
 
                         long startTimeSetCollision = System.currentTimeMillis();
                         setCollisionConfusionFromFile(cellNodeId);
                         // setCellColor(dumpTopo.getCellList().get(i).getCell().getNodeId());
                         long endTimeSetCollision = System.currentTimeMillis();
-                        timeSetColloision = +(endTimeSetCollision - startTimeSetCollision);
+                        timeSetColloision += (endTimeSetCollision - startTimeSetCollision);
 
                     }
 
@@ -744,6 +801,7 @@ public class RansimController {
                     }
 
                 }
+
                 long endTimeSectorNumber = System.currentTimeMillis();
                 log.info("Time taken for setting sector number: " + (endTimeSectorNumber - startTimeSectorNumber));
 
@@ -1232,8 +1290,17 @@ public class RansimController {
             TypedQuery<NetconfServers> query = entitymanager.createQuery("from NetconfServers e", NetconfServers.class);
             List<NetconfServers> ncServers = query.getResultList();
             for (NetconfServers netconfServers : ncServers) {
-
                 String ipPortKey = serverIdIpPortMapping.get(netconfServers.getServerId());
+                if (ipPortKey == null || ipPortKey.trim().equals("")) {
+                    log.info("No client for " + netconfServers.getServerId());
+                    for (String ipPortKeyStr : webSocketSessions.keySet()) {
+                        if (!serverIdIpPortMapping.containsValue(ipPortKeyStr)) {
+                            serverIdIpPortMapping.put(netconfServers.getServerId(), ipPortKeyStr);
+                            ipPortKey = ipPortKeyStr;
+                            break;
+                        }
+                    }
+                }
                 if (ipPortKey != null && !ipPortKey.trim().equals("")) {
                     Session clSess = webSocketSessions.get(ipPortKey);
                     if (clSess != null) {
@@ -1250,8 +1317,6 @@ public class RansimController {
                     } else {
                         log.info("No session for " + ipPortKey);
                     }
-                } else {
-                    log.info("No client for " + netconfServers.getServerId());
                 }
             }
         } catch (Exception eu) {
@@ -1432,6 +1497,7 @@ public class RansimController {
             log.info("handleModifyPciFromGui:ipPort >>>>>>> " + ipPort);
 
             if (ipPort != null && !ipPort.trim().equals("")) {
+
                 String[] ipPortArr = ipPort.split(":");
                 Topology oneCell = new Topology(pnfName, pciId, cellId, nbrList);
                 UpdateCell updatedPci = new UpdateCell(currentCell.getServerId(), ipPortArr[0], ipPortArr[1], oneCell);
@@ -1442,10 +1508,13 @@ public class RansimController {
                     if (clSess != null) {
                         RansimWebSocketServer.sendUpdateCellMessage(jsonStr, clSess);
                     } else {
-                        log.info("No client for " + currentCell.getServerId());
+                        log.info("No client session for " + ipPort);
                     }
+                } else {
+                    log.info("No client for " + currentCell.getServerId());
                 }
             }
+
         } catch (Exception eu) {
             if (entitymanager.getTransaction().isActive()) {
                 entitymanager.getTransaction().rollback();
@@ -1535,6 +1604,9 @@ public class RansimController {
             String val = serverIdIpPortMapping.get(key);
             Session sess = webSocketSessions.get(val);
             log.info("ServerId:" + key + " IpPort:" + val + " Session:" + sess);
+        }
+        for (String serverId : unassignedServerIds) {
+            log.info("Unassigned ServerId:" + serverId);
         }
         for (String serverId : serverIdIpPortMapping.keySet()) {
             List<String> attachedNoeds = serverIdIpNodeMapping.get(serverId);
