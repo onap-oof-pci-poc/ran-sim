@@ -17,6 +17,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * ============LICENSE_END=========================================================
  */
 
 package org.onap.ransim;
@@ -53,16 +54,17 @@ public class ConfigJsonHandler {
     public String peristConfigPath;
     private RansimClientWebSocket ransimAgentWebSocket = null;
     private String PnfName = "";
+    private ModuleConfiguration modCfgn = null;
 
     private ConfigJsonHandler(String peristConfigPath) {
         this.peristConfigPath = peristConfigPath;
-        loadJsonObject();
         ransimAgentWebSocket = new RansimClientWebSocket();
-        ModuleConfiguration modCfgn = new ModuleConfiguration();
+        modCfgn = new ModuleConfiguration();
         modCfgn.loadConfig();
         LOG.info("ModuleConfiguration : peristConfigPath {}", modCfgn.peristConfigPath);
         LOG.info("ModuleConfiguration : enodebsimIp {} {}", modCfgn.enodebsimIp, modCfgn.enodebsimPort);
         LOG.info("ModuleConfiguration3 : ransimCtrlrIp {} {}", modCfgn.ransimCtrlrIp, modCfgn.ransimCtrlrPort);
+        loadJsonObject();
         ransimAgentWebSocket.initWebsocketClient(modCfgn.ransimCtrlrIp, modCfgn.ransimCtrlrPort,
             modCfgn.enodebsimIp, modCfgn.enodebsimPort);
     }
@@ -75,7 +77,7 @@ public class ConfigJsonHandler {
     }
 
     public void loadJsonObject() {
-        LOG.info("ConfigJsonHandler.getJsonObject is called with peristConfigPath of {}", peristConfigPath);
+        LOG.info("ConfigJsonHandler.loadJsonObject is called with peristConfigPath of {}", peristConfigPath);
         if (peristConfigPath == null)
             peristConfigPath = "var/lib/honeycomb/persist/config/data.json";
         File jsonInputFile = new File(peristConfigPath);
@@ -86,7 +88,7 @@ public class ConfigJsonHandler {
             // Create JsonReader from Json.
             reader = Json.createReader(is);
             // Get the JsonObject structure from JsonReader.
-            radioAccessObj = reader.readObject().getJsonObject("enodebsim:radio-access");
+            radioAccessObj = reader.readObject().getJsonObject("bbf-tr-196-2-0-3-full:radio-access");
             LOG.info("radioAccessObj is {}", radioAccessObj);
             LOG.info("radioAccessObj str is {}", radioAccessObj.toString());
 
@@ -116,6 +118,9 @@ public class ConfigJsonHandler {
             jsonStr = jsonStr.substring("UpdateCell:".length());
             LOG.info("ConfigJsonHandler.handleUpdateTopology jsonStr2:{}", jsonStr);
             UpdateCell updCell = new Gson().fromJson(jsonStr, UpdateCell.class);
+            if (updCell.getOneCell()!=null) {
+            	LOG.info("Get One Cell - Not null");
+            }
             updateJsonObject(ncServerTopology, updCell);
             if(modCfgn.useNetconfDataChangeNotifn == false) {
                 NbrListChangeNotifnSender.sendNotification(updCell);
@@ -131,16 +136,18 @@ public class ConfigJsonHandler {
         LOG.info("ConfigJsonHandler.updateJsonObject is called with peristConfigPath of {}", peristConfigPath);
 
         PnfName = updTopo.getServerId();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("");
         sb.append("{\n" +
-                "  \"enodebsim:radio-access\": {");
+                "  \"bbf-tr-196-2-0-3-full:radio-access\": {");
             sb.append("    \"fap-service\": [\n");
         for(int i=0; i<updTopo.getTopology().size(); i++) {
             Topology aCell = updTopo.getTopology().get(i);
-            if(aCell.getCellId().equals(updCell.getOneCell().getCellId())) {
+            if (updCell.getOneCell() != null) {
+             if(aCell.getCellId().equals(updCell.getOneCell().getCellId())) {
                 aCell = updCell.getOneCell();
                 updTopo.getTopology().remove(i);
                 updTopo.getTopology().add(i, aCell);
+             }
             }
             sb.append("      {\n" +
                     "      \"alias\": \"");
@@ -155,10 +162,6 @@ public class ConfigJsonHandler {
             sb.append("\n" +
                     "      },\n" +
                     "      \"device-type\": \"standalone\",\n" +
-                    "      \"capabilities\": {\n" +
-                    "        \"gps-equipped\": \"true\",\n" +
-                    "        \"max-tx-power\": \"12345\"\n" +
-                    "      },\n" +
                     "      \"cell-config\": {\n" +
                     "        \"lte\": {\n" +
                     "          \"tunnel-number-of-entries\":5,\n" +
@@ -170,6 +173,7 @@ public class ConfigJsonHandler {
             "              \"max-lte-cell-entries\" : 4,\n" +
             "              \"lte-cell-number-of-entries\" : ");
     sb.append(aCell.getNeighborList().size());
+    
     sb.append(",\n" +
             "              \"lte-ran-neighbor-list-in-use-lte-cell\" : [\n");
 
@@ -186,8 +190,9 @@ public class ConfigJsonHandler {
 
     }
 
-    sb.append("              ]\n" +
-            "            }\n" +
+    sb.append("              ]\n");
+    
+    sb.append("            }\n" +
             "          }\n");
     sb.append("      }\n" +
             "      }\n" +
@@ -224,7 +229,15 @@ public class ConfigJsonHandler {
             } catch (Exception e) {
             }
         }
+            try {
+                LOG.info("Initializing configuration");
+                io.fd.honeycomb.infra.distro.Main.main(null);
+                LOG.info("Configuration initialized successfully");
+            } catch (Exception e) {
+                LOG.error("Unable to initialize configuration", e);
+            }
     }
+    
     public void handleModifyCell(String jsonStr) {
         ransimAgentWebSocket.sendMessage(jsonStr);
     }
@@ -235,7 +248,7 @@ public class ConfigJsonHandler {
         PnfName = updTopo.getServerId();
         StringBuilder sb = new StringBuilder();
         sb.append("{\n" +
-                "  \"enodebsim:radio-access\": {");
+                "  \"bbf-tr-196-2-0-3-full:radio-access\": {");
             sb.append("    \"fap-service\": [\n");
         for(int i=0; i<updTopo.getTopology().size(); i++) {
             Topology aCell = updTopo.getTopology().get(i);
@@ -252,10 +265,6 @@ public class ConfigJsonHandler {
             sb.append("\n" +
                     "      },\n" +
                     "      \"device-type\": \"standalone\",\n" +
-                    "      \"capabilities\": {\n" +
-                    "        \"gps-equipped\": \"true\",\n" +
-                    "        \"max-tx-power\": \"12345\"\n" +
-                    "      },\n" +
                     "      \"cell-config\": {\n" +
                     "        \"lte\": {\n" +
                     "          \"tunnel-number-of-entries\":5,\n" +
@@ -267,6 +276,7 @@ public class ConfigJsonHandler {
                     "              \"max-lte-cell-entries\" : 4,\n" +
                     "              \"lte-cell-number-of-entries\" : ");
             sb.append(aCell.getNeighborList().size());
+            
             sb.append(",\n" +
                     "              \"lte-ran-neighbor-list-in-use-lte-cell\" : [\n");
 
@@ -283,8 +293,9 @@ public class ConfigJsonHandler {
 
             }
 
-            sb.append("              ]\n" +
-                    "            }\n" +
+            sb.append("              ]\n");
+            
+            sb.append("            }\n" +
                     "          }\n");
             sb.append("      }\n" +
                     "      }\n" +
@@ -337,7 +348,7 @@ public class ConfigJsonHandler {
         Neighbor aNb2 = new Neighbor("jio", "6", 55, "CU2", "CU2");
         neighborList.add(aNb2 );
         Topology aCell = new Topology("CU1", 45, "1", neighborList );
-        topology.add(aCell );
+        topology.add(aCell);
 
         List<Neighbor> neighborList2 = new ArrayList<Neighbor>();
         Neighbor aNb3 = new Neighbor("jio", "1", 45, "CU1", "CU1");
@@ -345,9 +356,9 @@ public class ConfigJsonHandler {
         Neighbor aNb4 = new Neighbor("jio", "2", 46, "CU2", "CU2");
         neighborList2.add(aNb4 );
         Topology aCell2 = new Topology("CU1", 54, "5", neighborList2 );
-        topology.add(aCell2 );
+        topology.add(aCell2);
 
-        updTopo.setTopology(topology );
+        updTopo.setTopology(topology);
         ConfigJsonHandler.getConfigJsonHandler(null).writeJsonObject(updTopo);
     }
 

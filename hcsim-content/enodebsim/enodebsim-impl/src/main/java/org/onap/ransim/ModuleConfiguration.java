@@ -17,6 +17,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * ============LICENSE_END=========================================================
  */
 
 package org.onap.ransim;
@@ -66,7 +67,7 @@ public final class ModuleConfiguration {
 
     @InjectConfig("useNetconfDataChangeNotifn")
     public boolean useNetconfDataChangeNotifn;
- 
+
     Properties netconfConstants = new Properties();
 
     /**
@@ -81,6 +82,7 @@ public final class ModuleConfiguration {
     public static final String LRC_SERVICE_NAME = "lrc-service";
     public static final String LRR_SERVICE_NAME = "lrr-service";
     public static final String LRNLIU_SERVICE_NAME = "lrnliu-service";
+    public static final String LRNLIULC_SERVICE_NAME = "lrnliulc-service";
     public void loadConfig() {
         InputStream input = null;
         try {
