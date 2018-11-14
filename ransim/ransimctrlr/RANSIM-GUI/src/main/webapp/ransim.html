@@ -60,10 +60,24 @@
             background-color: lightblue;
             color: white;
         }
+        .button {
+		     background-color: #4CAF50; /* Green */
+		    border: none;
+		    color: white;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    margin: 4px 2px;
+		    cursor: pointer;
+		}
     </style>
     <script>
         var childWindow;
 
+        var ScreenConfig;
+        var netconfServerUserInput = "";
+        
         function init() {
             getCellTopology();
         }
@@ -84,41 +98,51 @@
         function drawTopology(topoObj) {
             console.log("topoObj");
             console.log(topoObj);
+            console.log("netconfServerUserInput");
+        	console.log(netconfServerUserInput);
             var width = window.innerWidth;
             var height = window.innerWidth;
             var myCanvas = document.getElementById("myCanvas");
-            myCanvas.width = width;
-            myCanvas.height = height;
+            myCanvas.width = 5000;
+            myCanvas.height = 5000;
 
             console.log("width" + width);
             console.log("height" + height);
             var context = myCanvas.getContext("2d");
-            context.clearRect(0, 0, width, height);
+            context.clearRect(0, 0, 5000, 5000);
             context.fillStyle = "#FFFFDF";
-            context.fillRect(0, 0, width, height);
+            context.fillRect(0, 0, 5000, 5000);
             var RADIUS = 11;
             var noProblemColor = "#32CD32"; //GREEN
-            var xScaleUnit = width / ((topoObj.maxScreenX - topoObj.minScreenX) * 2)
-            var yScaleUnit = height / ((topoObj.maxScreenY - topoObj.minScreenY) * 2)
+            var xScaleUnit = width / ((topoObj.maxScreenX - topoObj.minScreenX)/5 )
+            var yScaleUnit = height / ((topoObj.maxScreenY - topoObj.minScreenY)/5 )
 
-            var ScreenConfig = {
+            ScreenConfig = {
                 "xScaleUnit": xScaleUnit,
                 "yScaleUnit": yScaleUnit,
                 "noProblemColor": noProblemColor,
                 "RADIUS": RADIUS,
+                "minX": topoObj.minScreenX,
+                "maxX": topoObj.maxScreenX,
+                "minY": topoObj.minScreenY,
+                "maxY": topoObj.maxScreenY,                
                 "context": context
             }
 
             for (i in topoObj.cellTopology) {
                 var nodeId = topoObj.cellTopology[i].nodeId;
                 var physicalCellId = topoObj.cellTopology[i].physicalCellId;
+                var serverId = topoObj.cellTopology[i].serverId;
                 var confColor = noProblemColor;
                 if (typeof topoObj.cellTopology[i].color != 'undefined') {
                     confColor = topoObj.cellTopology[i].color;
                 }
+                if (serverId == netconfServerUserInput) {
+                   confColor = "#8A2BE2";
+				}
 
-                var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX + 20) * xScaleUnit;
-                var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY + 20) * yScaleUnit;
+                var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX ) * xScaleUnit + 20;
+                var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY ) * yScaleUnit + 20;
 
                 if (topoObj.cellTopology[i].sectorNumber == 1) {
                     cellX -= RADIUS;
@@ -162,8 +186,8 @@
 
                 var isClickedOnCell = false;
                 for (i in topoObj.cellTopology) {
-                    var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX + 20) * ScreenConfig.xScaleUnit;
-                    var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY + 20) * ScreenConfig.yScaleUnit;
+                    var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 20;
+                    var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
                     var rt = 0;
                     if (isIntersect(pos, topoObj.cellTopology[i], cellX, cellY, ScreenConfig)) {
 						isClickedOnCell = true;
@@ -253,14 +277,14 @@
             ScreenConfig, topoObj) {
             document.getElementById("modified").innerHTML = 'b';
            
-            for (i in topoObj.cellTopology) {
+            /* for (i in topoObj.cellTopology) {
                 var n = topoObj.cellTopology[i].nodeId;
                 var p = topoObj.cellTopology[i].physicalCellId;
                 if (typeof topoObj.cellTopology[i].color != 'undefined') {
                     confColor = topoObj.cellTopology[i].color;
                 }
-                var x = (topoObj.cellTopology[i].screenX - topoObj.minScreenX + 20) * ScreenConfig.xScaleUnit;
-                var y = (topoObj.cellTopology[i].screenY - topoObj.minScreenY + 20) * ScreenConfig.yScaleUnit;
+                var x = (topoObj.cellTopology[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 20;
+                var y = (topoObj.cellTopology[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
 
                 if (topoObj.cellTopology[i].sectorNumber == 1) {
                     x -= RADIUS;
@@ -281,7 +305,7 @@
                 ScreenConfig.context.fillStyle = "black";
                 ScreenConfig.context.textAlign = "center";
                 fillMultiLineText(ScreenConfig.context, p, x, y);
-            }
+            } */
 
             for (i in neighbour.neighborList) {
                 var neighbourNodeId = neighbour.neighborList[i].nodeId;
@@ -294,8 +318,8 @@
                 }
                 ScreenConfig.context.beginPath();
                 ScreenConfig.context.moveTo(cellX, cellY);
-                var nbrCellX = (neighbour.neighborList[i].screenX - topoObj.minScreenX + 20) * ScreenConfig.xScaleUnit;
-                var nbrCellY = (neighbour.neighborList[i].screenY - topoObj.minScreenY + 20) * ScreenConfig.yScaleUnit;
+                var nbrCellX = (neighbour.neighborList[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 20;
+                var nbrCellY = (neighbour.neighborList[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
 
                 if (neighbour.neighborList[i].sectorNumber == 1) {
                     nbrCellX -= ScreenConfig.RADIUS;
@@ -438,13 +462,79 @@
                 y += lineHeight;
             }
         }
+        
+        function reset(){
+        	netconfServerUserInput = "";
+        	window.location.reload();
+        }
+        
+        function searchCell(){
+        	//alert("enter netconf server id");
+        	var serverId = prompt("Please enter server ID", "ncserver000");
+        	netconfServerUserInput = serverId;
+        	console.log("netconfServerUserInput");
+        	console.log(netconfServerUserInput);
+            if (serverId != null) {
+            	var formVal = {
+            			"serverId": serverId
+                    }
+                    var dataObj = JSON.stringify(formVal);
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                           var cellList = JSON.parse(this.responseText);
+                           for (i in cellList.cells) {
+                               var n = cellList.cells[i].nodeId;
+                               var p = cellList.cells[i].physicalCellId;
+
+                               var x = (cellList.cells[i].screenX - ScreenConfig.minX ) * ScreenConfig.xScaleUnit + 20;
+                               var y = (cellList.cells[i].screenY - ScreenConfig.minY ) * ScreenConfig.yScaleUnit + 20;
+                               
+                               if (cellList.cells[i].sectorNumber == 1) {
+                                   x -= ScreenConfig.RADIUS;
+                               } else if (cellList.cells[i].sectorNumber == 2) {
+                                   x += ScreenConfig.RADIUS;
+                               } else if (cellList.cells[i].sectorNumber == 3) {
+                                   y += 1.8 * ScreenConfig.RADIUS;
+                               }
+
+                               ScreenConfig.context.fillStyle = "#8A2BE2";
+                               ScreenConfig.context.beginPath();
+                               ScreenConfig.context.arc(x, y, ScreenConfig.RADIUS, 0, Math.PI * 2, true);
+                               ScreenConfig.context.strokeStyle = "black";
+                               ScreenConfig.context.stroke();
+                               ScreenConfig.context.closePath();
+                               ScreenConfig.context.fill();
+                               ScreenConfig.context.font = "10px Comic Sans MS";
+                               ScreenConfig.context.fillStyle = "black";
+                               ScreenConfig.context.textAlign = "center";
+                               fillMultiLineText(ScreenConfig.context, p, x, y);
+                           }
+                        }
+                    };
+                    xmlhttp.open("POST", "http://10.143.125.147:8081/ransim/api/GetNetconfServerDetails",
+                        true);
+                    xmlhttp.setRequestHeader('Content-Type', 'application/json')
+                    xmlhttp.send(dataObj);
+            }
+        }
+                
+        
     </script>
 </head>
 
 <body onLoad="init();" style="margin: 0px">
     <div class="hide" id="rmenu"></div>
     <div class="hide" id="modified"></div>
-    <canvas id="myCanvas" />
+    <div id="ransim" class="absolute">
+		Highlight cells for the given server Id
+		<br>	
+		<button onclick="searchCell()">Enter Server Id</button>
+		<br>
+		<button onclick="reset()">Reset</button>
+		<br>
+	</div>
+    <canvas id="myCanvas" width="500000" height="500000"></canvas>
 </body>
 
 </html>
