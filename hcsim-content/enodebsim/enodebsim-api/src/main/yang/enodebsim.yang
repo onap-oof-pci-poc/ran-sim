@@ -576,7 +576,7 @@ container radio-access {
     }
     leaf plmnid {
       type string {
-        length "0..6";
+        length "0..16";
       }
       description
         "PLMN ID consists of Mobile Country Code (MCC) and Mobile Network Code (MNC) {{bibref|3GPP-TS.23.003}}, {{bibref|3GPP-TS.24.008}}. Mobile Country Code consists of three digits and uniquely identifies the country of domicile of the subscriber. Mobile Network Code consists of two or three digits and identifies the Home PLMN within a country. For a 2-digit MNC the total string length of {{param}} is 5.";
@@ -750,7 +750,7 @@ container radio-access {
     }
   }
 
-  typedef edit-operation-type {
+typedef edit-operation-type {
       type enumeration {
         enum "merge" {
           value 0;
@@ -815,7 +815,6 @@ container radio-access {
         "RFC 6241, Section 7.2";
 
     }
-
    //RFC6470
    notification netconf-config-change {
        description
@@ -872,4 +871,5 @@ container radio-access {
          }
        } // list edit
      } // notification netconf-config-change
+
 }

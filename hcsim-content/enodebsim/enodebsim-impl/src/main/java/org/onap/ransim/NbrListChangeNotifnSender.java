@@ -63,7 +63,7 @@ public class NbrListChangeNotifnSender implements ManagedNotificationProducer {
     static NotificationCollector collector = null;
 
     public static void sendNotification(UpdateCell updCell) {
-        LOG.info("RANSIM NbrListChangeNotifnSender sendNotification called");
+        LOG.info("RANSIM NbrListChangeNotifnSender sendNotification called ****** "+updCell.toString());
         FapServiceKey fsKey = new FapServiceKey(updCell.getOneCell().getCellId());
         List<LteRanNeighborListInUseLteCellChanged> nbrList = new ArrayList<LteRanNeighborListInUseLteCellChanged>();
         for(int i=0; i<updCell.getOneCell().getNeighborList().size(); i++) {
@@ -95,6 +95,7 @@ public class NbrListChangeNotifnSender implements ManagedNotificationProducer {
 
     @Override
     public void start(@Nonnull final NotificationCollector collector) {
+    	
         NbrListChangeNotifnSender.collector = collector;
         LOG.info("Starting notification stream for interfaces");
 
@@ -119,7 +120,7 @@ public class NbrListChangeNotifnSender implements ManagedNotificationProducer {
             }
         }, "NotificationProducer");
         thread.setDaemon(true);
-        thread.start();
+        thread.start();        
     }
 
     @Override
@@ -141,4 +142,3 @@ public class NbrListChangeNotifnSender implements ManagedNotificationProducer {
         stop();
     }
 }
-
