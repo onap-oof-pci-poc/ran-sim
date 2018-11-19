@@ -40,8 +40,8 @@ public class CellDetails {
     private boolean pciConfusionDetected;
     private Set<String> cellsAffectedDueToConfusion;
     private Set<String> cellsCausingConfusion;
-    private int gridX;
-    private int gridY;
+    private float gridX;
+    private float gridY;
     private float screenX;
     private float screenY;
     private String latitude;
@@ -92,7 +92,7 @@ public class CellDetails {
      */
     public CellDetails(String networkId, String nodeId, long physicalCellId, String nodeName, String nodeType,
             boolean pciCollisionDetected, boolean pciConfusionDetected, Set<String> cellsCausingConfusion,
-            Set<String> cellsAffectedDueToConfusion, int gridX, int gridY, float screenX, float screenY,
+            Set<String> cellsAffectedDueToConfusion, float gridX, float gridY, float screenX, float screenY,
             String latitude, String longitude, String serverId, int sectorNumber, String color) {
         super();
         this.networkId = networkId;
@@ -178,19 +178,19 @@ public class CellDetails {
         this.pciConfusionDetected = pciConfusionDetected;
     }
 
-    public int getGridX() {
+    public float getGridX() {
         return gridX;
     }
 
-    public void setGridX(int gridX) {
+    public void setGridX(float gridX) {
         this.gridX = gridX;
     }
 
-    public int getGridY() {
+    public float getGridY() {
         return gridY;
     }
 
-    public void setGridY(int gridY) {
+    public void setGridY(float gridY) {
         this.gridY = gridY;
     }
 
