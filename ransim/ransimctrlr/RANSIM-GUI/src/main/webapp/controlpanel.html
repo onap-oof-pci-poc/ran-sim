@@ -35,6 +35,7 @@
 		$scope.stopSimulator = function() {
 			$window.open('SimulationStop.html', '','menubar=no, locationbar=no, toolbar=no, width=600px, height=250px');
 		};
+		
 	});
 	</script>
   </head>
@@ -43,10 +44,10 @@
 		RAN Simulation
 		<br>
 		<!-- button ng-click="startSimulator()">StartHoneycomb</button-->
-		<button ng-click="startSimulatorFile()">Start Simulation From File</button>
+		<button ng-click="startSimulatorFile()">Start</button>
+		<button ng-click="stopSimulator()">Stop</button>
 		<br>
-		<button ng-click="stopSimulator()">Stop Simulation</button>
-		<br>
+
 	</div>
 	</body>
 </html>

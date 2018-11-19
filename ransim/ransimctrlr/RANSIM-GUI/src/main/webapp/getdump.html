@@ -87,7 +87,7 @@
             var nodeId = nbrs.neighborList[i].nodeId;
             if(i != 0)
               nbrsStr += ', ';
-            nbrsStr +=  '"Chn'+nodeId+'"' ;
+            nbrsStr +=  '"'+nodeId+'"' ;
           }
           //console.log("Response nbrsStr : " + nbrsStr);
           toBeContinued = false;
@@ -147,7 +147,7 @@
       context.clearRect(0, 0, width, height);
       context.fillStyle = "#FFFFFF";
       context.fillRect(0, 0, width, height);
-      var gridSize = topoObj.gridSize;
+      var gridSize = 45;
 
       var rad = height / (2 * gridSize);
       var gaps = rad * 2;
@@ -156,7 +156,7 @@
       var aColors = "#32CD32";
       var aColorsLength = 1;
       var arr = new Array();
-      for (var x = 0; x < gridSize; x++) {
+      /* for (var x = 0; x < gridSize; x++) {
         arr[x] = new Array();
         for (var y = 0; y < gridSize; y++) {
 
@@ -193,9 +193,9 @@
           context.fill();
           arr[x][y] = (x + 1) + ":" + (y + 1);
         }
-      }
+      } */
 
-      myCanvas.addEventListener('contextmenu', (e) => {
+      /* myCanvas.addEventListener('contextmenu', (e) => {
         const pos = {
           x: e.clientX,
           y: e.clientY
@@ -229,28 +229,35 @@
           }
         }
         e.preventDefault();
-      });
+      }); */
 
       console.log('{ "cellList" :[');
       var index = 0;
+      var pnfNum = 1000;
+      var pnfCount = 0;
       for (i in topoObj.cellTopology) {
         index++;
+        pnfCount++;
+        pnfNum = 1001 + (pnfCount/15) 
 	    var cellStr = '';
         var nodeId = topoObj.cellTopology[i].nodeId;
         var physicalCellId = topoObj.cellTopology[i].physicalCellId;
-        var row = topoObj.cellTopology[i].gridX;
-        --row;
-        var col = topoObj.cellTopology[i].gridY;
-        --col;
+        var row = i/45;
+        
+        var col = i%45;
+        
         
         //function point2LatLng(row, col, map);
         //console.log( translate_coordinates(row, row));
         
-		cellStr += ' "networkId" : "jio", ';
-		cellStr += ' "nodeId" : "Chn' + nodeId + '", ';
+		cellStr += ' "networkId" : "Network1", ';
+		cellStr += ' "nodeId" : "' + nodeId + '", ';
 		cellStr += ' "physicalCellId" : ' + physicalCellId + ', ';
 		cellStr += ' "pnfName" : "' + topoObj.cellTopology[i].serverId + '", ';
 		cellStr += ' "sectorNumber" : 0, ';
+		cellStr += ' "latitude" : "' + topoObj.cellTopology[i].latitude + '", ';
+		cellStr += ' "longitude" : "' + topoObj.cellTopology[i].longitude + '" ';
+		
         var collision = topoObj.cellTopology[i].pciCollisionDetected;
         if (typeof topoObj.cellTopology[i].pciCollisionDetected != 'undefined') {
           collision = topoObj.cellTopology[i].pciCollisionDetected;
@@ -318,8 +325,8 @@
           var xy2ll = translate_xyToLatLng( (col +1) * a,  (2 * row +1) * b);
   		  var slat=xy2ll.slat;  
           var slon=xy2ll.slon;
-          cellStr += ' "latitude" : "' + slat + '", ';
-  		  cellStr += ' "longitude" : "' + slon + '" ';
+          //cellStr += ' "latitude" : "' + slat + '", ';
+  		  //cellStr += ' "longitude" : "' + slon + '" ';
           
 		//cellStr += ' "screenX" : "' + ((col + 1) * a) + '", ';
 		//cellStr += ' "screenY" : "' + (rad + (2 * row) * b) + '" ';
@@ -328,8 +335,8 @@
           var xy2ll = translate_xyToLatLng( (col +1) * a, (2 * row + 2) * b);
   		  var slat=xy2ll.slat;  
           var slon=xy2ll.slon;
-          cellStr += ' "latitude" : "' + slat + '", ';
-  		  cellStr += ' "longitude" : "' + slon + '" ';
+          //cellStr += ' "latitude" : "' + slat + '", ';
+  		  //cellStr += ' "longitude" : "' + slon + '" ';
 			//cellStr += ' "screenX" : "' + ((col + 1) * a) + '", ';
 			//cellStr += ' "screenY" : "' + ((2 * row + 2) * b) + '" ';
         }
@@ -337,9 +344,9 @@
 		var neighborStr = getNeighborDumb(nodeId);
 		
 		if(index==1) {
-		  console.log('  { "Cell" : { ' + cellStr + ' }, "neighbor":[' + neighborStr + '] }');
+		  console.log('  { "cell" : { ' + cellStr + ' }, "neighbor":[' + neighborStr + '] }');
 		} else {
-		  console.log(', { "Cell" : { ' + cellStr + ' }, "neighbor":[' + neighborStr + '] }');
+		  console.log(', { "cell" : { ' + cellStr + ' }, "neighbor":[' + neighborStr + '] }');
 		}
 		
       }

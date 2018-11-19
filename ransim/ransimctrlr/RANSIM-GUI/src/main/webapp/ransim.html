@@ -470,7 +470,7 @@
         
         function searchCell(){
         	//alert("enter netconf server id");
-        	var serverId = prompt("Please enter server ID", "ncserver000");
+        	var serverId = document.getElementById("myText").value;;
         	netconfServerUserInput = serverId;
         	console.log("netconfServerUserInput");
         	console.log(netconfServerUserInput);
@@ -527,12 +527,10 @@
     <div class="hide" id="rmenu"></div>
     <div class="hide" id="modified"></div>
     <div id="ransim" class="absolute">
-		Highlight cells for the given server Id
-		<br>	
-		<button onclick="searchCell()">Enter Server Id</button>
+    PNF name: <input type="text" id="myText" size="9" value="ncserver00">	
+		<button onclick="searchCell()">Search</button>
 		<br>
-		<button onclick="reset()">Reset</button>
-		<br>
+		
 	</div>
     <canvas id="myCanvas" width="500000" height="500000"></canvas>
 </body>
