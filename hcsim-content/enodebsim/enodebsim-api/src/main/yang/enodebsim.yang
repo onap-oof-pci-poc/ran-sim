@@ -1,6 +1,7 @@
-module bbf-tr-196-2-0-3-full {
-  namespace "urn:onf:otcc:wireless:yang:radio-access";
-  prefix ran;
+module oofpcipoc {
+  yang-version "1.1";
+  namespace "org:onap:ccsdk:features:sdnr:northbound:oofpcipoc";
+  prefix "oofpcipoc";
 
   import ietf-yang-types {
     prefix yang;
@@ -28,16 +29,15 @@ module bbf-tr-196-2-0-3-full {
        BBF TR-196 2.0.3 full";
   }
 
-  revision 2018-09-20 {
+  revision 2018-11-27 {
     description
       "Updated and to be used only for ONAP PCI Optimization PoC 2018-09-20
-      Incorporated container for fap-service and added pnf-name leaf node";
+      Incorporated container for fap-service and added pnf-name leaf node
+      For respective nodes, changed min-elements from 1 to 0 make them optional";
     reference
       "ONF TR ???: A YANG Data Model for Radio Access Networks.
        BBF TR-196 2.0.3 full";
   }
-
-
 
 container radio-access {
 
@@ -244,7 +244,7 @@ container radio-access {
       type uint8 {
         range "1..21 | 33..40";
       }
-      //min-elements 1;
+      min-elements 0;
       max-elements "16";
       description
         "{{list}} Indicates the LTE bands that the LTE FAP supports {{bibref|3GPP-TS.36.101|Section 5.5}}. At least one band MUST be supported and multiple bands MAY be supported. Each individual band is identified by arabic number (1, 2,...). The order of the band indicators in the string has no significance. In case a new band is defined in the 3GPP standard in a future release of {{bibref|3GPP-TS.36.101}}, the corresponding new band number will be included in the valid band indicators. The followings are examples of valid values: :\"1\" (specifies only band-1 is supported) :\"1,2,11\" (specifies 3 bands are supported) :\"2,11,1\" (specifies 3 bands are supported)";
@@ -429,7 +429,7 @@ container radio-access {
         range "0..65535";
       }
       config false;
-      //min-elements 1;
+      min-elements 0;
       max-elements "128";
       description
         "{{list}} Each item is an E-UTRA Absolute Radio Frequency Channel Number in the downlink direction. In case there is more than one item in the list, the first item contains the most preferred value. Corresponds to parameter NDL specified in {{bibref|3GPP-TS.36.104|Table 5.7.3.1}}. If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
@@ -440,7 +440,7 @@ container radio-access {
         range "0..65535";
       }
       config false;
-      //min-elements 1;
+      min-elements 0;
       max-elements "128";
       description
         "{{list}} Each item is an E-UTRA Absolute Radio Frequency Channel Number in the uplink direction. In case there is more than one item in the list, the first item contains the most preferred value. Corresponds to parameter NUL specified in {{bibref|3GPP-TS.36.104|Table 5.7.3.1}}. If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
@@ -460,7 +460,7 @@ container radio-access {
         range "6 | 15 | 25 | 50 | 75 | 100";
       }
       config false;
-      //min-elements 1;
+      min-elements 0;
       max-elements "32";
       description
         "{{list}} Each item is a downlink transmission bandwidth, specified in number of Resource Blocks. In case there is more than one item in the list, the first item contains the most preferred value. Corresponds to parameter dl_Bandwidth in MIB (Master Information Block) in {{bibref|3GPP-TS.36.331|Section 6.2.2}}. and to parameter NRB in {{bibref|3GPP-TS.36.101|Table 5.6-1}}. If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
@@ -471,7 +471,7 @@ container radio-access {
         range "6 | 15 | 25 | 50 | 75 | 100";
       }
       config false;
-      //min-elements 1;
+      min-elements 0;
       max-elements "32";
       description
         "{{list}} Each item is an uplink transmission bandwidth, specified in number of Resource Blocks. In case there is more than one item in the list, the first item contains the most preferred value. Corresponds to parameter ul_Bandwidth in SIB2 in {{bibref|3GPP-TS.36.331|Section 6.3.1}}. and to parameter NRB in {{bibref|3GPP-TS.36.101|Table 5.6-1}}. If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
@@ -480,7 +480,7 @@ container radio-access {
     leaf-list reference-signal-power {
       type string;
       config false;
-      //min-elements 1;
+      min-elements 0;
       max-elements "512";
       description
         "{{list}} Each item is a downlink reference-signal transmit power, specified in dBm, with a numeric range between -60 and 50 inclusive. In case there is more than one item in the list, the first item contains the most preferred value. Defined as the linear average over the power contributions (in W) of all resource elements that carry cell-specific reference signals within the operating system bandwidth. Corresponds to parameter referenceSignalPower in PDSCH-Config IE in {{bibref|3GPP-TS.36.331|Section 6.3.2}}. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then LTE FAP accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of LTE FAP, LTE FAP accepts the value as an explicit configuration by the ACS.";
@@ -489,7 +489,7 @@ container radio-access {
     leaf-list phy-cell-id {
       type string;
       config false;
-      //min-elements 1;
+      min-elements 0;
       max-elements "512";
       description
         "{{list}} Each item is a physical cell ID with a numeric range between 0 and 503 inclusive. Represents the list of physical cell identities LTE FAP to choose from. In case there is more than one item in the list, the first item contains the most preferred value. As specified in {{bibref|3GPP-TS.36.211|Section 6.11}}. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If LTE FAP supports self-configuration capability for {{param}} and more than one item is configured, then LTE FAP is expected to select one from the list and overwrite this parameter containing only the one selected. If LTE FAP does not support self-configuration capability for {{param}} and more than one item is configured, then accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of , accepts the value as an explicit configuration by the ACS.";
@@ -498,7 +498,7 @@ container radio-access {
     leaf-list psch-power-offset {
       type string;
       config false;
-      //min-elements 1;
+      min-elements 0;
       max-elements "512";
       description
         "{{list}} Each item is a power offset, specified in dB, of the Primary Synchronization Channel with respect to the ReferenceSignalPower, with a numeric range between -350 and 150 inclusive. In case there is more than one item in the list, the first item contains the most preferred value. The value of {{param}} divided by 10 yields the actual value. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If supports self-configuration capability for {{param}} and more than one item is configured, then is expected to select one from the list and overwrite this parameter containing only the one selected. If does not support self-configuration capability for {{param}} and more than one item is configured, then accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of , accepts the value as an explicit configuration by the ACS.";
@@ -507,7 +507,7 @@ container radio-access {
     leaf-list ssch-power-offset {
       type string;
       config false;
-      //min-elements 1;
+      min-elements 0;
       max-elements "512";
       description
         "{{list}} Each item is a power offset, specified in dB, of the Secondary Synchronization Channel with respect to the ReferenceSignalPower, with a numeric range between -350 and 150 inclusive. In case there is more than one item in the list, the first item contains the most preferred value. The value of {{param}} divided by 10 yields the actual value. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If supports self-configuration capability for {{param}} and more than one item is configured, then is expected to select one from the list and overwrite this parameter containing only the one selected. If does not support self-configuration capability for {{param}} and more than one item is configured, then accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of , accepts the value as an explicit configuration by the ACS.";
@@ -516,7 +516,7 @@ container radio-access {
     leaf-list pbch-power-offset {
       type string;
       config false;
-      //min-elements 1;
+      min-elements 0;
       max-elements "512";
       description
         "{{list}} Each item is a power offset, specified in dB, of the Physical Broadcast Channel with respect to the ReferenceSignalPower, with a numeric range between -350 and 150 inclusive. In case there is more than one item in the list, the first item contains the most preferred value. The value of {{param}} divided by 10 yields the actual value. The multiplicity of the {{param}} values can also be expressed by defining a range using \"..\" (two periods) between two values. In this case, the combination of two values defines the lower-bound and upper-bound of the range inclusive. If this notation is used, then the list contains at least 2 items: \"<preferred-value>,<lower-bound>..<upper-bound>\". If supports self-configuration capability for {{param}} and more than one item is configured, then is expected to select one from the list and overwrite this parameter containing only the one selected. If does not support self-configuration capability for {{param}} and more than one item is configured, then accepts the first value and ignore the rest. If only one item is configured regardless of the self-configuration capability of , accepts the value as an explicit configuration by the ACS.";
@@ -576,7 +576,7 @@ container radio-access {
     }
     leaf plmnid {
       type string {
-        length "0..16";
+        length "0..6";
       }
       description
         "PLMN ID consists of Mobile Country Code (MCC) and Mobile Network Code (MNC) {{bibref|3GPP-TS.23.003}}, {{bibref|3GPP-TS.24.008}}. Mobile Country Code consists of three digits and uniquely identifies the country of domicile of the subscriber. Mobile Network Code consists of two or three digits and identifies the Home PLMN within a country. For a 2-digit MNC the total string length of {{param}} is 5.";
@@ -750,7 +750,7 @@ container radio-access {
     }
   }
 
-typedef edit-operation-type {
+  typedef edit-operation-type {
       type enumeration {
         enum "merge" {
           value 0;
