@@ -34,9 +34,9 @@ import io.fd.honeycomb.translate.read.ReaderFactory;
 import io.fd.honeycomb.translate.read.registry.ModifiableReaderRegistryBuilder;
 import javax.annotation.Nonnull;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.opendaylight.yang.gen.v1.urn.onf.otcc.wireless.yang.radio.access.rev180920.RadioAccess;
-import org.opendaylight.yang.gen.v1.urn.onf.otcc.wireless.yang.radio.access.rev180920.RadioAccessBuilder;
-import org.opendaylight.yang.gen.v1.urn.onf.otcc.wireless.yang.radio.access.rev180920.radio.access.FapService;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.RadioAccess;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.RadioAccessBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapService;
 
 /**
  * Factory producing readers for enodebsim plugin's data.
