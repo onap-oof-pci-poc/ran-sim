@@ -87,7 +87,7 @@ public class ConfigJsonHandler {
             // Create JsonReader from Json.
             reader = Json.createReader(is);
             // Get the JsonObject structure from JsonReader.
-            radioAccessObj = reader.readObject().getJsonObject("bbf-tr-196-2-0-3-full:radio-access");
+            radioAccessObj = reader.readObject().getJsonObject("oofpcipoc:radio-access");
             LOG.info("radioAccessObj is {}", radioAccessObj);
             LOG.info("radioAccessObj str is {}", radioAccessObj.toString());
 
@@ -137,7 +137,7 @@ public class ConfigJsonHandler {
         PnfName = updTopo.getServerId();
         StringBuilder sb = new StringBuilder("");
         sb.append("{\n" +
-                "  \"bbf-tr-196-2-0-3-full:radio-access\": {");
+                "  \"oofpcipoc:radio-access\": {");
             sb.append("    \"fap-service\": [\n");
         for(int i=0; i<updTopo.getTopology().size(); i++) {
             Topology aCell = updTopo.getTopology().get(i);
@@ -247,7 +247,7 @@ public class ConfigJsonHandler {
         PnfName = updTopo.getServerId();
         StringBuilder sb = new StringBuilder();
         sb.append("{\n" +
-                "  \"bbf-tr-196-2-0-3-full:radio-access\": {");
+                "  \"oofpcipoc:radio-access\": {");
             sb.append("    \"fap-service\": [\n");
         for(int i=0; i<updTopo.getTopology().size(); i++) {
             Topology aCell = updTopo.getTopology().get(i);
