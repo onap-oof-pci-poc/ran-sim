@@ -20,8 +20,6 @@
 
 package org.onap.ransim.rest.api.models;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -38,8 +36,6 @@ public class CellDetails {
     private String nodeType;
     private boolean pciCollisionDetected;
     private boolean pciConfusionDetected;
-    private Set<String> cellsAffectedDueToConfusion;
-    private Set<String> cellsCausingConfusion;
     private float gridX;
     private float gridY;
     private float screenX;
@@ -91,9 +87,8 @@ public class CellDetails {
      *            color of the cell in the GUI
      */
     public CellDetails(String networkId, String nodeId, long physicalCellId, String nodeName, String nodeType,
-            boolean pciCollisionDetected, boolean pciConfusionDetected, Set<String> cellsCausingConfusion,
-            Set<String> cellsAffectedDueToConfusion, float gridX, float gridY, float screenX, float screenY,
-            String latitude, String longitude, String serverId, int sectorNumber, String color) {
+            boolean pciCollisionDetected, boolean pciConfusionDetected, float gridX, float gridY, float screenX,
+            float screenY, String latitude, String longitude, String serverId, int sectorNumber, String color) {
         super();
         this.networkId = networkId;
         this.nodeId = nodeId;
@@ -102,8 +97,7 @@ public class CellDetails {
         this.nodeType = nodeType;
         this.pciCollisionDetected = pciCollisionDetected;
         this.pciConfusionDetected = pciConfusionDetected;
-        this.cellsAffectedDueToConfusion = cellsAffectedDueToConfusion;
-        this.cellsCausingConfusion = cellsCausingConfusion;
+
         this.gridX = gridX;
         this.gridY = gridY;
         this.screenX = screenX;
@@ -248,22 +242,6 @@ public class CellDetails {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
-    }
-
-    public Set<String> getCellsAffectedDueToConfusion() {
-        return cellsAffectedDueToConfusion;
-    }
-
-    public void setCellsAffectedDueToConfusion(Set<String> cellsAffectedDueToConfusion) {
-        this.cellsAffectedDueToConfusion = cellsAffectedDueToConfusion;
-    }
-
-    public Set<String> getCellsCausingConfusion() {
-        return cellsCausingConfusion;
-    }
-
-    public void setCellsCausingConfusion(Set<String> cellsCausingConfusion) {
-        this.cellsCausingConfusion = cellsCausingConfusion;
     }
 
     @Override
