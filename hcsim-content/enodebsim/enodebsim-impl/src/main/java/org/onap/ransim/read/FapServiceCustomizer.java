@@ -96,9 +96,6 @@ InitializingListReaderCustomizer<FapService, FapServiceKey, FapServiceBuilder> {
 
         // and sets it to builder
         builder.setAlias(data.getAlias());
-        builder.setDeviceType(data.getDeviceType());
-        builder.setDnPrefix(data.getDnPrefix());
-        builder.setAlias(data.getAlias());
     }
     /**
      *

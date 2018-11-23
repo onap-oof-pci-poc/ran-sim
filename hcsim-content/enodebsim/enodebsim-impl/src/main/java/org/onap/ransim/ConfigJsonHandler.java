@@ -160,20 +160,11 @@ public class ConfigJsonHandler {
             sb.append(aCell.getPciId());
             sb.append("\n" +
                     "      },\n" +
-                    "      \"device-type\": \"standalone\",\n" +
                     "      \"cell-config\": {\n" +
                     "        \"lte\": {\n" +
                     "          \"tunnel-number-of-entries\":5,\n" +
                     "          \"lte-ran\": {\n" +
-                    //"            \"lte-ran-common\": { \"cell-identity\": \"");
-            //sb.append(aCell.getCellId());
-            //sb.append("\" },\n" +
             "            \"lte-ran-neighbor-list-in-use\": {\n" +
-            "              \"max-lte-cell-entries\" : 4,\n" +
-            "              \"lte-cell-number-of-entries\" : ");
-    sb.append(aCell.getNeighborList().size());
-    
-    sb.append(",\n" +
             "              \"lte-ran-neighbor-list-in-use-lte-cell\" : [\n");
 
     for(int j=0; j<aCell.getNeighborList().size(); j++) {
@@ -263,20 +254,11 @@ public class ConfigJsonHandler {
             sb.append(aCell.getPciId());
             sb.append("\n" +
                     "      },\n" +
-                    "      \"device-type\": \"standalone\",\n" +
                     "      \"cell-config\": {\n" +
                     "        \"lte\": {\n" +
                     "          \"tunnel-number-of-entries\":5,\n" +
                     "          \"lte-ran\": {\n" +
-                    //"            \"lte-ran-common\": { \"cell-identity\": \"");
-            //sb.append(aCell.getCellId());
-            //sb.append("\" },\n" +
                     "            \"lte-ran-neighbor-list-in-use\": {\n" +
-                    "              \"max-lte-cell-entries\" : 4,\n" +
-                    "              \"lte-cell-number-of-entries\" : ");
-            sb.append(aCell.getNeighborList().size());
-            
-            sb.append(",\n" +
                     "              \"lte-ran-neighbor-list-in-use-lte-cell\" : [\n");
 
             for(int j=0; j<aCell.getNeighborList().size(); j++) {

@@ -70,16 +70,16 @@ public class NbrListChangeNotifnSender implements ManagedNotificationProducer {
             Neighbor nbr = updCell.getOneCell().getNeighborList().get(i);
             LteRanNeighborListInUseLteCellChangedKey nbrInUseKey = new LteRanNeighborListInUseLteCellChangedKey(null, null);
             LteRanNeighborListInUseLteCellChanged nbrInUse = new LteRanNeighborListInUseLteCellChangedBuilder()
+            		.setPnfName(nbr.getServerId())
                     .setCid(nbr.getNodeId())
                     .setPhyCellId(BigInteger.valueOf(nbr.getPhysicalCellId()))
                     .setPlmnid(nbr.getPlmnId())
-                    .setCid(nbr.getNodeId())
                     .build();
             nbrList.add(nbrInUse);
         }
         FapService fsCell = new FapServiceBuilder()
-                .setCellIdentity(updCell.getOneCell().getCellId())
-                .setLteCellNumberOfEntries(BigInteger.valueOf(updCell.getOneCell().getNeighborList().size()))
+        		.setAlias(updCell.getOneCell().getCellId())
+        		.setCid(updCell.getOneCell().getCellId())
                 .setLteRanNeighborListInUseLteCellChanged(nbrList)
                 .build();
         BigInteger fapServiceNumberOfEntriesChanged = BigInteger.ONE;
@@ -107,12 +107,12 @@ public class NbrListChangeNotifnSender implements ManagedNotificationProducer {
                 }
 
                 try {
-                    List<Neighbor> nbrs = new ArrayList<Neighbor> ();
+                    /*List<Neighbor> nbrs = new ArrayList<Neighbor> ();
                     nbrs.add(new Neighbor("jio", "1", 1, "ncserver1001", "ncserver1001"));
                     UpdateCell updCell = new UpdateCell("1", "127.0.0.1", "50000"
-                            , new Topology("ncserver1001", 1, "51", nbrs));
+                            , new Topology("ncserver1001", 1, "51", nbrs));*/
                     Thread.sleep(60000);
-                    sendNotification(updCell);
+                    /*sendNotification(updCell);*/
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;

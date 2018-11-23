@@ -81,9 +81,7 @@ public final class LteRanNeighborListInUseCustomizer implements
         final LteRanNeighborListInUse data = crudService.readSpecific(id, ctx);
 
         // and sets it to builder
-        builder.setLteCellNumberOfEntries(data.getLteCellNumberOfEntries());
         builder.setLteRanNeighborListInUseLteCell(data.getLteRanNeighborListInUseLteCell());
-        builder.setMaxLteCellEntries(data.getMaxLteCellEntries());
     }
 
 
