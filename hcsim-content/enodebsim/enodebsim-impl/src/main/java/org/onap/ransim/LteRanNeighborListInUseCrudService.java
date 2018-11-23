@@ -112,16 +112,12 @@ final class LteRanNeighborListInUseCrudService implements CrudService<LteRanNeig
     public LteRanNeighborListInUse readSpecific(@Nonnull final InstanceIdentifier<LteRanNeighborListInUse> identifier
             , @Nonnull final ReadContext ctx) throws ReadFailedException {
         LOG.info("RANSIM LteRanNeighborListInUseCrudService readSpecific called");
-        int mlce = 0;
-        int lcnoe = 0;
         List<LteRanNeighborListInUseLteCell> ngbrList = new ArrayList<LteRanNeighborListInUseLteCell>();
         // load data by this key
         // *Key class will always contain key of entity, in this case long value
         if(ctx != null) {
             JsonObject lrnllObj = (JsonObject) ctx.getModificationCache().get("lte-ran-neighbor-list-in-use");
             if(lrnllObj != null) {
-            mlce = lrnllObj.getInt("max-lte-cell-entries");
-            lcnoe = lrnllObj.getInt("lte-cell-number-of-entries");
             JsonArray jsArr = lrnllObj.getJsonArray("lte-ran-neighbor-list-in-use-lte-cell");
             if(jsArr != null) {
             for (int i = 0; i < jsArr.size(); i++) {
@@ -139,8 +135,6 @@ final class LteRanNeighborListInUseCrudService implements CrudService<LteRanNeig
 
 
         return new LteRanNeighborListInUseBuilder()
-                .setLteCellNumberOfEntries(BigInteger.valueOf(lcnoe))
-                .setMaxLteCellEntries(BigInteger.valueOf(mlce))
                 .setLteRanNeighborListInUseLteCell(ngbrList)
                 .build();
     }

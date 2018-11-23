@@ -28,7 +28,6 @@ import javax.annotation.Nonnull;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.FapServiceG.DeviceType;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.RadioAccess;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapService;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapServiceBuilder;
@@ -124,13 +123,6 @@ final class FapServiceCrudService implements CrudService<FapService> {
         for (int i = 0; i < fsArr.size(); i++) {
             JsonObject fsObj = fsArr.getJsonObject(i);
             if(fsObj.getString("alias").equals(key.getAlias())) {
-                DeviceType dt = DeviceType.Standalone;;
-                if(fsObj.getString("device-type") != null) {
-                    if("standalone".equals(fsObj.getString("device-type")))
-                        dt = DeviceType.Standalone;
-                    else if("integrated".equals(fsObj.getString("device-type")))
-                        dt = DeviceType.Integrated;
-                }
                 if(ctx!=null) {
                     if(fsObj.getJsonObject("cell-config")!=null)
                         ctx.getModificationCache().put("cell-config", fsObj.getJsonObject("cell-config"));
@@ -139,7 +131,6 @@ final class FapServiceCrudService implements CrudService<FapService> {
                 }
                 fs = new FapServiceBuilder()
                         .setAlias(key.getAlias())
-                        .setDeviceType(dt)
                         .build();
                 break;
             }

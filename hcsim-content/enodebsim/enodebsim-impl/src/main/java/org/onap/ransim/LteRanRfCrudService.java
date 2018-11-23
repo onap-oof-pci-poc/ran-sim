@@ -110,7 +110,6 @@ final class LteRanRfCrudService implements CrudService<LteRanRf> {
         // *Key class will always contain key of entity, in this case long value
 
         return new LteRanRfBuilder()
-                .setFreqBandIndicator((short) 6)
                 .build();
     }
 
