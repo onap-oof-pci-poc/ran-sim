@@ -22,8 +22,13 @@ package org.onap.ransim.rest.api.models;
 
 import java.util.List;
 
+
 public class CellData {
-    private CellInfo cell;
+
+
+    private CellInfo Cell;
+
+
     private List<String> neighbor;
 
     /**
@@ -34,9 +39,10 @@ public class CellData {
      * @param neighbor
      *            list of neighbors to be read from file
      */
-    public CellData(CellInfo cell, List<String> neighbor) {
+
+    public CellData( CellInfo cell, List<String> neighbor) {
         super();
-        this.cell = cell;
+        this.Cell = cell;
         this.neighbor = neighbor;
     }
 
@@ -45,11 +51,11 @@ public class CellData {
     }
 
     public CellInfo getCell() {
-        return cell;
+        return Cell;
     }
 
     public void setCell(CellInfo cell) {
-        this.cell = cell;
+        this.Cell = cell;
     }
 
     public List<String> getNeighbor() {
