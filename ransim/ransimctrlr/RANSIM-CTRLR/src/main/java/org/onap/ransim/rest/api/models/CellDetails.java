@@ -63,10 +63,7 @@ public class CellDetails {
      *            Checks if the cell has collision
      * @param pciConfusionDetected
      *            Checks if the cell has confusion
-     * @param cellsAffectedDueToConfusion
-     *            List of cells it causes confusion to
-     * @param cellsCausingConfusion
-     *            List of cells that causes confusion to the cell
+     *
      * @param gridX
      *            --
      * @param gridY
