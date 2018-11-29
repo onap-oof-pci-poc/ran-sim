@@ -1241,7 +1241,7 @@ public class RansimController {
                         List<String> nbrList = new ArrayList<>();
 
                         for (String nbr : newNbrsArr) {
-                            nbrList.add(nbr);
+                            nbrList.add(nbr.trim());
                         }
 
                         neighbors.getNeighborList().clear();

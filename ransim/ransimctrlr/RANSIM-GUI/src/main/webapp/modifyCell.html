@@ -112,28 +112,6 @@
 						alert("Modify Failed");
 						window.close();
 					}); 
-                
-                
-               	/*
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function() {
-                  alert("Response Text :"+this.responseText);
-                  if (this.readyState == 4 && this.status == 200) {
-                	  alert( "Success message: "+JSON.stringify(this.responseText));	
-					  alert("Modified Successfully");
-					  window.close();
-                  } else if (this.readyState == 4 && this.status > 200) {
-                	  alert( "Failure message: "+JSON.stringify(this.responseText));	
-					  alert("Modify Failed");
-					  window.close();
-                  }
-                 xmlhttp.open("POST", "http://10.143.125.147:8081/ransimui/ModifyACell", true);
-                 xmlhttp.setRequestHeader('Content-Type', 'application/json')
-               	 xmlhttp.send(dataObj);                
-                };
-                */
-              
-                
 			};				
 			$scope.close = function(){	
 				window.close();

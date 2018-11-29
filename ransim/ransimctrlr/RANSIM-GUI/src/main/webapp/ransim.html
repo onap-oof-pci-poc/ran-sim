@@ -482,8 +482,23 @@
                     var xmlhttp = new XMLHttpRequest();
                     xmlhttp.onreadystatechange = function() {
                         if (this.readyState == 4 && this.status == 200) {
-                           var cellList = JSON.parse(this.responseText);
-                           for (i in cellList.cells) {
+                        
+			   var cellList = JSON.parse(this.responseText);
+                           drawCell(cellList);
+                        }
+                        
+		 };
+                    xmlhttp.open("POST", "http://ransimsvr:8081/ransim/api/GetNetconfServerDetails",
+                        true);
+                    xmlhttp.setRequestHeader('Content-Type', 'application/json')
+                    xmlhttp.send(dataObj);
+            }
+        }
+                
+        function drawCell(cellList){
+		document.getElementById("modified").innerHTML = 'b';
+		
+		for (i in cellList.cells) {
                                var n = cellList.cells[i].nodeId;
                                var p = cellList.cells[i].physicalCellId;
 
@@ -510,16 +525,7 @@
                                ScreenConfig.context.textAlign = "center";
                                fillMultiLineText(ScreenConfig.context, p, x, y);
                            }
-                        }
-                    };
-                    xmlhttp.open("POST", "http://10.143.125.147:8081/ransim/api/GetNetconfServerDetails",
-                        true);
-                    xmlhttp.setRequestHeader('Content-Type', 'application/json')
-                    xmlhttp.send(dataObj);
-            }
-        }
-                
-        
+	}
     </script>
 </head>
 

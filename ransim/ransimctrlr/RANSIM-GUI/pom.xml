@@ -3,7 +3,7 @@
   ============LICENSE_START=======================================================
   Ran Simulator Controller GUI
   ================================================================================
-  Copyright (C) 2017-2018 AT&T Intellectual Property. All rights reserved.
+  Copyright (C) 2018 Wipro Limited Intellectual Property. All rights reserved.
   ================================================================================
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -28,18 +28,10 @@
 		<artifactId>RansimSuite</artifactId>
 		<version>1.2.0-SNAPSHOT</version>
 	</parent>
- 
 
 	<artifactId>RANSIM-GUI</artifactId>
 
 	<description>RANSIM GUI</description>
-	<properties>
-		<springframework.version>4.3.3.RELEASE</springframework.version>
-                <eclipselink.version>2.6.0</eclipselink.version>
-		<javax.persistence.version>2.1.0</javax.persistence.version>
-                <mariadb.jdbc.version>1.2.3</mariadb.jdbc.version>
-                <javax.persistence.api.version>1.0.2</javax.persistence.api.version>
-	</properties>
 	<packaging>war</packaging>
 	<build>
 		<plugins>
