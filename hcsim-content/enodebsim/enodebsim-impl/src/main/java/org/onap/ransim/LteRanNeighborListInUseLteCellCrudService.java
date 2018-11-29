@@ -114,7 +114,6 @@ final class LteRanNeighborListInUseLteCellCrudService implements CrudService<Lte
     @Override
     public LteRanNeighborListInUseLteCell readSpecific(@Nonnull final InstanceIdentifier<LteRanNeighborListInUseLteCell> identifier
             , @Nonnull final ReadContext ctx) throws ReadFailedException {
-        LOG.info("RANSIM LteRanNeighborListInUseLteCellCrudService readSpecific called");
         LteRanNeighborListInUseLteCell fs = new LteRanNeighborListInUseLteCellBuilder()
         .setCid("a")
         .setPhyCellId(BigInteger.ONE)
@@ -125,7 +124,6 @@ final class LteRanNeighborListInUseLteCellCrudService implements CrudService<Lte
 
     @Override
     public List<LteRanNeighborListInUseLteCell> readAll() throws ReadFailedException {
-        LOG.info("RANSIM LteRanNeighborListInUseLteCellCrudService readAll called");
         List<LteRanNeighborListInUseLteCell> fsList = new ArrayList<LteRanNeighborListInUseLteCell>();
         // read all data under parent node,in this case {@link ModuleState}
         return fsList;

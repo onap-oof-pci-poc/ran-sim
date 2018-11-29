@@ -74,35 +74,23 @@ final class X0005b9LteCrudService implements CrudService<X0005b9Lte> {
             int stIndex  = identifier.toString().indexOf("[_alias=");
             String subStr = identifier.toString().substring(stIndex+"[_alias=".length());
             String cid = subStr.substring(0, subStr.indexOf("]"));
-            LOG.info("stIndex:{}, subStr:{}, cid:{}", stIndex, subStr, cid);
 
             Iterable<PathArgument> paths = identifier.getPathArguments();
             Iterator<PathArgument> pathIter = paths.iterator();
             while (pathIter.hasNext()) {
                 PathArgument aPath = pathIter.next();
 
-                LOG.info("SimpleName   : {}", aPath.getType().getSimpleName());
-                LOG.info("Name         : {}", aPath.getType().getName());
-                LOG.info("CanonicalName: {}", aPath.getType().getCanonicalName());
-                LOG.info("TypeName     : {}", aPath.getType().getTypeName());
                 if(aPath.getType().getSimpleName().equals("FapService")) {
                     LOG.info("TODO . aPath     : {}", aPath);
                 }
             }
-            /*try{
-                String json = ConfigJsonHandler.getConfigJsonHandler(null).radioAccessObj.toString();
-                List<String> cids = JsonPath.read(json, "$..fap-service[?(@.alias =~ /"+cid+"/)]..cell-identity");
-                LOG.info("Try jsonpath cids:{}", cids);
-            }catch(Exception e) { LOG.info("Try jsonpath ", e);}
-             */
-
             ModifyPci modifyPci = null;
             if(writeContext.getModificationCache().containsKey("modify-pci-object")) {
-                LOG.info("Get from context");
+                LOG.debug("Get from context");
                 modifyPci = (ModifyPci)writeContext.getModificationCache().get("modify-pci-object");
             } else {
                 modifyPci = new ModifyPci();
-                LOG.info("Create new");
+                LOG.debug("Create new");
             }
 
             modifyPci.setPnfName(data.getPnfName());
@@ -113,11 +101,9 @@ final class X0005b9LteCrudService implements CrudService<X0005b9Lte> {
                 String jsonStr = new Gson().toJson(modifyPci, ModifyPci.class);
                 LOG.info("Sending to Ransim Ctrlr.");
                 ConfigJsonHandler.getConfigJsonHandler(null).handleModifyCell(jsonStr);
-                LOG.info("Cleanup write context");
                 writeContext.getModificationCache().close();
             } else {
                 writeContext.getModificationCache().put("modify-pci-object", modifyPci);
-                LOG.info("Write to context temp data");
             }
 
         } else {
@@ -165,7 +151,7 @@ final class X0005b9LteCrudService implements CrudService<X0005b9Lte> {
     @Override
     public X0005b9Lte readSpecific(@Nonnull final InstanceIdentifier<X0005b9Lte> identifier,
             @Nonnull final ReadContext ctx) throws ReadFailedException {
-        LOG.info("RANSIM X0005b9LteCrudService readSpecific called");
+        LOG.debug("RANSIM X0005b9LteCrudService readSpecific called");
         int pcid = 0;
         String pn = "";
         // load data by this key
@@ -182,7 +168,6 @@ final class X0005b9LteCrudService implements CrudService<X0005b9Lte> {
 
     @Override
     public List<X0005b9Lte> readAll() throws ReadFailedException {
-        LOG.info("RANSIM X0005b9LteCrudService readAll called");
         // read all data under parent node,in this case {@link ModuleState}
         return Collections
                 .singletonList(readSpecific(InstanceIdentifier.create(FapService.class).child(X0005b9Lte.class), null));

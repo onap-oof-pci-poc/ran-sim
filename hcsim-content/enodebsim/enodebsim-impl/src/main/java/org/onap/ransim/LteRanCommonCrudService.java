@@ -70,11 +70,9 @@ final class LteRanCommonCrudService implements CrudService<LteRanCommon> {
 
             ModifyPci modifyPci = null;
             if(writeContext.getModificationCache().containsKey("modify-pci-object")) {
-                LOG.info("modifyPci exists in cache");
                 modifyPci = (ModifyPci)writeContext.getModificationCache().get("modify-pci-object");
             } else {
                 modifyPci = new ModifyPci();
-                LOG.info("creating modifyPci new");
             }
 
             String cId = ""+data.getCellIdentity();
@@ -83,10 +81,8 @@ final class LteRanCommonCrudService implements CrudService<LteRanCommon> {
             if(modifyPci.isAllSet()) {
                 String jsonStr = new Gson().toJson(modifyPci, ModifyPci.class);
                 ConfigJsonHandler.getConfigJsonHandler(null).handleModifyCell(jsonStr);
-                LOG.info("modifyPci sent to server. Removing from cache");
                 writeContext.getModificationCache().close();
             } else {
-                LOG.info("putting modifyPci into cache");
                 writeContext.getModificationCache().put("modify-pci-object", modifyPci);
             }
 
@@ -135,7 +131,6 @@ final class LteRanCommonCrudService implements CrudService<LteRanCommon> {
     @Override
     public LteRanCommon readSpecific(@Nonnull final InstanceIdentifier<LteRanCommon> identifier,
             @Nonnull final ReadContext ctx) throws ReadFailedException {
-        LOG.info("RANSIM LteRanCommonCrudService readSpecific called");
         String ci = "";
         // load data by this key
         // *Key class will always contain key of entity, in this case long value
@@ -149,7 +144,6 @@ final class LteRanCommonCrudService implements CrudService<LteRanCommon> {
 
     @Override
     public List<LteRanCommon> readAll() throws ReadFailedException {
-        LOG.info("RANSIM LteRanCommonCrudService readAll called");
         // read all data under parent node,in this case {@link ModuleState}
         return Collections
                 .singletonList(readSpecific(InstanceIdentifier.create(LteRan.class).child(LteRanCommon.class), null));
