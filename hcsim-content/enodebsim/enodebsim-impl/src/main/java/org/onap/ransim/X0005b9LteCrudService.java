@@ -75,15 +75,6 @@ final class X0005b9LteCrudService implements CrudService<X0005b9Lte> {
             String subStr = identifier.toString().substring(stIndex+"[_alias=".length());
             String cid = subStr.substring(0, subStr.indexOf("]"));
 
-            Iterable<PathArgument> paths = identifier.getPathArguments();
-            Iterator<PathArgument> pathIter = paths.iterator();
-            while (pathIter.hasNext()) {
-                PathArgument aPath = pathIter.next();
-
-                if(aPath.getType().getSimpleName().equals("FapService")) {
-                    LOG.info("TODO . aPath     : {}", aPath);
-                }
-            }
             ModifyPci modifyPci = null;
             if(writeContext.getModificationCache().containsKey("modify-pci-object")) {
                 LOG.debug("Get from context");
@@ -142,6 +133,34 @@ final class X0005b9LteCrudService implements CrudService<X0005b9Lte> {
 
             // Performs any logic needed for persisting such data
             LOG.info("Update path[{}] from [{}] to [{}]", identifier, dataOld, dataNew);
+
+            int stIndex  = identifier.toString().indexOf("[_alias=");
+            String subStr = identifier.toString().substring(stIndex+"[_alias=".length());
+            String cid = subStr.substring(0, subStr.indexOf("]"));
+
+            ModifyPci modifyPci = new ModifyPci();
+	    /*
+            if(writeContext.getModificationCache().containsKey("modify-pci-object")) {
+                LOG.debug("Get from context");
+                modifyPci = (ModifyPci)writeContext.getModificationCache().get("modify-pci-object");
+            } else {
+                modifyPci = new ModifyPci();
+                LOG.debug("Create new");
+            }
+	    */
+
+            modifyPci.setPnfName(dataNew.getPnfName());
+            modifyPci.setPciId(dataNew.getPhyCellIdInUse().longValue());
+            modifyPci.setCellId(cid);
+
+            if(modifyPci.isAllSet()) {
+                String jsonStr = new Gson().toJson(modifyPci, ModifyPci.class);
+                LOG.info("Sending to Ransim Ctrlr.");
+                ConfigJsonHandler.getConfigJsonHandler(null).handleModifyCell(jsonStr);
+                //writeContext.getModificationCache().close();
+            } else {
+                //writeContext.getModificationCache().put("modify-pci-object", modifyPci);
+            }
         } else {
             throw new WriteFailedException.DeleteFailedException(identifier,
                     new NullPointerException("Provided data are null"));
