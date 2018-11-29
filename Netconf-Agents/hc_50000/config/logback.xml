@@ -22,12 +22,12 @@
     </encoder>
   </appender>
 
-  <root level="debug">
+  <root level="info">
     <!--appender-ref ref="STDOUT" /-->
     <appender-ref ref="honeycomb.log" />
   </root>
 
-  <logger name="org.opendaylight" level="DEBUG"/>
-  <logger name="io.fd" level="DEBUG"/>
-  <logger name="org.onap" level="DEBUG"/>
+  <logger name="org.opendaylight" level="INFO"/>
+  <logger name="io.fd" level="INFO"/>
+  <logger name="org.onap" level="INFO"/>
 </configuration>

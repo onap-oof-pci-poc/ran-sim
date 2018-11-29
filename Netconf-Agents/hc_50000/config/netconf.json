@@ -1,10 +1,10 @@
 {
-  "netconf-netty-threads": 2,
-  "netconf-tcp-enabled": "true",
+  "netconf-netty-threads": 4,
+  "netconf-tcp-enabled": "false",
   "netconf-tcp-binding-address": "127.0.0.1",
   "netconf-tcp-binding-port": 60000,
   "netconf-ssh-enabled": "true",
   "netconf-ssh-binding-address": "0.0.0.0",
   "netconf-ssh-binding-port": 50000,
-  "netconf-notification-stream-name": "honeycomb"
+  "netconf-notification-stream-name": "hc50000"
 }
