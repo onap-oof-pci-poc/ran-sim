@@ -112,13 +112,11 @@ final class FapServiceCrudService implements CrudService<FapService> {
     public FapService readSpecific(@Nonnull final InstanceIdentifier<FapService> identifier
             , @Nonnull final ReadContext ctx)
                     throws ReadFailedException {
-        LOG.info("RANSIM FapServiceCrudService readSpecific called");
         FapService fs = null;
         // read key specified in path identifier
         final FapServiceKey key = identifier.firstKeyOf(FapService.class);
         ConfigJsonHandler cfg = ConfigJsonHandler.getConfigJsonHandler(null);
         JsonArray fsArr = cfg.radioAccessObj.getJsonArray("fap-service");
-        LOG.info("RANSIM readSpecific fsArr is {}", fsArr);
         if(fsArr != null){
         for (int i = 0; i < fsArr.size(); i++) {
             JsonObject fsObj = fsArr.getJsonObject(i);
@@ -141,11 +139,9 @@ final class FapServiceCrudService implements CrudService<FapService> {
 
     @Override
     public List<FapService> readAll() throws ReadFailedException {
-        LOG.info("RANSIM FapServiceCrudService readAll called");
         ConfigJsonHandler cfg = ConfigJsonHandler.getConfigJsonHandler(null);
         JsonArray fsArr = cfg.radioAccessObj.getJsonArray("fap-service");
         List<FapService> fsList = new ArrayList<FapService>();
-        LOG.info("RANSIM readAll fsArr is {}", fsArr);
         for (int i = 0; i < fsArr.size(); i++) {
             JsonObject fsObj = fsArr.getJsonObject(i);
             FapService fs = readSpecific(InstanceIdentifier.create(RadioAccess.class).child(FapService.class,

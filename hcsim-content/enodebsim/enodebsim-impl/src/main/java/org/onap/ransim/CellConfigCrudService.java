@@ -105,7 +105,6 @@ final class CellConfigCrudService implements CrudService<CellConfig> {
     @Override
     public CellConfig readSpecific(@Nonnull final InstanceIdentifier<CellConfig> identifier
             , @Nonnull final ReadContext ctx) throws ReadFailedException {
-        LOG.info("RANSIM CellConfigCrudService readSpecific called");
 
         // load data by this key
         // *Key class will always contain key of entity, in this case long value
@@ -121,7 +120,6 @@ final class CellConfigCrudService implements CrudService<CellConfig> {
 
     @Override
     public List<CellConfig> readAll() throws ReadFailedException {
-        LOG.info("RANSIM CellConfigCrudService readAll called");
         // read all data under parent node,in this case {@link ModuleState}
         return Collections.singletonList(
                 readSpecific(InstanceIdentifier.create(FapService.class).child(CellConfig.class), null));

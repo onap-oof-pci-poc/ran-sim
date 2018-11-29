@@ -57,10 +57,14 @@ public class RansimClientWebSocket {
     @OnMessage
     public void onMessage(String jsonStr, Session session) throws IOException {
         try {
+            clientSession = session;
+	    if(jsonStr == null || jsonStr.trim().equals('')) {
+                LOG.debug("Periodic ping message.... ignore");
+		return;
+	    }
             LOG.info("Message received: {}, Session Id: {}", jsonStr, session.getId());
             ConfigJsonHandler cfgHandler = ConfigJsonHandler.getConfigJsonHandler(null);
             cfgHandler.handleUpdateTopology(jsonStr);
-            clientSession = session;
         } catch(Exception e) {
             LOG.info("Exception in onMessage:", e);
         }
@@ -69,14 +73,26 @@ public class RansimClientWebSocket {
     @OnClose
     public void onClose(CloseReason reason, Session session) {
         LOG.info("Closing a WebSocket Session Id {} due to {}", session.getId(), reason.getReasonPhrase());
+	clientSession = null;
         new RetryWebsocket(this).start();
     }
 
     public void sendMessage(String jsonStr) {
         try {
-            clientSession.getBasicRemote().sendText(jsonStr);
+	    int retryCount = 0;
+            while(clientSession == null) {
+		    try{ Thread.sleep(5000); } catch(Exception ex){}
+		    if(retryCount++ > 4)
+			    break;
+            }
+	    if(clientSession != null) {
+                clientSession.getBasicRemote().sendText(jsonStr);
+	    } else {
+                LOG.error("Could not get websock client session!!");
+	    }
         } catch (Exception e) {
-            LOG.info("Exception in sendMessage:", e);
+            LOG.debug("Exception in sendMessage:", e);
+            LOG.error("Exception in sendMessage:" + e);
         }
     }
 

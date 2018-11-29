@@ -110,73 +110,57 @@ public final class Module extends AbstractModule {
         // can hold multiple binding for separate yang modules
         final Multibinder<WriterFactory> writerFactoryBinder = Multibinder.newSetBinder(binder(), WriterFactory.class);
         writerFactoryBinder.addBinding().to(FapServiceModuleWriterFactory.class);
-        LOG.info("RANSIM Module.configure FapServiceModuleWriterFactory registered");
 
         bind(new TypeLiteral<CrudService<LteRanCommon>>(){})
         .annotatedWith(Names.named(LRC_SERVICE_NAME))
         .to(LteRanCommonCrudService.class);
 
         readerFactoryBinder.addBinding().to(LteRanCommonModuleStateReaderFactory.class);
-        LOG.info("RANSIM Module.configure LteRanCommonModuleStateReaderFactory registered");
         writerFactoryBinder.addBinding().to(LteRanCommonModuleWriterFactory.class);
-        LOG.info("RANSIM Module.configure LteRanCommonModuleWriterFactory registered");
 
         Multibinder.newSetBinder(binder(), ManagedNotificationProducer.class).addBinding().to(NbrListChangeNotifnSender.class);
-        LOG.info("RANSIM Module.configure NbrListChangeNotifnSender registered");
 
         bind(new TypeLiteral<CrudService<CellConfig>>(){})
         .annotatedWith(Names.named(CC_SERVICE_NAME))
         .to(CellConfigCrudService.class);
 
         readerFactoryBinder.addBinding().to(CellConfigModuleStateReaderFactory.class);
-        LOG.info("RANSIM Module.configure CellConfigModuleStateReaderFactory registered");
         writerFactoryBinder.addBinding().to(CellConfigModuleWriterFactory.class);
-        LOG.info("RANSIM Module.configure CellConfigModuleWriterFactory registered");
 
         bind(new TypeLiteral<CrudService<X0005b9Lte>>(){})
         .annotatedWith(Names.named(XL_SERVICE_NAME))
         .to(X0005b9LteCrudService.class);
 
         readerFactoryBinder.addBinding().to(X0005b9LteModuleStateReaderFactory.class);
-        LOG.info("RANSIM Module.configure X0005b9LteModuleStateReaderFactory registered");
         writerFactoryBinder.addBinding().to(X0005b9LteModuleWriterFactory.class);
-        LOG.info("RANSIM Module.configure X0005b9LteModuleWriterFactory registered");
 
         bind(new TypeLiteral<CrudService<Lte>>(){})
         .annotatedWith(Names.named(L_SERVICE_NAME))
         .to(LteCrudService.class);
 
         readerFactoryBinder.addBinding().to(LteModuleStateReaderFactory.class);
-        LOG.info("RANSIM Module.configure LteModuleStateReaderFactory registered");
         writerFactoryBinder.addBinding().to(LteModuleWriterFactory.class);
-        LOG.info("RANSIM Module.configure LteModuleWriterFactory registered");
 
         bind(new TypeLiteral<CrudService<LteRan>>(){})
         .annotatedWith(Names.named(LR_SERVICE_NAME))
         .to(LteRanCrudService.class);
 
         readerFactoryBinder.addBinding().to(LteRanModuleStateReaderFactory.class);
-        LOG.info("RANSIM Module.configure LteRanModuleStateReaderFactory registered");
         writerFactoryBinder.addBinding().to(LteRanModuleWriterFactory.class);
-        LOG.info("RANSIM Module.configure LteRanModuleWriterFactory registered");
 
         bind(new TypeLiteral<CrudService<LteRanRf>>(){})
         .annotatedWith(Names.named(LRR_SERVICE_NAME))
         .to(LteRanRfCrudService.class);
 
         readerFactoryBinder.addBinding().to(LteRanRfModuleStateReaderFactory.class);
-        LOG.info("RANSIM Module.configure LteRanRfModuleStateReaderFactory registered");
         writerFactoryBinder.addBinding().to(LteRanRfModuleWriterFactory.class);
-        LOG.info("RANSIM Module.configure LteRanRfModuleWriterFactory registered");
 
         bind(new TypeLiteral<CrudService<LteRanNeighborListInUse>>(){})
         .annotatedWith(Names.named(LRNLIU_SERVICE_NAME))
         .to(LteRanNeighborListInUseCrudService.class);
 
         readerFactoryBinder.addBinding().to(LteRanNeighborListInUseModuleStateReaderFactory.class);
-        LOG.info("RANSIM Module.configure LteRanNeighborListInUseModuleStateReaderFactory registered");
         writerFactoryBinder.addBinding().to(LteRanNeighborListInUseModuleWriterFactory.class);
-        LOG.info("RANSIM Module.configure LteRanNeighborListInUseModuleWriterFactory registered");
         
         bind(new TypeLiteral<CrudService<LteRanNeighborListInUseLteCell>>(){})
         .annotatedWith(Names.named(LRNLIULC_SERVICE_NAME))

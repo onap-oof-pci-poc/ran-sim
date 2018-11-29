@@ -62,7 +62,7 @@ public class ConfigJsonHandler {
         modCfgn.loadConfig();
         LOG.info("ModuleConfiguration : peristConfigPath {}", modCfgn.peristConfigPath);
         LOG.info("ModuleConfiguration : enodebsimIp {} {}", modCfgn.enodebsimIp, modCfgn.enodebsimPort);
-        LOG.info("ModuleConfiguration3 : ransimCtrlrIp {} {}", modCfgn.ransimCtrlrIp, modCfgn.ransimCtrlrPort);
+        LOG.info("ModuleConfiguration : ransimCtrlrIp {} {}", modCfgn.ransimCtrlrIp, modCfgn.ransimCtrlrPort);
         loadJsonObject();
         ransimAgentWebSocket.initWebsocketClient(modCfgn.ransimCtrlrIp, modCfgn.ransimCtrlrPort,
             modCfgn.enodebsimIp, modCfgn.enodebsimPort);
@@ -76,7 +76,6 @@ public class ConfigJsonHandler {
     }
 
     public void loadJsonObject() {
-        LOG.info("ConfigJsonHandler.loadJsonObject is called with peristConfigPath of {}", peristConfigPath);
         if (peristConfigPath == null)
             peristConfigPath = "var/lib/honeycomb/persist/config/data.json";
         File jsonInputFile = new File(peristConfigPath);
@@ -88,8 +87,7 @@ public class ConfigJsonHandler {
             reader = Json.createReader(is);
             // Get the JsonObject structure from JsonReader.
             radioAccessObj = reader.readObject().getJsonObject("oofpcipoc:radio-access");
-            LOG.info("radioAccessObj is {}", radioAccessObj);
-            LOG.info("radioAccessObj str is {}", radioAccessObj.toString());
+            LOG.debug("radioAccessObj str is {}", radioAccessObj.toString());
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -106,20 +104,14 @@ public class ConfigJsonHandler {
     }
 
     public void handleUpdateTopology(String jsonStr) {
-        LOG.info("ConfigJsonHandler.handleUpdateTopology jsonStr:{}", jsonStr);
         if(jsonStr.startsWith("SetConfigTopology:")) {
             jsonStr = jsonStr.substring("SetConfigTopology:".length());
-            LOG.info("ConfigJsonHandler.handleUpdateTopology jsonStr1:{}",  jsonStr);
             SetConfigTopology updTopo = new Gson().fromJson(jsonStr, SetConfigTopology.class);
             writeJsonObject(updTopo);
             loadJsonObject();
         } else if(jsonStr.startsWith("UpdateCell:")) {
             jsonStr = jsonStr.substring("UpdateCell:".length());
-            LOG.info("ConfigJsonHandler.handleUpdateTopology jsonStr2:{}", jsonStr);
             UpdateCell updCell = new Gson().fromJson(jsonStr, UpdateCell.class);
-            if (updCell.getOneCell()!=null) {
-            	LOG.info("Get One Cell - Not null");
-            }
             updateJsonObject(ncServerTopology, updCell);
             if(modCfgn.useNetconfDataChangeNotifn == false) {
                 NbrListChangeNotifnSender.sendNotification(updCell);
@@ -132,8 +124,6 @@ public class ConfigJsonHandler {
     }
 
     private void updateJsonObject(SetConfigTopology updTopo, UpdateCell updCell) {
-        LOG.info("ConfigJsonHandler.updateJsonObject is called with peristConfigPath of {}", peristConfigPath);
-
         PnfName = updTopo.getServerId();
         StringBuilder sb = new StringBuilder("");
         sb.append("{\n" +
@@ -198,7 +188,7 @@ public class ConfigJsonHandler {
                 "}");
 
 
-        LOG.info("NEW TOPOLOGY IS:{}",  sb.toString());
+        LOG.debug("NEW TOPOLOGY IS:{}",  sb.toString());
 
         if (peristConfigPath == null)
             peristConfigPath = "var/lib/honeycomb/persist/config/data.json";
@@ -220,11 +210,10 @@ public class ConfigJsonHandler {
             }
         }
             try {
-                LOG.info("Initializing configuration");
                 io.fd.honeycomb.infra.distro.Main.main(null);
-                LOG.info("Configuration initialized successfully");
+                LOG.info("Configuration reinitialized successfully");
             } catch (Exception e) {
-                LOG.error("Unable to initialize configuration", e);
+                LOG.error("Unable to reinitialize configuration", e);
             }
     }
     
@@ -233,8 +222,6 @@ public class ConfigJsonHandler {
     }
 
     public void writeJsonObject(SetConfigTopology updTopo) {
-        LOG.info("ConfigJsonHandler.writeJsonObject is called with peristConfigPath of {}", peristConfigPath);
-
         PnfName = updTopo.getServerId();
         StringBuilder sb = new StringBuilder();
         sb.append("{\n" +
@@ -292,7 +279,7 @@ public class ConfigJsonHandler {
                 "}");
 
 
-        LOG.info("NEW TOPOLOGY IS:{}",  sb.toString());
+        LOG.debug("NEW TOPOLOGY IS:{}",  sb.toString());
 
         if (peristConfigPath == null)
             peristConfigPath = "var/lib/honeycomb/persist/config/data.json";
@@ -316,31 +303,4 @@ public class ConfigJsonHandler {
             }
         }
     }
-
-
-    public static void testSample() {
-        SetConfigTopology updTopo = new SetConfigTopology();
-        updTopo.setServerId("CU1");
-        List<Topology> topology = new ArrayList<Topology>();
-
-        List<Neighbor> neighborList = new ArrayList<Neighbor>();
-        Neighbor aNb1 = new Neighbor("jio", "5", 54, "CU1", "CU1");
-        neighborList.add(aNb1 );
-        Neighbor aNb2 = new Neighbor("jio", "6", 55, "CU2", "CU2");
-        neighborList.add(aNb2 );
-        Topology aCell = new Topology("CU1", 45, "1", neighborList );
-        topology.add(aCell);
-
-        List<Neighbor> neighborList2 = new ArrayList<Neighbor>();
-        Neighbor aNb3 = new Neighbor("jio", "1", 45, "CU1", "CU1");
-        neighborList2.add(aNb3 );
-        Neighbor aNb4 = new Neighbor("jio", "2", 46, "CU2", "CU2");
-        neighborList2.add(aNb4 );
-        Topology aCell2 = new Topology("CU1", 54, "5", neighborList2 );
-        topology.add(aCell2);
-
-        updTopo.setTopology(topology);
-        ConfigJsonHandler.getConfigJsonHandler(null).writeJsonObject(updTopo);
-    }
-
 }
