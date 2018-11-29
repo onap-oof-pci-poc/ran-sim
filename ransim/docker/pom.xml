@@ -1,8 +1,8 @@
 <!--
   ============LICENSE_START=======================================================
-  ONAP Policy Engine - Docker files
+  ONAP Ransim Controller - Docker files
   ================================================================================
-  Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+  Copyright (C) 2018 Wipro Limited Intellectual Property. All rights reserved.
   ================================================================================
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -30,13 +30,12 @@
 	<packaging>pom</packaging>
 	<name>Ransim - Docker build</name>
 	<description>ONAP Ransim Docker Build</description>
-
+<!--
 	<properties>
 		<nexusproxy>https://nexus.onap.org</nexusproxy>
 	</properties>
 
         <repositories>
-                <!-- LF repositories -->
                 <repository>
                         <id>ecomp-releases</id>
                         <name>Release Repository</name>
@@ -57,8 +56,8 @@
                         <name>Public Repository</name>
                         <url>${nexusproxy}/content/repositories/public/</url>
                 </repository>
-                <!-- LF repositories END-->
         </repositories>
+-->
 
 	<build>
 		<plugins>
@@ -73,7 +72,6 @@
 							<goal>copy</goal>
 						</goals>
 						<configuration>
-							<!--outputDirectory>${project.build.directory}/ransim-docker</outputDirectory-->
                                                         <outputDirectory>ransim-docker</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>true</overWriteSnapshots>
