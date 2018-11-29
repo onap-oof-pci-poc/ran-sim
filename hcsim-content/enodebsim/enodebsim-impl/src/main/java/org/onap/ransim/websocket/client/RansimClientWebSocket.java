@@ -58,7 +58,7 @@ public class RansimClientWebSocket {
     public void onMessage(String jsonStr, Session session) throws IOException {
         try {
             clientSession = session;
-	    if(jsonStr == null || jsonStr.trim().equals('')) {
+	    if(jsonStr == null || jsonStr.trim().equals("")) {
                 LOG.debug("Periodic ping message.... ignore");
 		return;
 	    }
