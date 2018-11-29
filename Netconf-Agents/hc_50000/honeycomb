@@ -3,7 +3,7 @@ STATUS=100
 
 while [ $STATUS -eq 100 ]
 do
-  java -Xms128m -Xmx512m -jar $(dirname $0)/enodebsim-distribution-1.18.10.jar
+  java -Dorg.apache.sshd.registerBouncyCastle=false -Xms128m -Xmx512m -jar $(dirname $0)/enodebsim-distribution-1.18.10.jar
   STATUS=$?
   echo "Honeycomb exited with status: $STATUS"
   if [ $STATUS -eq 100 ]

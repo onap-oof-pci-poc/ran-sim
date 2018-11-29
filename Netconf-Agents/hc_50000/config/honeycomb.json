@@ -5,10 +5,5 @@
   "persist-config": "true",
   "persisted-config-path": "var/lib/honeycomb/persist/config/data.json",
   "persisted-config-restoration-type": "Put",
-  "notification-service-queue-depth": 1,
-  "peristConfigPath": "hai",
-  "enodebsimIp": "10.143.125.163",
-  "enodebsimPort": 50000,
-  "ransimCtrlrIp": "10.143.125.147",
-  "ransimCtrlrPort": 8081
+  "notification-service-queue-depth": 1
 }
