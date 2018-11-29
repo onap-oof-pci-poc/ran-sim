@@ -76,6 +76,10 @@ public class RansimWebSocketServer {
     @OnMessage
     public void onMessage(String message, Session session, @PathParam("IpPort") String ipPort) {
         try {
+            if(message == null || message.trim().equals("")) {
+                log.debug("Periodic ping message.... ignore");
+                return;
+            }
             log.info("Message received from client(" + ipPort + "):" + message);
             RansimController.getRansimController().handleModifyPciFromSdnr(message, session, ipPort);
         } catch (Exception e) {
@@ -111,45 +115,15 @@ public class RansimWebSocketServer {
         sendMessage("SetConfigTopology:" + str, session);
     }
 
+    public static void sendPingMessage(Session session) {
+        sendMessage("", session);
+    }
+
     private static void sendMessage(String str, Session session) {
         try {
-            log.info("Sending message :" + str);
             session.getBasicRemote().sendText(str);
         } catch (IOException e) {
             log.info("Exception in sendMessage:", e);
         }
-    }
-
-    /**
-     * Test sample.
-     *
-     * @param session
-     *            session details
-     */
-    public static void testSample(Session session) {
-        SetConfigTopology updTopo = new SetConfigTopology();
-        updTopo.setServerId("CU1");
-        List<Topology> topology = new ArrayList<Topology>();
-
-        List<Neighbor> neighborList = new ArrayList<Neighbor>();
-        Neighbor nb1 = new Neighbor("jio", "5", 54, "CU1", "CU1");
-        neighborList.add(nb1);
-        Neighbor nb2 = new Neighbor("jio", "6", 55, "CU2", "CU2");
-        neighborList.add(nb2);
-        Topology cell1 = new Topology("CU1", 45, "1", neighborList);
-        topology.add(cell1);
-
-        List<Neighbor> neighborList2 = new ArrayList<Neighbor>();
-        Neighbor nb3 = new Neighbor("jio", "1", 45, "CU1", "CU1");
-        neighborList2.add(nb3);
-        Neighbor nb4 = new Neighbor("jio", "2", 46, "CU2", "CU2");
-        neighborList2.add(nb4);
-        Topology cell2 = new Topology("CU1", 54, "5", neighborList2);
-        topology.add(cell2);
-
-        updTopo.setTopology(topology);
-        Gson gson = new Gson();
-        String jsonStr = gson.toJson(updTopo);
-        sendSetConfigTopologyMessage(jsonStr, session);
     }
 }

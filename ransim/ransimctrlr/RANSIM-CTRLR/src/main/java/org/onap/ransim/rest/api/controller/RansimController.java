@@ -73,7 +73,7 @@ public class RansimController {
     int numberOfMachines = 1;
     int numberOfProcessPerMc = 5;
     boolean strictValidateRansimAgentsAvailability = false;
-    Map<String, Session> webSocketSessions = new HashMap<String, Session>();
+    public Map<String, Session> webSocketSessions = new HashMap<String, Session>();
     Map<String, String> serverIdIpPortMapping = new HashMap<String, String>();
     List<String> unassignedServerIds = new ArrayList<String>();
     Map<String, List<String>> serverIdIpNodeMapping = new HashMap<String, List<String>>();
@@ -97,6 +97,7 @@ public class RansimController {
     public static synchronized RansimController getRansimController() {
         if (rsController == null) {
             rsController = new RansimController();
+	    new KeepWebsockAliveThread(rsController).start();
         }
         return rsController;
     }
@@ -1620,4 +1621,25 @@ public class RansimController {
 
     }
 
+}
+
+class KeepWebsockAliveThread extends Thread {
+    static Logger log = Logger.getLogger(KeepWebsockAliveThread.class.getName());
+	RansimController rsCtrlr = null;
+        KeepWebsockAliveThread(RansimController ctrlr) {
+		rsCtrlr = ctrlr;
+        }
+	public void run() {
+                log.info("Inside KeepWebsockAliveThread run method");
+		while(true) {
+        	for (String ipPort : rsCtrlr.webSocketSessions.keySet()) {
+			try{
+            		Session sess = rsCtrlr.webSocketSessions.get(ipPort);
+            		RansimWebSocketServer.sendPingMessage(sess);
+                	log.debug("Sent ping message to Client ipPort:" + ipPort);
+			}catch(Exception ex1){}
+		}
+		try { Thread.sleep(10000); } catch(Exception ex){}
+		}
+        }
 }
