@@ -29,6 +29,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -37,6 +38,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -73,10 +75,10 @@ public class RansimController {
     int numberOfMachines = 1;
     int numberOfProcessPerMc = 5;
     boolean strictValidateRansimAgentsAvailability = false;
-    public Map<String, Session> webSocketSessions = new HashMap<String, Session>();
-    Map<String, String> serverIdIpPortMapping = new HashMap<String, String>();
-    List<String> unassignedServerIds = new ArrayList<String>();
-    Map<String, List<String>> serverIdIpNodeMapping = new HashMap<String, List<String>>();
+    public Map<String, Session> webSocketSessions = new ConcurrentHashMap<String, Session>();
+    Map<String, String> serverIdIpPortMapping = new ConcurrentHashMap<String, String>();
+    List<String> unassignedServerIds = Collections.synchronizedList(new ArrayList<String>());
+    Map<String, List<String>> serverIdIpNodeMapping = new ConcurrentHashMap<String, List<String>>();
     int nextServerIdNumber = 1001;
     String sdnrServerIp = "";
     int sdnrServerPort = 0;
@@ -125,15 +127,35 @@ public class RansimController {
             // String serverId = serverIdPrefix + nextServerIdNumber;
             // nextServerIdNumber++;
             if (unassignedServerIds.size() > 0) {
-                String serverId = unassignedServerIds.remove(0);
+            	log.info("addWebSocketSessions: No serverIds pending to assign for " + ipPort);
+                String serverId = null;
+                synchronized(unassignedServerIds) {
+                	serverId = unassignedServerIds.remove(0);
+                }
                 log.info("addWebSocketSessions: Adding serverId " + serverId + " for " + ipPort);
                 serverIdIpPortMapping.put(serverId, ipPort);
-
                 mapServerIdToNodes(serverId);
+                EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
+                EntityManager entitymanager = emfactory.createEntityManager();
+                try {
+                    entitymanager.getTransaction().begin();
+                    NetconfServers server = entitymanager.find(NetconfServers.class, serverId);
+                    if (server != null) {
+                        server.setIp(ipPort.split(":")[0]);
+                        server.setNetconfPort(ipPort.split(":")[1]);
+                        entitymanager.merge(server);
+                        entitymanager.flush();
+                    }
+                    entitymanager.getTransaction().commit();
+                } catch (Exception e1) {
+                    log.info("Exception mapServerIdToNodes :", e1);
+                    if (entitymanager.getTransaction().isActive()) {
+                        entitymanager.getTransaction().rollback();
+                    }
+                }
             } else {
                 log.info("addWebSocketSessions: No serverIds pending to assign for " + ipPort);
             }
-
         } else {
             for (String key : serverIdIpPortMapping.keySet()) {
                 if (serverIdIpPortMapping.get(key).equals(ipPort)) {
