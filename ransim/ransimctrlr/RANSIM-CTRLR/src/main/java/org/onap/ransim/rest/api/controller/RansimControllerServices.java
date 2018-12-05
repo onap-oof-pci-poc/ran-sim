@@ -158,6 +158,12 @@ public class RansimControllerServices {
             Query query = entitymanager.createQuery("from CellDetails cd", CellDetails.class);
             List<CellDetails> cds = query.getResultList();
 
+            for (int i = 0; i < cds.size(); i++) {
+                if (cds.get(i).isPciCollisionDetected() || cds.get(i).isPciConfusionDetected()) {
+                    rsCtrlr.setCollisionConfusionFromFile(cds.get(i).getNodeId());
+                }
+            }
+
             Topology top = new Topology();
 
             if (cds != null && cds.size() > 0) {
