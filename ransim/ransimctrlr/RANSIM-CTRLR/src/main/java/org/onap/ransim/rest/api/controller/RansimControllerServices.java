@@ -421,6 +421,12 @@ public class RansimControllerServices {
             log.info("Stop simulation : " + (startTimStopSimulation));
             Query q1 = entitymanager.createQuery("DELETE FROM CellDetails cd");
             q1.executeUpdate();
+            
+            Query q4 = entitymanager.createQuery("DELETE FROM netconfservers_celldetails nsc");
+            q4.executeUpdate();
+            
+            Query q5 = entitymanager.createQuery("DELETE FROM cellneighbor_celldetails cnc");
+            q5.executeUpdate();
 
             String result = rsCtrlr.stopAllCells();
             log.info("All cell simulation are stopped...." + result);
