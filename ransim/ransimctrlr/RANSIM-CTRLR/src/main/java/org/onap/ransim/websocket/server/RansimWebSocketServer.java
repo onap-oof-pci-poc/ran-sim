@@ -56,8 +56,12 @@ public class RansimWebSocketServer {
     public void onOpen(Session session, @PathParam("IpPort") String ipPort) {
         log.info("Ransim client(" + ipPort + ") opened a connection");
         try {
-            RansimController.getRansimController().addWebSocketSessions(ipPort, session);
-            RansimController.getRansimController().sendInitialConfigForNewAgent(ipPort);
+            String serverId = RansimController.getRansimController().addWebSocketSessions(ipPort, session);
+            if (serverId != null) {
+            	RansimController.getRansimController().sendInitialConfigForNewAgent(ipPort, serverId);
+            } else {
+            	log.info("RansimWebSocketServer: No assigned ServerId found - No intial configuration sent to New Agent "+ipPort);
+            }
         } catch (Exception e) {
             log.info("Exception in onOpen:", e);
         }
