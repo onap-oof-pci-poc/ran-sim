@@ -104,6 +104,18 @@ public class RansimController {
         return rsController;
     }
 
+    private String checkIpPortAlreadyExists(String ipPort, Map<String, String> serverIdIpPortMapping) {
+    	String serverId = null;
+    	for (String key : serverIdIpPortMapping.keySet()) {
+    		String value = serverIdIpPortMapping.get(key);
+    		if (value.equals(ipPort)) {
+    			serverId = key;
+    			break;
+    		}
+    	}
+    	return serverId;
+    }
+
     /**
      * Add web socket sessions.
      *
@@ -128,11 +140,18 @@ public class RansimController {
             // nextServerIdNumber++;
             if (unassignedServerIds.size() > 0) {
             	log.info("addWebSocketSessions: No serverIds pending to assign for " + ipPort);                
-                
-                serverId = unassignedServerIds.remove(0);
-                
-                log.info("addWebSocketSessions: Adding serverId " + serverId + " for " + ipPort);
+                serverId = checkIpPortAlreadyExists(ipPort, serverIdIpPortMapping);
+            	if (serverId == null) {
+                  serverId = unassignedServerIds.remove(0);
+            	} else {
+            	  if (unassignedServerIds.contains(serverId)) {
+            		  unassignedServerIds.remove(serverId);
+            	  }
+            	}
+                log.info("RansCtrller = Available unassigned ServerIds :"+unassignedServerIds); 
+                log.info("RansCtrller = addWebSocketSessions: Adding serverId " + serverId + " for " + ipPort);
                 serverIdIpPortMapping.put(serverId, ipPort);
+                log.debug("RansCtrller = serverIdIpPortMapping >>>> :"+serverIdIpPortMapping);
                 mapServerIdToNodes(serverId);
                 EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
                 EntityManager entitymanager = emfactory.createEntityManager();
@@ -209,16 +228,16 @@ public class RansimController {
             for (String serverId : serverIdIpPortMapping.keySet()) {
                 String ipPortVal = serverIdIpPortMapping.get(serverId);
                 if (ipPortVal.equals(ipPort)) {
-                    unassignedServerIds.add(serverId);
+                    if (!unassignedServerIds.contains(serverId)) { 
+                        unassignedServerIds.add(serverId);
+                    }
                     removedServerId = serverId;
                     break;
                 }
             }
             Session wsSession = webSocketSessions.remove(ipPort);
-            serverIdIpPortMapping.remove(removedServerId);
-            serverIdIpNodeMapping.remove(removedServerId);
             log.info(
-                    "removeWebSocketSessions: Client session " + wsSession.getId() + " for " + ipPort + " is removed.");
+                    "removeWebSocketSessions: Client session " + wsSession.getId() + " for " + ipPort + " is removed. Server Id : "+removedServerId);
         } else {
             log.info("addWebSocketSessions: Client session for " + ipPort + " not exist");
         }
