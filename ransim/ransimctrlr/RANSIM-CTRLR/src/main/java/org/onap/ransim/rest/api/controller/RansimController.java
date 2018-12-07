@@ -933,7 +933,7 @@ public class RansimController {
 
     }
 
-	static void checkCollisionAfterModify() {
+    static void checkCollisionAfterModify() {
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
         EntityManager entitymanager = emfactory.createEntityManager();
         try {
