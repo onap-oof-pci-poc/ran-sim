@@ -156,14 +156,10 @@ public class RansimControllerServices {
         EntityManager entitymanager = emfactory.createEntityManager();
         try {
 
+            rsCtrlr.checkCollisionAfterModify();
+
             Query query = entitymanager.createQuery("from CellDetails cd", CellDetails.class);
             List<CellDetails> cds = query.getResultList();
-
-            for (int i = 0; i < cds.size(); i++) {
-                if (cds.get(i).isPciCollisionDetected() || cds.get(i).isPciConfusionDetected()) {
-                    rsCtrlr.setCollisionConfusionFromFile(cds.get(i).getNodeId());
-                }
-            }
 
             Topology top = new Topology();
 
@@ -422,7 +418,7 @@ public class RansimControllerServices {
             log.info("Stop simulation : " + (startTimStopSimulation));
             Query q1 = entitymanager.createQuery("DELETE FROM CellDetails cd");
             q1.executeUpdate();
-            
+
             String result = rsCtrlr.stopAllCells();
             log.info("All cell simulation are stopped...." + result);
 

@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.Query;
 import javax.websocket.Session;
@@ -132,10 +132,10 @@ public class RansimController {
                     + " already exist. Removing old session.");
             webSocketSessions.remove(ipPort);
         }
-        String serverId = null;
+
         log.info("addWebSocketSessions: Adding Client session " + wsSession.getId() + " for " + ipPort);
         webSocketSessions.put(ipPort, wsSession);
-
+        String serverId = null;
         if (!serverIdIpPortMapping.containsValue(ipPort)) {
             // String serverId = serverIdPrefix + nextServerIdNumber;
             // nextServerIdNumber++;
@@ -183,6 +183,7 @@ public class RansimController {
                     break;
                 }
             }
+
         }
         return serverId;
     }
@@ -1412,16 +1413,10 @@ public class RansimController {
      * @param ipPortKey
      *            ip address details of the netconf server
      */
-    public synchronized void sendInitialConfigForNewAgent(String ipPortKey, String serverId) {
+    public void sendInitialConfigForNewAgent(String ipPortKey, String serverId) {
         try {
             dumpSessionDetails();
-            // String serverId = "";
             if (ipPortKey != null && !ipPortKey.trim().equals("")) {
-                /*
-                 * for (String key : serverIdIpPortMapping.keySet()) { if
-                 * (serverIdIpPortMapping.get(key).equals(ipPortKey)) { serverId = key; break; }
-                 * }
-                 */
                 if (serverId != null && !serverId.trim().equals("")) {
                     Session clSess = webSocketSessions.get(ipPortKey);
                     if (clSess != null) {
@@ -1653,10 +1648,8 @@ public class RansimController {
                 } catch (Exception e) {
                     log.info("Ignore Exception:", e);
                 }
+                serverIdIpNodeMapping.clear();
             }
-            serverIdIpNodeMapping.clear();
-            serverIdIpPortMapping.clear();
-            unassignedServerIds.clear();
         } catch (Exception eu) {
             if (entitymanager.getTransaction().isActive()) {
                 entitymanager.getTransaction().rollback();
@@ -1724,4 +1717,3 @@ class KeepWebsockAliveThread extends Thread {
         }
     }
 }
-
