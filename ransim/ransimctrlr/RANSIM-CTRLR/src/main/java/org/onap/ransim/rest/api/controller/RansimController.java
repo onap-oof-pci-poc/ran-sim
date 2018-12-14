@@ -105,7 +105,7 @@ public class RansimController {
         return rsController;
     }
 
-    private String checkIpPortAlreadyExists(String ipPort, Map<String, String> serverIdIpPortMapping) {
+  private String checkIpPortAlreadyExists(String ipPort, Map<String, String> serverIdIpPortMapping) {
         String serverId = null;
         for (String key : serverIdIpPortMapping.keySet()) {
             String value = serverIdIpPortMapping.get(key);
@@ -125,7 +125,7 @@ public class RansimController {
      * @param wsSession
      *            session details
      */
-    public synchronized String addWebSocketSessions(String ipPort, Session wsSession) { // javadoc
+    public synchronized void addWebSocketSessions(String ipPort, Session wsSession) { // javadoc
         loadProperties();
         if (webSocketSessions.containsKey(ipPort)) {
             log.info("addWebSocketSessions: Client session " + wsSession.getId() + " for " + ipPort
@@ -137,8 +137,6 @@ public class RansimController {
         webSocketSessions.put(ipPort, wsSession);
         String serverId = null;
         if (!serverIdIpPortMapping.containsValue(ipPort)) {
-            // String serverId = serverIdPrefix + nextServerIdNumber;
-            // nextServerIdNumber++;
             if (unassignedServerIds.size() > 0) {
                 log.info("addWebSocketSessions: No serverIds pending to assign for " + ipPort);
                 serverId = checkIpPortAlreadyExists(ipPort, serverIdIpPortMapping);
@@ -179,13 +177,11 @@ public class RansimController {
             for (String key : serverIdIpPortMapping.keySet()) {
                 if (serverIdIpPortMapping.get(key).equals(ipPort)) {
                     log.info("addWebSocketSessions: ServerId " + key + " for " + ipPort + " is exist already");
-                    serverId = key;
                     break;
                 }
             }
 
         }
-        return serverId;
     }
 
     private void mapServerIdToNodes(String serverId) {
