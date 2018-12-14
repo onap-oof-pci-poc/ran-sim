@@ -151,6 +151,7 @@ public class RansimControllerServices {
             @ApiResponse(code = 500, message = "Cannot retrieve the RAN simulation network topology details") })
     public ResponseEntity<String> getTopology() throws Exception {
         log.info("Inside getTopology...");
+	rsCtrlr.checkCollisionAfterModify();
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
         EntityManager entitymanager = emfactory.createEntityManager();
         try {

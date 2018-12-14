@@ -44,6 +44,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import javax.persistence.Query;
 import javax.websocket.Session;
 
 import org.apache.log4j.Logger;
@@ -99,21 +100,21 @@ public class RansimController {
     public static synchronized RansimController getRansimController() {
         if (rsController == null) {
             rsController = new RansimController();
-	    new KeepWebsockAliveThread(rsController).start();
+            new KeepWebsockAliveThread(rsController).start();
         }
         return rsController;
     }
 
     private String checkIpPortAlreadyExists(String ipPort, Map<String, String> serverIdIpPortMapping) {
-    	String serverId = null;
-    	for (String key : serverIdIpPortMapping.keySet()) {
-    		String value = serverIdIpPortMapping.get(key);
-    		if (value.equals(ipPort)) {
-    			serverId = key;
-    			break;
-    		}
-    	}
-    	return serverId;
+        String serverId = null;
+        for (String key : serverIdIpPortMapping.keySet()) {
+            String value = serverIdIpPortMapping.get(key);
+            if (value.equals(ipPort)) {
+                serverId = key;
+                break;
+            }
+        }
+        return serverId;
     }
 
     /**
@@ -139,19 +140,19 @@ public class RansimController {
             // String serverId = serverIdPrefix + nextServerIdNumber;
             // nextServerIdNumber++;
             if (unassignedServerIds.size() > 0) {
-            	log.info("addWebSocketSessions: No serverIds pending to assign for " + ipPort);                
+                log.info("addWebSocketSessions: No serverIds pending to assign for " + ipPort);
                 serverId = checkIpPortAlreadyExists(ipPort, serverIdIpPortMapping);
-            	if (serverId == null) {
-                  serverId = unassignedServerIds.remove(0);
-            	} else {
-            	  if (unassignedServerIds.contains(serverId)) {
-            		  unassignedServerIds.remove(serverId);
-            	  }
-            	}
-                log.info("RansCtrller = Available unassigned ServerIds :"+unassignedServerIds); 
+                if (serverId == null) {
+                    serverId = unassignedServerIds.remove(0);
+                } else {
+                    if (unassignedServerIds.contains(serverId)) {
+                        unassignedServerIds.remove(serverId);
+                    }
+                }
+                log.info("RansCtrller = Available unassigned ServerIds :" + unassignedServerIds);
                 log.info("RansCtrller = addWebSocketSessions: Adding serverId " + serverId + " for " + ipPort);
                 serverIdIpPortMapping.put(serverId, ipPort);
-                log.debug("RansCtrller = serverIdIpPortMapping >>>> :"+serverIdIpPortMapping);
+                log.debug("RansCtrller = serverIdIpPortMapping >>>> :" + serverIdIpPortMapping);
                 mapServerIdToNodes(serverId);
                 EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
                 EntityManager entitymanager = emfactory.createEntityManager();
@@ -224,11 +225,11 @@ public class RansimController {
      */
     public synchronized void removeWebSocketSessions(String ipPort) {
         if (webSocketSessions.containsKey(ipPort)) {
-        	String removedServerId = null;
+            String removedServerId = null;
             for (String serverId : serverIdIpPortMapping.keySet()) {
                 String ipPortVal = serverIdIpPortMapping.get(serverId);
                 if (ipPortVal.equals(ipPort)) {
-                    if (!unassignedServerIds.contains(serverId)) { 
+                    if (!unassignedServerIds.contains(serverId)) {
                         unassignedServerIds.add(serverId);
                     }
                     removedServerId = serverId;
@@ -236,8 +237,8 @@ public class RansimController {
                 }
             }
             Session wsSession = webSocketSessions.remove(ipPort);
-            log.info(
-                    "removeWebSocketSessions: Client session " + wsSession.getId() + " for " + ipPort + " is removed. Server Id : "+removedServerId);
+            log.info("removeWebSocketSessions: Client session " + wsSession.getId() + " for " + ipPort
+                    + " is removed. Server Id : " + removedServerId);
         } else {
             log.info("addWebSocketSessions: Client session for " + ipPort + " not exist");
         }
@@ -933,6 +934,33 @@ public class RansimController {
 
     }
 
+    static void checkCollisionAfterModify() {
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
+        EntityManager entitymanager = emfactory.createEntityManager();
+        try {
+            Query query = entitymanager.createQuery(
+                    "from CellDetails cd where cd.pciCollisionDetected=true or cd.pciConfusionDetected=true",
+                    CellDetails.class);
+
+            List<CellDetails> checkCollisionConfusion = query.getResultList();
+
+            for (int i = 0; i < checkCollisionConfusion.size(); i++) {
+                log.info(checkCollisionConfusion.get(i).getNodeId());
+                setCollisionConfusionFromFile(checkCollisionConfusion.get(i).getNodeId());
+            }
+        } catch (Exception eu) {
+            log.info("checkCollisionAfterModify", eu);
+            if (entitymanager.getTransaction().isActive()) {
+                entitymanager.getTransaction().rollback();
+            }
+
+        } finally {
+            entitymanager.close();
+            emfactory.close();
+        }
+
+    }
+
     static void setCellColor(String cellNodeId) {
 
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
@@ -1387,14 +1415,13 @@ public class RansimController {
     public synchronized void sendInitialConfigForNewAgent(String ipPortKey, String serverId) {
         try {
             dumpSessionDetails();
-            //String serverId = "";
+            // String serverId = "";
             if (ipPortKey != null && !ipPortKey.trim().equals("")) {
-                /*for (String key : serverIdIpPortMapping.keySet()) {
-                    if (serverIdIpPortMapping.get(key).equals(ipPortKey)) {
-                        serverId = key;
-                        break;
-                    }
-                }*/
+                /*
+                 * for (String key : serverIdIpPortMapping.keySet()) { if
+                 * (serverIdIpPortMapping.get(key).equals(ipPortKey)) { serverId = key; break; }
+                 * }
+                 */
                 if (serverId != null && !serverId.trim().equals("")) {
                     Session clSess = webSocketSessions.get(ipPortKey);
                     if (clSess != null) {
@@ -1672,21 +1699,29 @@ public class RansimController {
 
 class KeepWebsockAliveThread extends Thread {
     static Logger log = Logger.getLogger(KeepWebsockAliveThread.class.getName());
-	RansimController rsCtrlr = null;
-        KeepWebsockAliveThread(RansimController ctrlr) {
-		rsCtrlr = ctrlr;
+    RansimController rsCtrlr = null;
+
+    KeepWebsockAliveThread(RansimController ctrlr) {
+        rsCtrlr = ctrlr;
+    }
+
+    @Override
+    public void run() {
+        log.info("Inside KeepWebsockAliveThread run method");
+        while (true) {
+            for (String ipPort : rsCtrlr.webSocketSessions.keySet()) {
+                try {
+                    Session sess = rsCtrlr.webSocketSessions.get(ipPort);
+                    RansimWebSocketServer.sendPingMessage(sess);
+                    log.debug("Sent ping message to Client ipPort:" + ipPort);
+                } catch (Exception ex1) {
+                }
+            }
+            try {
+                Thread.sleep(10000);
+            } catch (Exception ex) {
+            }
         }
-	public void run() {
-                log.info("Inside KeepWebsockAliveThread run method");
-		while(true) {
-        	for (String ipPort : rsCtrlr.webSocketSessions.keySet()) {
-			try{
-            		Session sess = rsCtrlr.webSocketSessions.get(ipPort);
-            		RansimWebSocketServer.sendPingMessage(sess);
-                	log.debug("Sent ping message to Client ipPort:" + ipPort);
-			}catch(Exception ex1){}
-		}
-		try { Thread.sleep(10000); } catch(Exception ex){}
-		}
-        }
+    }
 }
+

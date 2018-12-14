@@ -361,9 +361,9 @@
     },
     {
       "Cell": {
-        "latitude": 21.716027693183044,
+        "latitude": 23.156053701369755,
         "networkId": "ran-1",
-        "longitude": -59.03780416730061,
+        "longitude": -57.81755264511039,
         "sectorNumber": 0,
         "pnfName": "ncserver1",
         "physicalCellId": 11,
@@ -500,9 +500,9 @@
     },
     {
       "Cell": {
-        "latitude": 23.069293537663965,
+        "latitude": 22.112639889778492,
         "networkId": "ran-1",
-        "longitude": -58.195587111104346,
+        "longitude": -58.406516071442856,
         "sectorNumber": 0,
         "pnfName": "ncserver2",
         "physicalCellId": 3,
@@ -531,9 +531,9 @@
     },
     {
       "Cell": {
-        "latitude": 23.069293537663965,
+        "latitude": 22.192639889778492,
         "networkId": "ran-1",
-        "longitude": -58.295587111104346,
+        "longitude": -58.106516071442856,
         "sectorNumber": 0,
         "pnfName": "ncserver2",
         "physicalCellId": 4,
@@ -562,7 +562,7 @@
     },
     {
       "Cell": {
-        "latitude": 23.269293537663965,
+        "latitude": 22.869293537663965,
         "networkId": "ran-1",
         "longitude": -57.895587111104346,
         "sectorNumber": 0,
@@ -593,7 +593,7 @@
     },
     {
       "Cell": {
-        "latitude": 23.169293537663965,
+        "latitude": 22.469293537663965,
         "networkId": "ran-1",
         "longitude": -57.395587111104346,
         "sectorNumber": 0,
@@ -624,7 +624,7 @@
     },
     {
       "Cell": {
-        "latitude": 22.969293537663965,
+        "latitude": 22.769293537663965,
         "networkId": "ran-1",
         "longitude": -58.295587111104346,
         "sectorNumber": 0,
@@ -655,9 +655,9 @@
     },
     {
       "Cell": {
-        "latitude": 22.38486906364119,
+        "latitude": 21.68486906364119,
         "networkId": "ran-1",
-        "longitude": -57.14459764090074,
+        "longitude": -58.14459764090074,
         "sectorNumber": 0,
         "pnfName": "ncserver2",
         "physicalCellId": 8,
@@ -686,9 +686,9 @@
     },
     {
       "Cell": {
-        "latitude": 23.396053701369755,
+        "latitude": 22.86053701369755,
         "networkId": "ran-1",
-        "longitude": -57.71755264511039,
+        "longitude": -59.21755264511039,
         "sectorNumber": 0,
         "pnfName": "ncserver2",
         "physicalCellId": 9,
@@ -834,9 +834,9 @@
     },
     {
       "Cell": {
-        "latitude": 27.79684099037746,
+        "latitude": 28.404452823019323,
         "networkId": "ran-1",
-        "longitude": -55.50957310004712,
+        "longitude": -56.77555524888115,
         "sectorNumber": 0,
         "pnfName": "ncserver2",
         "physicalCellId": 14,
@@ -958,9 +958,9 @@
     },
     {
       "Cell": {
-        "latitude": 23.396053701369755,
+        "latitude": 21.716027693183044,
         "networkId": "ran-1",
-        "longitude": -57.91755264511039,
+        "longitude": -59.03780416730061,
         "sectorNumber": 0,
         "pnfName": "ncserver3",
         "physicalCellId": 18,
@@ -1341,9 +1341,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.030510734477716,
+        "latitude": 29.854922784414914,
         "networkId": "ran-1",
-        "longitude": -54.47438665086288,
+        "longitude": -57.5990737932559,
         "sectorNumber": 0,
         "pnfName": "ncserver3",
         "physicalCellId": 8,
@@ -2397,9 +2397,9 @@
     },
     {
       "Cell": {
-        "latitude": 29.854922784414914,
+        "latitude": 28.030510734477716,
         "networkId": "ran-1",
-        "longitude": -57.5990737932559,
+        "longitude": -54.47438665086288,
         "sectorNumber": 0,
         "pnfName": "ncserver5",
         "physicalCellId": 0,
@@ -2424,9 +2424,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.96411354054906,
+        "latitude": 28.22263699365844,
         "networkId": "ran-1",
-        "longitude": -55.84922705297615,
+        "longitude": -54.39179730314601,
         "sectorNumber": 0,
         "pnfName": "ncserver5",
         "physicalCellId": 1,
@@ -2451,9 +2451,9 @@
     },
     {
       "Cell": {
-        "latitude": 24.298710713690294,
+        "latitude": 28.24121023117052,
         "networkId": "ran-1",
-        "longitude": -55.84116159026271,
+        "longitude": -53.97532960117983,
         "sectorNumber": 0,
         "pnfName": "ncserver5",
         "physicalCellId": 2,
@@ -2478,9 +2478,9 @@
     },
     {
       "Cell": {
-        "latitude": 27.73126455796066,
+        "latitude": 27.602259346711737,
         "networkId": "ran-1",
-        "longitude": -51.785157440798926,
+        "longitude": -54.58894037918582,
         "sectorNumber": 0,
         "pnfName": "ncserver5",
         "physicalCellId": 3,
@@ -2505,9 +2505,9 @@
     },
     {
       "Cell": {
-        "latitude": 27.871196022740662,
+        "latitude": 28.21322050653976,
         "networkId": "ran-1",
-        "longitude": -51.17346108542746,
+        "longitude": -55.3449607267139,
         "sectorNumber": 0,
         "pnfName": "ncserver5",
         "physicalCellId": 4,
@@ -2532,9 +2532,9 @@
     },
     {
       "Cell": {
-        "latitude": 27.55626304907802,
+        "latitude": 28.321148698681732,
         "networkId": "ran-1",
-        "longitude": -58.48690415723466,
+        "longitude": -55.41720844327804,
         "sectorNumber": 0,
         "pnfName": "ncserver5",
         "physicalCellId": 5,
@@ -2559,9 +2559,9 @@
     },
     {
       "Cell": {
-        "latitude": 26.110539542652695,
+        "latitude": 28.65098238425578,
         "networkId": "ran-1",
-        "longitude": -54.84216882201174,
+        "longitude": -55.19341856682094,
         "sectorNumber": 0,
         "pnfName": "ncserver5",
         "physicalCellId": 6,
@@ -2586,9 +2586,9 @@
     },
     {
       "Cell": {
-        "latitude": 26.493611891170577,
+        "latitude": 28.921118997041624,
         "networkId": "ran-1",
-        "longitude": -58.20802373439534,
+        "longitude": -55.09156917310199,
         "sectorNumber": 0,
         "pnfName": "ncserver5",
         "physicalCellId": 7,
@@ -2613,9 +2613,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.404452823019323,
+        "latitude": 27.79684099037746,
         "networkId": "ran-1",
-        "longitude": -56.77555524888115,
+        "longitude": -55.50957310004712,
         "sectorNumber": 0,
         "pnfName": "ncserver5",
         "physicalCellId": 8,
@@ -2640,9 +2640,9 @@
     },
     {
       "Cell": {
-        "latitude": 26.02798932952509,
+        "latitude": 28.671472993864555,
         "networkId": "ran-1",
-        "longitude": -53.24681934205905,
+        "longitude": -55.63727259879924,
         "sectorNumber": 0,
         "pnfName": "ncserver6",
         "physicalCellId": 9,
@@ -2667,9 +2667,9 @@
     },
     {
       "Cell": {
-        "latitude": 26.136615920507992,
+        "latitude": 28.900330520286495,
         "networkId": "ran-1",
-        "longitude": -59.18272304049664,
+        "longitude": -54.04369547507091,
         "sectorNumber": 0,
         "pnfName": "ncserver6",
         "physicalCellId": 10,
@@ -2694,9 +2694,9 @@
     },
     {
       "Cell": {
-        "latitude": 22.576372299358972,
+        "latitude": 28.070618942352034,
         "networkId": "ran-1",
-        "longitude": -55.83326903377058,
+        "longitude": -54.627138199246666,
         "sectorNumber": 0,
         "pnfName": "ncserver6",
         "physicalCellId": 11,
@@ -2721,9 +2721,9 @@
     },
     {
       "Cell": {
-        "latitude": 23.429398979287846,
+        "latitude": 28.329398979287846,
         "networkId": "ran-1",
-        "longitude": -51.07386667578762,
+        "longitude": -54.27386667578762,
         "sectorNumber": 0,
         "pnfName": "ncserver6",
         "physicalCellId": 12,
@@ -2748,9 +2748,9 @@
     },
     {
       "Cell": {
-        "latitude": 20.255355232190567,
+        "latitude": 28.755355232190567,
         "networkId": "ran-1",
-        "longitude": -56.03975275191563,
+        "longitude": -54.63975275191563,
         "sectorNumber": 0,
         "pnfName": "ncserver6",
         "physicalCellId": 13,
@@ -2775,9 +2775,9 @@
     },
     {
       "Cell": {
-        "latitude": 23.400045784590912,
+        "latitude": 28.500045784590912,
         "networkId": "ran-1",
-        "longitude": -51.966613266133244,
+        "longitude": -53.966613266133244,
         "sectorNumber": 0,
         "pnfName": "ncserver6",
         "physicalCellId": 14,
@@ -5415,9 +5415,9 @@
     },
     {
       "Cell": {
-        "latitude": 23.20700006856297,
+        "latitude": 27.620700006856297,
         "networkId": "ran-1",
-        "longitude": -56.29218080272443,
+        "longitude": -54.49218080272443,
         "sectorNumber": 0,
         "pnfName": "ncserver10",
         "physicalCellId": 20,
@@ -5795,9 +5795,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.671472993864555,
+        "latitude": 26.02798932952509,
         "networkId": "ran-1",
-        "longitude": -55.63727259879924,
+        "longitude": -53.24681934205905,
         "sectorNumber": 0,
         "pnfName": "ncserver11",
         "physicalCellId": 2,
@@ -6155,9 +6155,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.921118997041624,
+        "latitude": 26.493611891170577,
         "networkId": "ran-1",
-        "longitude": -55.09156917310199,
+        "longitude": -58.20802373439534,
         "sectorNumber": 0,
         "pnfName": "ncserver12",
         "physicalCellId": 14,
@@ -6752,9 +6752,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.21322050653976,
+        "latitude": 27.871196022740662,
         "networkId": "ran-1",
-        "longitude": -55.3449607267139,
+        "longitude": -51.17346108542746,
         "sectorNumber": 0,
         "pnfName": "ncserver14",
         "physicalCellId": 2,
@@ -7283,9 +7283,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.24121023117052,
+        "latitude": 24.298710713690294,
         "networkId": "ran-1",
-        "longitude": -53.97532960117983,
+        "longitude": -55.84116159026271,
         "sectorNumber": 0,
         "pnfName": "ncserver15",
         "physicalCellId": 5,
@@ -8297,9 +8297,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.070618942352034,
+        "latitude": 22.576372299358972,
         "networkId": "ran-1",
-        "longitude": -54.627138199246666,
+        "longitude": -55.83326903377058,
         "sectorNumber": 0,
         "pnfName": "ncserver17",
         "physicalCellId": 11,
@@ -8554,9 +8554,9 @@
     },
     {
       "Cell": {
-        "latitude": 27.602259346711737,
+        "latitude": 27.73126455796066,
         "networkId": "ran-1",
-        "longitude": -54.58894037918582,
+        "longitude": -51.785157440798926,
         "sectorNumber": 0,
         "pnfName": "ncserver17",
         "physicalCellId": 1,
@@ -8977,9 +8977,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.900330520286495,
+        "latitude": 26.136615920507992,
         "networkId": "ran-1",
-        "longitude": -54.64369547507091,
+        "longitude": -59.18272304049664,
         "sectorNumber": 0,
         "pnfName": "ncserver18",
         "physicalCellId": 10,
@@ -9024,9 +9024,9 @@
     },
     {
       "Cell": {
-        "latitude": 22.06859764738578,
+        "latitude": 27.76859764738578,
         "networkId": "ran-1",
-        "longitude": -56.555570597885165,
+        "longitude": -54.555570597885165,
         "sectorNumber": 0,
         "pnfName": "ncserver18",
         "physicalCellId": 11,
@@ -9118,9 +9118,9 @@
     },
     {
       "Cell": {
-        "latitude": 23.179203829635437,
+        "latitude": 27.479203829635437,
         "networkId": "ran-1",
-        "longitude": -56.75949885148851,
+        "longitude": -54.75949885148851,
         "sectorNumber": 0,
         "pnfName": "ncserver18",
         "physicalCellId": 13,
@@ -11069,7 +11069,7 @@
       ]
     },
     {
-      "Cell": 
+      "Cell": {
         "latitude": 22.849088858716694,
         "networkId": "ran-1",
         "longitude": -50.47684251787422,
@@ -11760,9 +11760,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.65098238425578,
+        "latitude": 26.110539542652695,
         "networkId": "ran-1",
-        "longitude": -55.19341856682094,
+        "longitude": -54.84216882201174,
         "sectorNumber": 0,
         "pnfName": "ncserver24",
         "physicalCellId": 13,
@@ -11958,9 +11958,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.321148698681732,
+        "latitude": 27.55626304907802,
         "networkId": "ran-1",
-        "longitude": -55.41720844327804,
+        "longitude": -58.48690415723466,
         "sectorNumber": 0,
         "pnfName": "ncserver24",
         "physicalCellId": 19,
@@ -12062,9 +12062,9 @@
     },
     {
       "Cell": {
-        "latitude": 28.22263699365844,
+        "latitude": 28.96411354054906,
         "networkId": "ran-1",
-        "longitude": -54.39179730314601,
+        "longitude": -55.84922705297615,
         "sectorNumber": 0,
         "pnfName": "ncserver24",
         "physicalCellId": 2,
@@ -12157,3 +12157,4 @@
     }
   ]
 }
+
