@@ -125,7 +125,7 @@ public class RansimController {
      * @param wsSession
      *            session details
      */
-    public synchronized void addWebSocketSessions(String ipPort, Session wsSession) { // javadoc
+    public synchronized String addWebSocketSessions(String ipPort, Session wsSession) { // javadoc
         loadProperties();
         if (webSocketSessions.containsKey(ipPort)) {
             log.info("addWebSocketSessions: Client session " + wsSession.getId() + " for " + ipPort
@@ -177,11 +177,12 @@ public class RansimController {
             for (String key : serverIdIpPortMapping.keySet()) {
                 if (serverIdIpPortMapping.get(key).equals(ipPort)) {
                     log.info("addWebSocketSessions: ServerId " + key + " for " + ipPort + " is exist already");
+                    serverId = key;
                     break;
                 }
             }
-
         }
+        return serverId;
     }
 
     private void mapServerIdToNodes(String serverId) {
@@ -1482,7 +1483,6 @@ public class RansimController {
                 }
                 cell.setNeighborList(nbrList);
                 config.add(i, cell);
-
             }
 
             SetConfigTopology topo = new SetConfigTopology();
