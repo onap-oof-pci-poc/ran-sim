@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.EntityManager;
@@ -1183,36 +1184,26 @@ public class RansimController {
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("ransimctrlrdb");
         EntityManager entitymanager = emfactory.createEntityManager();
         String result = "failure node dosent exist";
-
+	log.info("deleteCellFunction called with nodeId :"+nodeId);
         try {
-
             CellDetails deleteCelldetail = entitymanager.find(CellDetails.class, nodeId);
             CellNeighbor deleteCellNeighbor = entitymanager.find(CellNeighbor.class, nodeId);
-
-            log.info("CellDetails and CellNeighbor obtained for " + nodeId);
-            List<CellDetails> nbrList = new ArrayList<CellDetails>(deleteCellNeighbor.getNeighborList());
             if (deleteCelldetail != null && deleteCellNeighbor != null) {
-                List<CellDetails> currentCellNeighbors = new ArrayList<CellDetails>(
-                        deleteCellNeighbor.getNeighborList());
-                entitymanager.getTransaction().begin();
+            	TypedQuery<CellNeighbor> query = entitymanager.createQuery("from CellNeighbor cn", CellNeighbor.class);
+            	List<CellNeighbor> cellNeighborList = query.getResultList();
+            	entitymanager.getTransaction().begin();
+            	for (CellNeighbor cellNeighbors : cellNeighborList) {
+            		Set<CellDetails> currentCellNeighbors = new HashSet<CellDetails>(
+            				cellNeighbors.getNeighborList());
+            		if (currentCellNeighbors.contains(deleteCelldetail)) {
+				log.info("Deleted Cell is Neighbor of NodeId : "+cellNeighbors.getNodeId());
+            			currentCellNeighbors.remove(deleteCelldetail);
+				cellNeighbors.setNeighborList(currentCellNeighbors);
+                        	entitymanager.merge(cellNeighbors);
+            		}
+            	}
 
-                for (int i = 0; i < currentCellNeighbors.size(); i++) {
-                    CellNeighbor nextCellNbr = entitymanager.find(CellNeighbor.class,
-                            currentCellNeighbors.get(i).getNodeId());
-
-                    if (nextCellNbr != null) {
-                        log.info("nextCellNbr " + currentCellNeighbors.get(i).getNodeId());
-                        if (nextCellNbr.getNeighborList().contains(deleteCelldetail)) {
-                            nextCellNbr.getNeighborList().remove(deleteCelldetail);
-                            entitymanager.merge(nextCellNbr);
-
-                        }
-                    }
-
-                }
-
-                deleteCellNeighbor.getNeighborList().clear();
-
+            	deleteCellNeighbor.getNeighborList().clear();
                 entitymanager.remove(deleteCellNeighbor);
 
                 if (deleteCelldetail.getServerId() != null) {
@@ -1220,22 +1211,12 @@ public class RansimController {
                     NetconfServers ns = entitymanager.find(NetconfServers.class, deleteCelldetail.getServerId());
                     ns.getCells().remove(deleteCelldetail);
                     entitymanager.merge(ns);
-
                 }
                 entitymanager.remove(deleteCelldetail);
                 entitymanager.flush();
                 entitymanager.getTransaction().commit();
-
-                for (int i = 0; i < nbrList.size(); i++) {
-                    if (gridType == GridType.HONEYCOMB || gridType == GridType.CIRCULAR) {
-                        generateNeighbors(nbrList.get(i).getNodeId());
-                    } else if (gridType == GridType.RANDOM) {
-                        setCollisionConfusionFromFile(nbrList.get(i).getNodeId());
-                        setCellColor(nbrList.get(i).getNodeId());
-                    }
-                }
+               
                 result = "cell has been deleted from the database";
-
             } else {
                 log.info("cell id does not exist");
                 result = "failure nodeId dosent exist";
@@ -1246,12 +1227,9 @@ public class RansimController {
             if (entitymanager.getTransaction().isActive()) {
                 entitymanager.getTransaction().rollback();
             }
-
             result = "exception in function";
         }
-
         return result;
-
     }
 
     private int modifyCellFunction(String nodeId, long physicalCellId) {
@@ -1283,14 +1261,12 @@ public class RansimController {
                 log.info("NewPhysicalCellId is empty or invalid");
                 result = 400;
             } else {
-
                 modifyCell.setPhysicalCellId(physicalCellId);
                 entitymanager.merge(modifyCell);
                 entitymanager.getTransaction().begin();
                 if (modifyCell.getServerId() != null) {
                     NetconfServers ns = entitymanager.find(NetconfServers.class, modifyCell.getServerId());
                     ns.getCells().add(modifyCell);
-
                 }
 
                 log.info("updated in database....");
@@ -1304,7 +1280,6 @@ public class RansimController {
                     for (CellDetails cd : affectedNbrList) {
                         generateNeighbors(cd.getNodeId());
                     }
-
                 } else if (gridType == GridType.RANDOM) {
 
                     entitymanager.getTransaction().begin();
@@ -1332,11 +1307,9 @@ public class RansimController {
                     }
 
                     setCollisionConfusionFromFile(nodeId);
-                    // setCellColor(nodeId);
 
                     for (CellDetails cd : affectedNbrList) {
                         setCollisionConfusionFromFile(cd.getNodeId());
-                        // setCellColor(cd.getNodeId());
                     }
                 }
 
