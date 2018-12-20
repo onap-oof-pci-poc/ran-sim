@@ -73,7 +73,6 @@
                             "nodeId": $scope.nodeId
                         }
                         var dataObj = JSON.stringify(formVal);
-                        //alert("Delete DataObj : " + dataObj);
 
                         var res = $http.post(
                                 'http://ransimsvr:8081/ransim/api/DeleteACell', dataObj
