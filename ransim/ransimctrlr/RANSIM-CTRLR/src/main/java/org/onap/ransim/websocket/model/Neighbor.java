@@ -27,6 +27,7 @@ public class Neighbor {
     private long physicalCellId;
     private String serverId;
     private String pnfName;
+    private boolean blacklisted;
 
     public String getPlmnId() {
         return plmnId;
@@ -68,37 +69,20 @@ public class Neighbor {
         this.pnfName = pnfName;
     }
 
+    public Neighbor() {
+        // TODO Auto-generated constructor stub
+    }
+
+    public boolean isBlacklisted() {
+        return blacklisted;
+    }
+
+    public void setBlacklisted(boolean blacklisted) {
+        this.blacklisted = blacklisted;
+    }
     @Override
     public String toString() {
         return "Neighbor [nodeId=" + nodeId + ", physicalCellId=" + physicalCellId + ", serverId=" + serverId
                 + ", pnfName=" + pnfName + "]";
     }
-
-    /**
-     * Contains the neighbor details .
-     *
-     * @param plmnId
-     *            plmn id
-     * @param nodeId
-     *            node id for the cell
-     * @param physicalCellId
-     *            pci number for the cell
-     * @param serverId
-     *            server id name
-     * @param pnfName
-     *            pnf name
-     */
-    public Neighbor(String plmnId, String nodeId, long physicalCellId, String serverId, String pnfName) {
-        super();
-        this.plmnId = plmnId;
-        this.nodeId = nodeId;
-        this.physicalCellId = physicalCellId;
-        this.serverId = serverId;
-        this.pnfName = pnfName;
-    }
-
-    public Neighbor() {
-        // TODO Auto-generated constructor stub
-    }
-
 }

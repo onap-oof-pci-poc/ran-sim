@@ -19,9 +19,15 @@ services:
    ransim:
       image: onap/ransim:latest
       container_name: ransim
+      environment:
+       - SDNR_IP=192.168.100.21
+       - SDNR_PORT=30202
+       - SDNR_USER=admin
+       - SDNR_PASSWORD=Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U
       hostname: ransimsvr
       ports:
        - "8081:8081"
       command: ransim
       volumes:
        - ./config/ransim:/tmp/ransim-install/config
+

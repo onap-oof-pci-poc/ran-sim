@@ -1,0 +1,146 @@
+<!-- 
+ * ============LICENSE_START=======================================================
+ * Ran Simulator Controller
+ * ================================================================================
+ * Copyright (C) 2018 Wipro Limited.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */ 
+ -->
+
+<html>
+   <head>
+      <title>Display Cell Details</title>
+      <script src="angular.min.js"></script>   
+      <style>
+         table, th , td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
+         }
+         
+         table tr:nth-child(odd) {
+            background-color: #f2f2f2;
+         }
+         
+         table tr:nth-child(even) {
+            background-color: #ffffff;
+         }
+      </style>      
+   </head>
+   <body><center>
+      <h2>Cell Details</h2>
+      <div data-ng-init="onloadFun()" ng-app = "mainApp" ng-controller = "configController">         
+         <form name = "configForm" novalidate>
+            <table border = "0" align=center>
+               <tr>
+                  <td>Node Id:</td>
+                  <td><input name = "nodeId" type = "string" ng-model = "nodeId" required disabled>
+                     <br><span style = "color:red" ng-show = "configForm.nodeId.$dirty && configForm.nodeId.$invalid">
+                        <span ng-show = "configForm.nodeId.$error.required">Node Id is mandatory.</span>
+                     </span>
+                  </td>
+               </tr>                                         
+               <tr>
+                  <td>Physical Cell Id:</td>
+                  <td><input name = "oldPhysicalCellId" type = "number" ng-model = "oldPhysicalCellId" required disabled>
+                     <br>
+                  </td>
+               </tr> 
+	       <tr>
+                  <td>Pnf Name:</td>
+                  <td><input name = "pnfName" type = "string" ng-model = "pnfName" required disabled>
+                     <br>
+                  </td>
+               </tr>              
+               <!-- tr>
+                  <td>New Physical Cell Id:</td>
+                  <td><input name = "newPhysicalCellId" type = "number" ng-model = "newPhysicalCellId" required>
+                     <br><span style = "color:red" ng-show = "configForm.newPhysicalCellId.$dirty && configForm.newPhysicalCellId.$invalid">
+                        <span ng-show = "configForm.newPhysicalCellId.$error.required">New Physical Cell Id is mandatory.</span>
+                     </span>
+                  </td>
+               </tr -->               
+               <!-- tr>
+                  <td>Neighbors:</td>
+                  <td><textarea name = "existingNbrs" rows="8" cols="31" type = "string" ng-model = "existingNbrs" disabled></textarea>
+                     <br>
+                  </td>
+               </tr -->                                         
+               <!-- tr>
+                  <td>New Neighbors:</td>
+                  <td><textarea name = "newNbrs" rows="8" cols="31" type = "string" ng-model = "newNbrs"></textarea>
+                     <br>
+                  </td>
+               </tr -->                                         
+               <!-- tr>
+                  <td colspan=2 align=right>                  
+                     <button ng-disabled = "configForm.newPhysicalCellId.$dirty &&
+                        configForm.newPhysicalCellId.$invalid || configForm.nodeId.$dirty &&
+                        configForm.nodeId.$invalid" ng-click="modifyCell()">Modify</button>
+					   <button ng-click = "close()">Cancel</button>
+                  </td>
+               </tr -->					
+            </table>
+         </form>
+      </div>
+      <script>			 
+         var mainApp = angular.module("mainApp", []);
+         mainApp.controller('configController',['$scope', '$http', '$location', function($scope, $http, $location) {
+            $scope.modifyCell = function() {				
+		
+			};				
+			$scope.close = function(){	
+				window.close();
+			}
+			$scope.onloadFun = function(){
+				parts = {"queryvars": {}},
+				absUrl = $location.absUrl(),
+				// extract and parse url
+				elements = absUrl.split("?");
+				// query string
+				// parse quesry string
+				parts["queryString"] = elements[1];
+				if ( elements[1] ) {
+					parts["hashString"] = (parts["queryString"].split("#"))[1];
+					parts["requestParams"] = ((parts["queryString"].split("#"))[0]).split("&");
+	    
+					parts["requestParams"].forEach(function(queryStringVariable) {
+						var __variable = queryStringVariable.split("=");
+						parts.queryvars[__variable[0]] = __variable[1];
+					});
+					//alert("Parts : "+JSON.stringify(parts));
+					if (parts.queryvars["cid"] !== "undefined") {
+						//alert("CID : "+parts.queryvars["cid"]);
+						$scope.nodeId = parts.queryvars["cid"];
+					}
+					
+					if (parts.queryvars["pcid"] !== "undefined") {
+						//alert("PC Id : "+parts.queryvars["pcid"]);
+						$scope.newPhysicalCellId = parseInt(parts.queryvars["pcid"]);
+						$scope.oldPhysicalCellId = parseInt(parts.queryvars["pcid"]);
+					}
+					if (parts.queryvars["pnf"] !== "undefined") {
+						//alert("CID : "+parts.queryvars["cid"]);
+						$scope.pnfName = parts.queryvars["pnf"];
+					}
+					//neighbrList
+					//neighbrList=Chn204%2CChn203%2CChn403%2CChn302%2CChn304%2CChn202
+										
+				}
+			}
+         }]);		 
+      </script>      
+   <center></body>
+</html>

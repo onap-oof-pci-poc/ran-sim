@@ -26,15 +26,53 @@
 	<script>		  
 	var app = angular.module('myApp', []);
 	app.controller('myCtrl', function($scope, $window) {
-		$scope.startSimulator = function() {
+		/*$scope.startSimulator = function() {
 			$window.open('SimulationTrigger.html', '','menubar=no, locationbar=no, toolbar=no, width=600px, height=250px');
-		};
+		};*/
 		$scope.startSimulatorFile = function() {
+                        document.getElementById("stopSimulator").disabled = false;
+			document.getElementById("startSimulator").disabled = true;
 			$window.open('SimulationTriggerFile.html', '','menubar=no, locationbar=no, toolbar=no, width=600px, height=250px');
 		};
 		$scope.stopSimulator = function() {
+                        document.getElementById("stopSimulator").disabled = true;
+			document.getElementById("startSimulator").disabled = false;
 			$window.open('SimulationStop.html', '','menubar=no, locationbar=no, toolbar=no, width=600px, height=250px');
 		};
+		
+		$scope.showOperationTable = function() {
+			$window.open('operationhistory.html', '','menubar=no, locationbar=no, toolbar=no, width=600px, height=250px');
+		};
+		$scope.startPm = function() {
+			
+			document.getElementById("stopPm").disabled = false;
+				document.getElementById("startPm").disabled = true;
+			$window.open('startPm.html', '','menubar=no, locationbar=no, toolbar=no, width=600px, height=250px');
+			/*
+			var status;
+			var xmlhttp = new XMLHttpRequest();
+            		xmlhttp.onreadystatechange = function() {
+                		if (this.readyState == 4 && this.status == 200) {
+                    			status = JSON.parse(this.responseText);
+					console.log(status);
+					console.log("status");
+                		}
+            		};
+           		 xmlhttp.open("GET", "http://ransimsvr:8081/ransim/api/GetPmDataStatus",
+               			 true);
+            		xmlhttp.send();
+			
+			if(status == true){
+				document.getElementById("stopPm").disabled = false;
+				document.getElementById("startPm").disabled = true;
+			}*/
+			
+		};
+		$scope.stopPm = function() {
+			document.getElementById("stopPm").disabled = true;
+			document.getElementById("startPm").disabled = false;
+			$window.open('stopPm.html', '','menubar=no, locationbar=no, toolbar=no, width=600px, height=250px');
+		};	
 		
 	});
 	</script>
@@ -44,8 +82,16 @@
 		RAN Simulation
 		<br>
 		<!-- button ng-click="startSimulator()">StartHoneycomb</button-->
-		<button ng-click="startSimulatorFile()">Start</button>
-		<button ng-click="stopSimulator()">Stop</button>
+		<button id="startSimulator" ng-click="startSimulatorFile()">Start</button>
+		<button id="stopSimulator" ng-click="stopSimulator()" disabled>Stop</button><br>
+		<br>
+                <div id="operupdate" name="operuodate">1 cell updated, for details click below</div>
+		<button ng-click="showOperationTable()">View</button>
+		<br>
+		<br>
+		<div>PM data</div>
+		<button id="startPm" ng-click="startPm()">Start</button>
+		<button id="stopPm" ng-click="stopPm()" disabled>Stop</button>
 		<br>
 
 	</div>

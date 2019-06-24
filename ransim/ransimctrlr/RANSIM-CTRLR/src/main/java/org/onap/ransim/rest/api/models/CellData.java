@@ -22,47 +22,43 @@ package org.onap.ransim.rest.api.models;
 
 import java.util.List;
 
-
 public class CellData {
-
-
+    
     private CellInfo Cell;
-
-
-    private List<String> neighbor;
-
-    /**
-     * A constructor for CellData.
-     *
-     * @param cell
-     *            cell details to be read from file
-     * @param neighbor
-     *            list of neighbors to be read from file
-     */
-
-    public CellData( CellInfo cell, List<String> neighbor) {
+    private List<NbrDump> neighbor;
+    
+    public CellData() {
         super();
-        this.Cell = cell;
+    }
+    
+    /**
+     * Constructor with all parameters
+     * 
+     * @param cell
+     *            Contains cell details.
+     * @param neighbor
+     *            Contains list of neighbor details.
+     */
+    public CellData(CellInfo cell, List<NbrDump> neighbor) {
+        super();
+        Cell = cell;
         this.neighbor = neighbor;
     }
-
-    public CellData() {
-
-    }
-
+    
     public CellInfo getCell() {
         return Cell;
     }
-
+    
     public void setCell(CellInfo cell) {
-        this.Cell = cell;
+        Cell = cell;
     }
-
-    public List<String> getNeighbor() {
+    
+    public List<NbrDump> getNeighbor() {
         return neighbor;
     }
-
-    public void setNeighbor(List<String> neighbor) {
+    
+    public void setNeighbor(List<NbrDump> neighbor) {
         this.neighbor = neighbor;
     }
+    
 }

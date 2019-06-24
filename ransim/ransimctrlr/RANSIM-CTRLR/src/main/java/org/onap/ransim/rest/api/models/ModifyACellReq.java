@@ -21,11 +21,11 @@
 package org.onap.ransim.rest.api.models;
 
 public class ModifyACellReq {
-
+    
     private String nodeId;
     private Long newPhysicalCellId;
     private String newNbrs;
-
+    
     /**
      * A constructor for ModifyACellReq.
      *
@@ -41,36 +41,36 @@ public class ModifyACellReq {
         this.nodeId = nodeId;
         this.newPhysicalCellId = newPhysicalCellId;
         this.newNbrs = newNbrs;
-
+        
     }
-
+    
     public ModifyACellReq() {
-
+        
         // Default constructor for ModifyCell
     }
-
+    
     public String getNodeId() {
         return nodeId;
     }
-
+    
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId;
     }
-
+    
     public Long getNewPhysicalCellId() {
         return newPhysicalCellId;
     }
-
+    
     public void setNewPhysicalCellId(Long newPhysicalCellId) {
         this.newPhysicalCellId = newPhysicalCellId;
     }
-
+    
     public String getNewNbrs() {
         return newNbrs;
     }
-
+    
     public void setNewNbrs(String newNbrs) {
         this.newNbrs = newNbrs;
     }
-
+    
 }

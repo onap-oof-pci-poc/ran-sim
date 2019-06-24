@@ -18,13 +18,12 @@
  * ============LICENSE_END=========================================================
  */
 
-
 package org.onap.ransim.rest.api.models;
 
 public class GetACellDetailReq {
-
+    
     private String nodeId;
-
+    
     /**
      * A constructor for GetACellDetailReq.
      *
@@ -35,17 +34,17 @@ public class GetACellDetailReq {
         super();
         this.nodeId = nodeId;
     }
-
+    
     public GetACellDetailReq() {
-
+        
     }
-
+    
     public String getNodeId() {
         return nodeId;
     }
-
+    
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId;
     }
-
+    
 }

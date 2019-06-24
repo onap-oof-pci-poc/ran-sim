@@ -1,0 +1,25 @@
+{
+  "kpiDump": [
+    {
+      "parameter1": "InterEnbOutAtt_X2HO",
+      "successValue1": "250",
+      "badValue1": "250",
+      "poorValue1": "250",
+      "parameter2": "InterEnbOutSucc_X2HO",
+      "successValue2": "230",
+      "badValue2": "20",
+      "poorValue2": "150"
+    },
+    {
+      "parameter1": "InterEnbOutAtt_X2HO",
+      "successValue1": "250",
+      "badValue1": "250",
+      "poorValue1": "250",
+      "parameter2": "InterEnbOutSucc_X2HO",
+      "successValue2": "220",
+      "badValue2": "50",
+      "poorValue2": "125"
+    }
+  ]
+}
+

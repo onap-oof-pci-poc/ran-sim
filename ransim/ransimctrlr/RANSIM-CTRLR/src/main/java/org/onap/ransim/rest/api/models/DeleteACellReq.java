@@ -21,9 +21,9 @@
 package org.onap.ransim.rest.api.models;
 
 public class DeleteACellReq {
-
+    
     private String nodeId;
-
+    
     /**
      * A constructor for DeleteACellReq.
      *
@@ -34,17 +34,17 @@ public class DeleteACellReq {
         super();
         this.nodeId = nodeId;
     }
-
+    
     public DeleteACellReq() {
-
+        
     }
-
+    
     public String getNodeId() {
         return nodeId;
     }
-
+    
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId;
     }
-
+    
 }

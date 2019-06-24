@@ -21,13 +21,13 @@
 package org.onap.ransim.rest.api.models;
 
 public class GetNeighborListReq {
-
+    
     private String nodeId;
-
+    
     public GetNeighborListReq() {
-
+        
     }
-
+    
     /**
      * A constructor for GetNeighborListReq.
      *
@@ -38,13 +38,13 @@ public class GetNeighborListReq {
         super();
         this.nodeId = nodeId;
     }
-
+    
     public String getNodeId() {
         return nodeId;
     }
-
+    
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId;
     }
-
+    
 }

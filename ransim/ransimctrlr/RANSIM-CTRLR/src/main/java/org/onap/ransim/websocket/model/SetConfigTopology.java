@@ -25,6 +25,7 @@ import java.util.List;
 public class SetConfigTopology {
 
     private String serverId;
+    private String uuid;
     private String ip;
     private String netconfPort;
     private List<Topology> topology;
@@ -59,6 +60,14 @@ public class SetConfigTopology {
 
     public void setServerId(String serverId) {
         this.serverId = serverId;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getIp() {

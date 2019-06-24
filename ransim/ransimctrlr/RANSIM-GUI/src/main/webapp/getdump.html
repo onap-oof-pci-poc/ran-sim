@@ -83,11 +83,11 @@
         if (this.readyState == 4 && this.status == 200) {
           //console.log("Response DataObj : " + this.responseText);
           var nbrs = JSON.parse(this.responseText);
-          for( i in nbrs.neighborList ) {
-            var nodeId = nbrs.neighborList[i].nodeId;
+          for( i in nbrs.cellsWithHO ) {
+            var nodeId = nbrs.cellsWithHO[i].nodeId;
             if(i != 0)
               nbrsStr += ', ';
-            nbrsStr +=  '"'+nodeId+'"' ;
+            nbrsStr +=  '{"nodeId":'+'"'+nodeId+'"'+',"blacklisted":"false"}' ;
           }
           //console.log("Response nbrsStr : " + nbrsStr);
           toBeContinued = false;

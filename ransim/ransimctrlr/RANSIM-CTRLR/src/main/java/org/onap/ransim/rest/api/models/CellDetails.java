@@ -28,7 +28,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "CellDetails")
 public class CellDetails {
-
+    
     private String networkId;
     private String nodeId;
     private long physicalCellId;
@@ -45,7 +45,24 @@ public class CellDetails {
     private String serverId;
     private int sectorNumber = 0;
     private String color;
-
+    
+    /**
+     * Constructor with cell Id, pci and server Id for test cases.
+     * 
+     * @param nodeId
+     *            Node Id of Cell
+     * @param physicalCellId
+     *            Pci value of the cell.
+     * @param serverId
+     *            Server Id of the cell.
+     */
+    public CellDetails(String nodeId, long physicalCellId, String serverId) {
+        super();
+        this.nodeId = nodeId;
+        this.physicalCellId = physicalCellId;
+        this.serverId = serverId;
+    }
+    
     /**
      * A constructor for CellDetails( Database to store cell details).
      *
@@ -83,9 +100,10 @@ public class CellDetails {
      * @param color
      *            color of the cell in the GUI
      */
-    public CellDetails(String networkId, String nodeId, long physicalCellId, String nodeName, String nodeType,
-            boolean pciCollisionDetected, boolean pciConfusionDetected, float gridX, float gridY, float screenX,
-            float screenY, String latitude, String longitude, String serverId, int sectorNumber, String color) {
+    public CellDetails(String networkId, String nodeId, long physicalCellId, String nodeName,
+            String nodeType, boolean pciCollisionDetected, boolean pciConfusionDetected,
+            float gridX, float gridY, float screenX, float screenY, String latitude,
+            String longitude, String serverId, int sectorNumber, String color) {
         super();
         this.networkId = networkId;
         this.nodeId = nodeId;
@@ -94,7 +112,7 @@ public class CellDetails {
         this.nodeType = nodeType;
         this.pciCollisionDetected = pciCollisionDetected;
         this.pciConfusionDetected = pciConfusionDetected;
-
+        
         this.gridX = gridX;
         this.gridY = gridY;
         this.screenX = screenX;
@@ -105,146 +123,146 @@ public class CellDetails {
         this.sectorNumber = sectorNumber;
         this.color = color;
     }
-
+    
     public CellDetails() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
+    
     public String getNetworkId() {
         return networkId;
     }
-
+    
     public void setNetworkId(String networkId) {
         this.networkId = networkId;
     }
-
+    
     @Id
     @Column(name = "nodeId", unique = true, nullable = false, length = 50)
     public String getNodeId() {
         return nodeId;
     }
-
+    
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId;
     }
-
+    
     public long getPhysicalCellId() {
         return physicalCellId;
     }
-
+    
     public void setPhysicalCellId(long physicalCellId) {
         this.physicalCellId = physicalCellId;
     }
-
+    
     public String getNodeName() {
         return nodeName;
     }
-
+    
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
-
+    
     public String getNodeType() {
         return nodeType;
     }
-
+    
     public void setNodeType(String nodeType) {
         this.nodeType = nodeType;
     }
-
+    
     public boolean isPciCollisionDetected() {
         return pciCollisionDetected;
     }
-
+    
     public void setPciCollisionDetected(boolean pciCollisionDetected) {
         this.pciCollisionDetected = pciCollisionDetected;
     }
-
+    
     public boolean isPciConfusionDetected() {
         return pciConfusionDetected;
     }
-
+    
     public void setPciConfusionDetected(boolean pciConfusionDetected) {
         this.pciConfusionDetected = pciConfusionDetected;
     }
-
+    
     public float getGridX() {
         return gridX;
     }
-
+    
     public void setGridX(float gridX) {
         this.gridX = gridX;
     }
-
+    
     public float getGridY() {
         return gridY;
     }
-
+    
     public void setGridY(float gridY) {
         this.gridY = gridY;
     }
-
+    
     public float getScreenX() {
         return screenX;
     }
-
+    
     public void setScreenX(float screenX) {
         this.screenX = screenX;
     }
-
+    
     public float getScreenY() {
         return screenY;
     }
-
+    
     public void setScreenY(float screenY) {
         this.screenY = screenY;
     }
-
+    
     public String getServerId() {
         return serverId;
     }
-
+    
     public void setServerId(String serverId) {
         this.serverId = serverId;
     }
-
+    
     public int getSectorNumber() {
         return sectorNumber;
     }
-
+    
     public void setSectorNumber(int sectorNumber) {
         this.sectorNumber = sectorNumber;
     }
-
+    
     public String getColor() {
         return color;
     }
-
+    
     public void setColor(String color) {
         this.color = color;
     }
-
+    
     public String getLatitude() {
         return latitude;
     }
-
+    
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
-
+    
     public String getLongitude() {
         return longitude;
     }
-
+    
     public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
-
+    
     @Override
     public String toString() {
-        return "Cell Details [networkId=" + networkId + ", nodeId=" + nodeId + ", physicalCellId=" + physicalCellId
-                + ", nodeName=" + nodeName + ", nodeType=" + nodeType + ", pciCollisionDetected=" + pciCollisionDetected
-                + ", pciConfusionDetected=" + pciConfusionDetected + "]";
+        return "Cell Details [networkId=" + networkId + ", nodeId=" + nodeId + ", physicalCellId="
+                + physicalCellId + ", nodeName=" + nodeName + ", nodeType=" + nodeType
+                + ", pciCollisionDetected=" + pciCollisionDetected + ", pciConfusionDetected="
+                + pciConfusionDetected + "]";
     }
 }

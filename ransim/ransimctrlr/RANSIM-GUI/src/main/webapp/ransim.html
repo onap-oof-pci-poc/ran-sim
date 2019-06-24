@@ -90,7 +90,7 @@
                     drawTopology(topology);
                 }
             };
-            xmlhttp.open("GET", "http://ransimsvr:8081/ransim/api/GetTopology",
+            xmlhttp.open("GET", "/ransim/api/GetTopology",
                 true);
             xmlhttp.send();
         }
@@ -103,16 +103,20 @@
             var width = window.innerWidth;
             var height = window.innerWidth;
             var myCanvas = document.getElementById("myCanvas");
-            myCanvas.width = 5000;
-            myCanvas.height = 5000;
+	    var topoWidth = (width*3) + 200;	
+	    var topoHeight = (height*3) + 200;
+            myCanvas.width = topoWidth;
+            myCanvas.height = topoHeight;
 
             console.log("width" + width);
             console.log("height" + height);
+	    console.log("topoWidth " + topoWidth);
+            console.log("topoHeight " + topoHeight);
             var context = myCanvas.getContext("2d");
-            context.clearRect(0, 0, 5000, 5000);
+            context.clearRect(0, 0, topoWidth, topoHeight);
             context.fillStyle = "#FFFFDF";
-            context.fillRect(0, 0, 5000, 5000);
-            var RADIUS = 10;
+            context.fillRect(0, 0, topoWidth, topoHeight);
+            var RADIUS = 11;
             var noProblemColor = "#32CD32"; //GREEN
             var xScaleUnit = width / ((topoObj.maxScreenX - topoObj.minScreenX)/3 )
             var yScaleUnit = height / ((topoObj.maxScreenY - topoObj.minScreenY)/3 )
@@ -134,9 +138,15 @@
                 var physicalCellId = topoObj.cellTopology[i].physicalCellId;
                 var serverId = topoObj.cellTopology[i].serverId;
                 var confColor = noProblemColor;
-                if (typeof topoObj.cellTopology[i].color != 'undefined') {
+                /*if (typeof topoObj.cellTopology[i].color != 'undefined') {
                     confColor = topoObj.cellTopology[i].color;
-                }
+			console.log("topoObj.cellTopology[i].color:");
+			console.log(topoObj.cellTopology[i].color);
+                }*/
+		confColor = topoObj.cellTopology[i].color;
+			console.log("topoObj.cellTopology[i].color:");
+			console.log(topoObj.cellTopology[i].color);
+		
                 if (serverId == netconfServerUserInput) {
                    confColor = "#8A2BE2";
 				}
@@ -151,7 +161,9 @@
                 } else if (topoObj.cellTopology[i].sectorNumber == 3) {
                     cellY += 1.8 * RADIUS;
                 }
-
+		
+		console.log("confColor:");
+		console.log(confColor);
                 context.fillStyle = confColor;
                 context.beginPath();
                 context.arc(cellX, cellY, RADIUS, 0, Math.PI * 2, true);
@@ -159,10 +171,10 @@
                 context.stroke();
                 context.closePath();
                 context.fill();
-                context.font = "11px Comic Sans MS";
+                context.font = "bold 11px Comic Sans MS";
                 context.fillStyle = "black";
                 context.textAlign = "center";
-                fillMultiLineText(context, physicalCellId, cellX, cellY);
+                fillMultiLineText(context, physicalCellId, cellX, (cellY + (RADIUS/2)) );
             }
             ScreenConfig.context.save();
             document.getElementById("modified").innerHTML = 'a';
@@ -190,7 +202,7 @@
                     var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
                     var rt = 0;
                     if (isIntersect(pos, topoObj.cellTopology[i], cellX, cellY, ScreenConfig)) {
-						isClickedOnCell = true;
+			isClickedOnCell = true;
                         var nodeVal = topoObj.cellTopology[i].nodeId;
                         var cellVal = topoObj.cellTopology[i].physicalCellId;
                         var pnfName = topoObj.cellTopology[i].serverId;
@@ -218,7 +230,9 @@
                         htmlText1 +=
                             '<button class="button" id="showNeighbours">Show Neighbors</button>';
                         htmlText1 +=
-                            '<button class="button" id="modifyNode">Modify</button>';
+                            '<button class="button" id="modifyNodeNeighbor">Modify Neighbors</button>';
+			htmlText1 +=
+                            '<button class="button" id="modifyNodePci">Modify PCI</button>';
                         htmlText1 +=
                             '<button class="button" id="deleteNode">Delete</button>';
                         htmlText1 += '</div>';
@@ -229,16 +243,26 @@
                         var y = cellY;
                         document.getElementById("cellDetails").addEventListener("click",
                             function() {
-                                alert("Cell Id:" + nodeVal + "\nPhysical Cell Id:" + cellVal + "\nPnf Name:" + pnfName);
+
+				childWindow = window.open('displayCellDetails.html?cid=' + nodeVal +
+                        		'&pcid=' + cellVal + '&pnf=' + pnfName, '',
+                        		'menubar=no, locationbar=no, toolbar=no, width=500px, height=300px'
+                   		 );
+
+                                //alert("Cell Id:" + nodeVal + "\nPhysical Cell Id:" + cellVal + "\nPnf Name:" + pnfName);
                             });
                         document.getElementById("showNeighbours").addEventListener("click",
                             function() {
                                 showNeighbours(nodeVal, cellVal, x, y, RADIUS,
                                     ScreenConfig, topoObj);
                             });
-                        document.getElementById("modifyNode").addEventListener("click",
+                        document.getElementById("modifyNodeNeighbor").addEventListener("click",
                             function() {
-                                modifyNode(nodeVal, cellVal);
+                                modifyNodeNeighbor(nodeVal, cellVal);
+                            });
+			document.getElementById("modifyNodePci").addEventListener("click",
+                            function() {
+                                modifyNodePci(nodeVal, cellVal);
                             });
                         document.getElementById("deleteNode").addEventListener("click",
                             function() {
@@ -265,7 +289,7 @@
                     drawNeighbors(neighbour, nodeId, pcId, cellX, cellY, RADIUS, ScreenConfig, topoObj);
                 }
             };
-            xmlhttp.open("POST", "http://ransimsvr:8081/ransim/api/GetNeighborList",
+            xmlhttp.open("POST", "/ransim/api/GetNeighborList",
                 true);
             xmlhttp.setRequestHeader('Content-Type', 'application/json')
             xmlhttp.send(dataObj);
@@ -301,43 +325,48 @@
                 ScreenConfig.context.stroke();
                 ScreenConfig.context.closePath();
                 ScreenConfig.context.fill();
-                ScreenConfig.context.font = "11px Comic Sans MS";
+                ScreenConfig.context.font = "bold 11px Comic Sans MS";
                 ScreenConfig.context.fillStyle = "black";
                 ScreenConfig.context.textAlign = "center";
                 fillMultiLineText(ScreenConfig.context, p, x, y);
             } */
 
-            for (i in neighbour.neighborList) {
-                var neighbourNodeId = neighbour.neighborList[i].nodeId;
-                var neighbourPhysicalCellId = neighbour.neighborList[i].physicalCellId;
+            for (i in neighbour.cellsWithHo) {
+                var neighbourNodeId = neighbour.cellsWithHo[i].nodeId;
+                var neighbourPhysicalCellId = neighbour.cellsWithHo[i].physicalCellId;
                 var confuColor = ScreenConfig.noProblemColor;
                 var collCol = 0;
                 var confCol = 0;
-                if (typeof neighbour.neighborList[i].color != 'undefined') {
-                    confuColor = neighbour.neighborList[i].color;
+                if (typeof neighbour.cellsWithHo[i].color != 'undefined') {
+                    confuColor = neighbour.cellsWithHo[i].color;
                 }
                 ScreenConfig.context.beginPath();
                 ScreenConfig.context.moveTo(cellX, cellY);
-                var nbrCellX = (neighbour.neighborList[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 20;
-                var nbrCellY = (neighbour.neighborList[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
+                var nbrCellX = (neighbour.cellsWithHo[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 20;
+                var nbrCellY = (neighbour.cellsWithHo[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
 
-                if (neighbour.neighborList[i].sectorNumber == 1) {
+                if (neighbour.cellsWithHo[i].sectorNumber == 1) {
                     nbrCellX -= ScreenConfig.RADIUS;
-                } else if (neighbour.neighborList[i].sectorNumber == 2) {
+                } else if (neighbour.cellsWithHo[i].sectorNumber == 2) {
                     nbrCellX += ScreenConfig.RADIUS;
-                } else if (neighbour.neighborList[i].sectorNumber == 3) {
+                } else if (neighbour.cellsWithHo[i].sectorNumber == 3) {
                     nbrCellY += 1.8 * ScreenConfig.RADIUS;
                 }
 
-                if (neighbour.neighborList[i].physicalCellId == pcId) {
+                if (neighbour.cellsWithHo[i].physicalCellId == pcId) {
                     collCol = 1;
                 }
 
-                for (j in neighbour.neighborList) {
+                for (j in neighbour.cellsWithHo) {
                     if (i != j) {
-                        if (neighbour.neighborList[i].physicalCellId == neighbour.neighborList[j].physicalCellId) {
+			if(neighbour.cellsWithHo[j] != null)
+			{
+                        if (neighbour.cellsWithHo[i].physicalCellId == neighbour.cellsWithHo[j].physicalCellId) {	
                             confCol = 1;
+				console.log("neighbour.cellsWithHo[i].physicalCellId: " + neighbour.cellsWithHo[i].physicalCellId);
+				console.log("neighbour.cellsWithHo[j].physicalCellId: " + neighbour.cellsWithHo[j].physicalCellId);
                         }
+			}
                     }
                 }
 
@@ -365,26 +394,71 @@
                 ScreenConfig.context.stroke();
                 ScreenConfig.context.closePath();
                 ScreenConfig.context.fill();
-                ScreenConfig.context.font = "11px Comic Sans MS";
+                ScreenConfig.context.font = "bold 11px Comic Sans MS";
                 ScreenConfig.context.fillStyle = "black";
                 ScreenConfig.context.textAlign = "center";
-                fillMultiLineText(ScreenConfig.context, neighbourPhysicalCellId, nbrCellX, nbrCellY);
+                fillMultiLineText(ScreenConfig.context, neighbourPhysicalCellId, nbrCellX, (nbrCellY + (RADIUS/2)) );
+            }
+
+	    for (i in neighbour.cellsWithNoHo) {
+                var neighbourNodeId = neighbour.cellsWithNoHo[i].nodeId;
+                var neighbourPhysicalCellId = neighbour.cellsWithNoHo[i].physicalCellId;
+                var confuColor = ScreenConfig.noProblemColor;
+                var collCol = 0;
+                var confCol = 0;
+                
+                confuColor = "#606060";
+                
+                ScreenConfig.context.beginPath();
+                ScreenConfig.context.moveTo(cellX, cellY);
+                var nbrCellX = (neighbour.cellsWithNoHo[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 20;
+                var nbrCellY = (neighbour.cellsWithNoHo[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
+
+                if (neighbour.cellsWithNoHo[i].sectorNumber == 1) {
+                    nbrCellX -= ScreenConfig.RADIUS;
+                } else if (neighbour.cellsWithNoHo[i].sectorNumber == 2) {
+                    nbrCellX += ScreenConfig.RADIUS;
+                } else if (neighbour.cellsWithNoHo[i].sectorNumber == 3) {
+                    nbrCellY += 1.8 * ScreenConfig.RADIUS;
+                }
+
+                
+                console.log("336. neighbourPCI: " + neighbourPhysicalCellId + " collCol:" + collCol + "confCol: " + confCol);
+		ScreenConfig.context.setLineDash([10, 5]);
+                ScreenConfig.context.lineTo(nbrCellX, nbrCellY);
+                ScreenConfig.context.strokeStyle = confuColor;
+                ScreenConfig.context.lineWidth = 2;
+                ScreenConfig.context.stroke();
+                ScreenConfig.context.closePath();
+
+                ScreenConfig.context.fillStyle = confuColor;
+                ScreenConfig.context.beginPath();
+                ScreenConfig.context.arc(nbrCellX, nbrCellY, RADIUS, 0, Math.PI * 2, true);
+                ScreenConfig.context.strokeStyle = "black";
+                ScreenConfig.context.stroke();
+                ScreenConfig.context.closePath();
+                ScreenConfig.context.fill();
+                ScreenConfig.context.font = "bold 11px Comic Sans MS";
+                ScreenConfig.context.fillStyle = "black";
+                ScreenConfig.context.textAlign = "center";
+                fillMultiLineText(ScreenConfig.context, neighbourPhysicalCellId, nbrCellX, (nbrCellY + (RADIUS/2)));
             }
 
             ScreenConfig.context.fillStyle = "#00FFFF";
             ScreenConfig.context.beginPath();
             ScreenConfig.context.arc(cellX, cellY, RADIUS, 0, Math.PI * 2, true);
+		console.log("ScreenConfig.context.fillStyle: " + ScreenConfig.context.fillStyle);
             ScreenConfig.context.strokeStyle = "black";
             ScreenConfig.context.stroke();
             ScreenConfig.context.closePath();
             ScreenConfig.context.fill();
-            ScreenConfig.context.font = "11px Comic Sans MS";
+            ScreenConfig.context.font = "bold 11px Comic Sans MS";
             ScreenConfig.context.fillStyle = "black";
             ScreenConfig.context.textAlign = "center";
-            fillMultiLineText(ScreenConfig.context, pcId, cellX, cellY);
+            fillMultiLineText(ScreenConfig.context, pcId, cellX, (cellY + (RADIUS/2)) );
         }
 
-        function modifyNode(cid, pcid) {
+        function modifyNodeNeighbor(cid, pcid) {
             var formVal = {
                 "newPhysicalCellId": pcid,
                 "nodeId": cid
@@ -396,12 +470,13 @@
                 if (this.readyState == 4 && this.status == 200) {
                     var neighbour = JSON.parse(this.responseText);
                     var neighbourNodeIds = '';
-                    for (i in neighbour.neighborList) {
+                    for (i in neighbour.cellsWithHo) {
                         if (neighbourNodeIds.length == 0)
-                            neighbourNodeIds += neighbour.neighborList[i].nodeId;
+                            neighbourNodeIds += neighbour.cellsWithHo[i].nodeId;
                         else
-                            neighbourNodeIds += ',' + neighbour.neighborList[i].nodeId;
+                            neighbourNodeIds += ',' + neighbour.cellsWithHo[i].nodeId;
                     }
+           	    
                     var neighbrList = escape(neighbourNodeIds);
                     childWindow = window.open('modifyCell.html?cid=' + cid +
                         '&pcid=' + pcid + '&neighbrList=' + neighbrList, '',
@@ -411,7 +486,46 @@
 					document.getElementById("rmenu").className = "hide";
                 }
             };
-            xmlhttp.open("POST", "http://ransimsvr:8081/ransim/api/GetNeighborList",
+            xmlhttp.open("POST", "/ransim/api/GetNeighborList",
+                true);
+            xmlhttp.setRequestHeader('Content-Type', 'application/json')
+            xmlhttp.send(dataObj);
+        }
+
+	function modifyNodePci(cid, pcid) {
+            var formVal = {
+                "newPhysicalCellId": pcid,
+                "nodeId": cid
+            }
+            var dataObj = JSON.stringify(formVal);
+            //var dataObj = JSON.stringify(formVal);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var neighbour = JSON.parse(this.responseText);
+                    var neighbourNodeIds = '';
+                    for (i in neighbour.cellsWithHo) {
+                        if (neighbourNodeIds.length == 0)
+                            neighbourNodeIds += neighbour.cellsWithHo[i].nodeId;
+                        else
+                            neighbourNodeIds += ',' + neighbour.cellsWithHo[i].nodeId;
+                    }
+		    /*for (i in neighbour.cellsWithNoHo) {
+                        if (neighbourNodeIds.length == 0)
+                            neighbourNodeIds += neighbour.cellsWithNoHo[i].nodeId;
+                        else
+                            neighbourNodeIds += ',' + neighbour.cellsWithNoHo[i].nodeId;
+                    }*/
+                    var neighbrList = escape(neighbourNodeIds);
+                    childWindow = window.open('modifyCellPci.html?cid=' + cid +
+                        '&pcid=' + pcid + '&neighbrList=' + neighbrList, '',
+                        'menubar=no, locationbar=no, toolbar=no, width=600px, height=500px'
+                    );
+                    var timer = setInterval(checkChild, 500);
+					document.getElementById("rmenu").className = "hide";
+                }
+            };
+            xmlhttp.open("POST", "/ransim/api/GetNeighborList",
                 true);
             xmlhttp.setRequestHeader('Content-Type', 'application/json')
             xmlhttp.send(dataObj);
@@ -488,7 +602,7 @@
                         }
                         
 		 };
-                    xmlhttp.open("POST", "http://ransimsvr:8081/ransim/api/GetNetconfServerDetails",
+                    xmlhttp.open("POST", "/ransim/api/GetNetconfServerDetails",
                         true);
                     xmlhttp.setRequestHeader('Content-Type', 'application/json')
                     xmlhttp.send(dataObj);
@@ -520,10 +634,10 @@
                                ScreenConfig.context.stroke();
                                ScreenConfig.context.closePath();
                                ScreenConfig.context.fill();
-                               ScreenConfig.context.font = "11px Comic Sans MS";
+                               ScreenConfig.context.font = "bold 11px Comic Sans MS";
                                ScreenConfig.context.fillStyle = "black";
                                ScreenConfig.context.textAlign = "center";
-                               fillMultiLineText(ScreenConfig.context, p, x, y);
+                               fillMultiLineText(ScreenConfig.context, p, x, (y + (ScreenConfig.RADIUS/2)));
                            }
 	}
     </script>
@@ -533,7 +647,7 @@
     <div class="hide" id="rmenu"></div>
     <div class="hide" id="modified"></div>
     <div id="ransim" class="absolute">
-    PNF name: <input type="text" id="myText" size="9" value="ncserver00">	
+    PNF/Cell name: <input type="text" id="myText" size="9" value="ncserver00">	
 		<button onclick="searchCell()">Search</button>
 		<br>
 		

@@ -33,6 +33,7 @@ language governing permissions and limitations under the License.
 		<mariadb.jdbc.version>1.2.3</mariadb.jdbc.version>
 		<javax.persistence.api.version>1.0.2</javax.persistence.api.version>
 		<jetty.version>9.2.11.v20150529</jetty.version>
+		<version.org.hibernate>4.3.11.Final</version.org.hibernate>
 	</properties>
 	<packaging>war</packaging>
 	<build>
@@ -123,6 +124,12 @@ language governing permissions and limitations under the License.
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.9.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmockit</groupId>
+			<artifactId>jmockit</artifactId>
+			<version>1.19</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -243,6 +250,16 @@ language governing permissions and limitations under the License.
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${version.org.hibernate}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-testing</artifactId>
+			<version>${version.org.hibernate}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

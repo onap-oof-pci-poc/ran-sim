@@ -21,7 +21,7 @@
 package org.onap.ransim.rest.api.models;
 
 public class CellInfo {
-
+    
     private String networkId;
     private String nodeId;
     private long physicalCellId;
@@ -29,7 +29,7 @@ public class CellInfo {
     private int sectorNumber;
     private String latitude;
     private String longitude;
-
+    
     /**
      * A constructor for CellInfo.
      *
@@ -48,8 +48,8 @@ public class CellInfo {
      * @param longitude
      *            longitude of the node
      */
-    public CellInfo(String networkId, String nodeId, long physicalCellId, String pnfName, int sectorNumber,
-            String latitude, String longitude) {
+    public CellInfo(String networkId, String nodeId, long physicalCellId,
+            String pnfName, int sectorNumber, String latitude, String longitude) {
         super();
         this.networkId = networkId;
         this.nodeId = nodeId;
@@ -59,65 +59,65 @@ public class CellInfo {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
+    
     public CellInfo() {
-
+        
     }
-
+    
     public String getNetworkId() {
         return networkId;
     }
-
+    
     public void setNetworkId(String networkId) {
         this.networkId = networkId;
     }
-
+    
     public String getNodeId() {
         return nodeId;
     }
-
+    
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId;
     }
-
+    
     public long getPhysicalCellId() {
         return physicalCellId;
     }
-
+    
     public void setPhysicalCellId(long physicalCellId) {
         this.physicalCellId = physicalCellId;
     }
-
+    
     public String getPnfName() {
         return pnfName;
     }
-
+    
     public void setPnfName(String pnfName) {
         this.pnfName = pnfName;
     }
-
+    
     public int getSectorNumber() {
         return sectorNumber;
     }
-
+    
     public void setSectorNumber(int sectorNumber) {
         this.sectorNumber = sectorNumber;
     }
-
+    
     public String getLatitude() {
         return latitude;
     }
-
+    
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
-
+    
     public String getLongitude() {
         return longitude;
     }
-
+    
     public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
-
+    
 }

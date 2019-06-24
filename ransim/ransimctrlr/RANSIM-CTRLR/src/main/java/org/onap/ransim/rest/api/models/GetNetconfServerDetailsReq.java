@@ -21,9 +21,9 @@
 package org.onap.ransim.rest.api.models;
 
 public class GetNetconfServerDetailsReq {
-
+    
     private String serverId;
-
+    
     /**
      * A constructor for GetNetconfServerDetailsReq.
      *
@@ -34,18 +34,18 @@ public class GetNetconfServerDetailsReq {
         super();
         this.serverId = serverId;
     }
-
+    
     public GetNetconfServerDetailsReq() {
-
+        
         // TODO Auto-generated constructor stub
     }
-
+    
     public String getServerId() {
         return serverId;
     }
-
+    
     public void setServerId(String serverId) {
         this.serverId = serverId;
     }
-
+    
 }

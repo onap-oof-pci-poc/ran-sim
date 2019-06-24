@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ============LICENSE_START=======================================================
-  ONAP Ransim Controller
+  ONAP-PAP-REST
   ================================================================================
-  Copyright (C) 2018 Wipro Limited Intellectual Property. All rights reserved.
+  Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
   ================================================================================
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -27,7 +27,9 @@
 		<class>org.onap.ransim.rest.api.models.CellDetails</class>
 		<class>org.onap.ransim.rest.api.models.CellNeighbor</class>
 		<class>org.onap.ransim.rest.api.models.NetconfServers</class>
-		
+		<class>org.onap.ransim.rest.api.models.OperationLog</class>	
+		<class>org.onap.ransim.rest.api.models.NeighborDetails</class>
+	        
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mariadb://mariadb:3306/ransim_db"/>
