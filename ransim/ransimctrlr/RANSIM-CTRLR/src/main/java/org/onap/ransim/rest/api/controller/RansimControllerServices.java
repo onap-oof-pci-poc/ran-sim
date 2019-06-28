@@ -431,7 +431,7 @@ public class RansimControllerServices {
             String[] newNbrsArr = nbrsStr.split(",");
             
             for(int i=0; i<newNbrsArr.length; i++){
-                NeighborDetails cell = new NeighborDetails(new NeihborId(req.getNodeId(), newNbrsArr[i]), false);
+                NeighborDetails cell = new NeighborDetails(new NeihborId(req.getNodeId(), newNbrsArr[i].trim()), false);
                 nbrsList.add(cell);
             }
             

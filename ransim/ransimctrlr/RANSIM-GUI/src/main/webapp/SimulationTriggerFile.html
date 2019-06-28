@@ -69,7 +69,7 @@
 				var dataObj = JSON.stringify(formVal);
 				
 				
-                 var res = $http.post('http://ransimsvr:8081/ransim/api/StartSimulation', dataObj)
+                 var res = $http.post('/ransim/api/StartSimulation', dataObj)
 					.then(function successCallback(response){
 						alert( "Simulation successfully triggered");
 						window.close();

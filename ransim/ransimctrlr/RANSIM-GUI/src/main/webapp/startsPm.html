@@ -21,7 +21,7 @@
 
 <html>
    <head>
-      <title>Performance Management</title>
+      <title>PM</title>
       <script src="angular.min.js"></script>      
       <style>
          table, th , td {
@@ -41,19 +41,32 @@
    </head>
    <body>
       <center>
-      <h2>Performance Management(PM)</h2>
+      <h2>Enter the cells with Hand-off Failures</h2>
       <div data-ng-init="onloadFun()" ng-app = "mainApp" ng-controller = "configController">         
          <form name = "configForm" novalidate>
-            <table border = "0" align=center>
-               <tr>
-                  <td>
-					Stop generating PM data
+            <table border = "0" align=center>    
+		<tr>
+                  <td>Node Id(bad value):</td>
+                  <td><input name = "nodeIdBad" type = "string" ng-model = "nodeIdBad">
+                     <br>
                   </td>
-               </tr>                                   
+               </tr> 
                <tr>
-                  <td align=right>                  
-                     <button ng-click="stopPm()">Yes</button>
-		     <button ng-click = "close()">No</button>
+		   <td colspan=2> Bad Value: Enter the ids of the cell(s) for which the HO to a few neighbors will have less than 25% success.</td>	
+	       </tr> 
+	       <tr>
+                  <td>Node Id(poor value):</td>
+                  <td><input name = "nodeIdPoor" type = "string" ng-model = "nodeIdPoor">
+                     <br>
+                  </td>
+               </tr>
+	       <tr>
+		   <td colspan=2> Poor Value: Enter the ids of the cell(s) for which the HO to a few neighbors will have 25%-50% success.</td>	
+	       </tr>                               
+               <tr>
+                  <td colspan=2 align=center>                  
+                     <button ng-click="startPm()">Start</button>
+		     <button ng-click = "close()">Close</button>
                   </td>
                </tr>					
             </table>
@@ -62,29 +75,28 @@
       <script>
          var mainApp = angular.module("mainApp", []);
          mainApp.controller('configController',['$scope', '$http', function($scope, $http) {
-            $scope.stopPm = function(){	
-            	//alert("check");
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function() {
-		 // alert("check 2");
-                  if (this.readyState == 4 && this.status == 200) {
-                	  //alert( "Success message: "+JSON.stringify(this.responseText));	
-			var result = (this.responseText);
-			alert("Response: " + result);
-					  //alert("Request generated successfully.");
-					  window.close();
-                  } else if (this.readyState == 4 && this.status > 200) {
-                	  //alert( "Failure message: "+JSON.stringify(this.responseText));	
-					  alert("Request Failed. ");
-					  window.close();
-                  }
-                };
+            $scope.startPm = function(){	
+
+		var formVal =
+		 {
+				"nodeIdBad": $scope.nodeIdBad,
+				"nodeIdPoor":$scope.nodeIdPoor
+				
+		}
+		var dataObj = JSON.stringify(formVal);            	
+
+               var res = $http.post('/ransim/api/GeneratePmData', dataObj)
+					.then(function successCallback(response){
+						
+						//alert("Request sent Successfully");
+						window.close();						
+					}, function errorCallback(response){
+						
+						//alert("Request Failed");
+						window.close();
+					});                             
                 
-		xmlhttp.open("GET", "/ransim/api/stopPmData",
-                true);
-                xmlhttp.send();                                
-                
-			};			
+		};			
 			$scope.close = function(){	
 				window.close();
 			}

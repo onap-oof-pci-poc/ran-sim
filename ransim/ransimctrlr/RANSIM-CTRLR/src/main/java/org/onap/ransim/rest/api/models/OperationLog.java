@@ -42,10 +42,10 @@ public class OperationLog {
     private String message;
     private String fieldName;
     private String operation;
-    private String prevValue;
+    /*private String prevValue;
     
     @Column(name = "currValue", length = 500)
-    private String currValue;
+    private String currValue;*/
     
     public int getRowId() {
         return rowId;
@@ -104,20 +104,5 @@ public class OperationLog {
         this.operation = operation;
     }
     
-    public String getPrevValue() {
-        return prevValue;
-    }
-    
-    public void setPrevValue(String prevValue) {
-        this.prevValue = prevValue;
-    }
-    
-    public String getCurrValue() {
-        return currValue;
-    }
-    
-    public void setCurrValue(String currValue) {
-        this.currValue = currValue;
-    }
-    
+        
 }

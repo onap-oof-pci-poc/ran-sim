@@ -102,7 +102,7 @@
 				var dataObj = JSON.stringify(formVal);
 				
 				
-                 var res = $http.post('http://ransimsvr:8081/ransim/api/ModifyACell', dataObj)
+                 var res = $http.post('/ransim/api/ModifyACell', dataObj)
 					.then(function successCallback(response){
 						
 						alert("Modified Successfully");

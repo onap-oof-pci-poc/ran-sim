@@ -100,11 +100,11 @@
             console.log(topoObj);
             console.log("netconfServerUserInput");
         	console.log(netconfServerUserInput);
-            var width = window.innerWidth;
-            var height = window.innerWidth;
+            var width = window.innerWidth*3.5;
+            var height = window.innerWidth*3.5;
             var myCanvas = document.getElementById("myCanvas");
-	    var topoWidth = (width*3) + 200;	
-	    var topoHeight = (height*3) + 200;
+	    var topoWidth = (width) + 200;	
+	    var topoHeight = (height) + 200;
             myCanvas.width = topoWidth;
             myCanvas.height = topoHeight;
 
@@ -118,8 +118,8 @@
             context.fillRect(0, 0, topoWidth, topoHeight);
             var RADIUS = 11;
             var noProblemColor = "#32CD32"; //GREEN
-            var xScaleUnit = width / ((topoObj.maxScreenX - topoObj.minScreenX)/3 )
-            var yScaleUnit = height / ((topoObj.maxScreenY - topoObj.minScreenY)/3 )
+            var xScaleUnit = width / ((topoObj.maxScreenX - topoObj.minScreenX) )
+            var yScaleUnit = height / ((topoObj.maxScreenY - topoObj.minScreenY) )
 
             ScreenConfig = {
                 "xScaleUnit": xScaleUnit,
@@ -151,8 +151,8 @@
                    confColor = "#8A2BE2";
 				}
 
-                var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX ) * xScaleUnit + 20;
-                var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY ) * yScaleUnit + 20;
+                var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX ) * xScaleUnit + 50;
+                var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY ) * yScaleUnit + 50;
 
                 if (topoObj.cellTopology[i].sectorNumber == 1) {
                     cellX -= RADIUS;
@@ -198,8 +198,8 @@
 
                 var isClickedOnCell = false;
                 for (i in topoObj.cellTopology) {
-                    var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 20;
-                    var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
+                    var cellX = (topoObj.cellTopology[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 50;
+                    var cellY = (topoObj.cellTopology[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 50;
                     var rt = 0;
                     if (isIntersect(pos, topoObj.cellTopology[i], cellX, cellY, ScreenConfig)) {
 			isClickedOnCell = true;
@@ -342,8 +342,8 @@
                 }
                 ScreenConfig.context.beginPath();
                 ScreenConfig.context.moveTo(cellX, cellY);
-                var nbrCellX = (neighbour.cellsWithHo[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 20;
-                var nbrCellY = (neighbour.cellsWithHo[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
+                var nbrCellX = (neighbour.cellsWithHo[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 50;
+                var nbrCellY = (neighbour.cellsWithHo[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 50;
 
                 if (neighbour.cellsWithHo[i].sectorNumber == 1) {
                     nbrCellX -= ScreenConfig.RADIUS;
@@ -381,11 +381,19 @@
                 }
 
                 console.log("336. neighbourPCI: " + neighbourPhysicalCellId + " collCol:" + collCol + "confCol: " + confCol);
+               
+                var headlen = 20;   // length of head in pixels
+                var angle = Math.atan2(nbrCellY-cellY,nbrCellX-cellX); 
                 ScreenConfig.context.lineTo(nbrCellX, nbrCellY);
                 ScreenConfig.context.strokeStyle = confuColor;
-                ScreenConfig.context.lineWidth = 2;
+                ScreenConfig.context.lineWidth = 1;
+                ScreenConfig.context.lineTo(nbrCellX-headlen*Math.cos(angle-Math.PI/6),nbrCellY-headlen*Math.sin(angle-Math.PI/6));
+                ScreenConfig.context.moveTo(nbrCellX, nbrCellY);
+                ScreenConfig.context.lineTo(nbrCellX-headlen*Math.cos(angle+Math.PI/6),nbrCellY-headlen*Math.sin(angle+Math.PI/6));
                 ScreenConfig.context.stroke();
                 ScreenConfig.context.closePath();
+
+                  
 
                 ScreenConfig.context.fillStyle = confuColor;
                 ScreenConfig.context.beginPath();
@@ -398,6 +406,14 @@
                 ScreenConfig.context.fillStyle = "black";
                 ScreenConfig.context.textAlign = "center";
                 fillMultiLineText(ScreenConfig.context, neighbourPhysicalCellId, nbrCellX, (nbrCellY + (RADIUS/2)) );
+		
+		if(nbrCellY > cellY){
+			ScreenConfig.context.fillText(neighbourNodeId, nbrCellX, (nbrCellY + 2.2*RADIUS) );
+		}
+		else{
+			ScreenConfig.context.fillText(neighbourNodeId, nbrCellX, (nbrCellY - 1.6*RADIUS) );
+		}
+		
             }
 
 	    for (i in neighbour.cellsWithNoHo) {
@@ -409,10 +425,11 @@
                 
                 confuColor = "#606060";
                 
+
                 ScreenConfig.context.beginPath();
                 ScreenConfig.context.moveTo(cellX, cellY);
-                var nbrCellX = (neighbour.cellsWithNoHo[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 20;
-                var nbrCellY = (neighbour.cellsWithNoHo[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 20;
+                var nbrCellX = (neighbour.cellsWithNoHo[i].screenX - topoObj.minScreenX ) * ScreenConfig.xScaleUnit + 50;
+                var nbrCellY = (neighbour.cellsWithNoHo[i].screenY - topoObj.minScreenY ) * ScreenConfig.yScaleUnit + 50;
 
                 if (neighbour.cellsWithNoHo[i].sectorNumber == 1) {
                     nbrCellX -= ScreenConfig.RADIUS;
@@ -424,10 +441,16 @@
 
                 
                 console.log("336. neighbourPCI: " + neighbourPhysicalCellId + " collCol:" + collCol + "confCol: " + confCol);
+		var headlen = 20;   // length of head in pixels
+                var angle = Math.atan2(nbrCellY-cellY,nbrCellX-cellX);
 		ScreenConfig.context.setLineDash([10, 5]);
+
                 ScreenConfig.context.lineTo(nbrCellX, nbrCellY);
                 ScreenConfig.context.strokeStyle = confuColor;
-                ScreenConfig.context.lineWidth = 2;
+                ScreenConfig.context.lineWidth = 1;
+		ScreenConfig.context.lineTo(nbrCellX-headlen*Math.cos(angle-Math.PI/6),nbrCellY-headlen*Math.sin(angle-Math.PI/6));
+                ScreenConfig.context.moveTo(nbrCellX, nbrCellY);
+                ScreenConfig.context.lineTo(nbrCellX-headlen*Math.cos(angle+Math.PI/6),nbrCellY-headlen*Math.sin(angle+Math.PI/6));
                 ScreenConfig.context.stroke();
                 ScreenConfig.context.closePath();
 
@@ -442,6 +465,12 @@
                 ScreenConfig.context.fillStyle = "black";
                 ScreenConfig.context.textAlign = "center";
                 fillMultiLineText(ScreenConfig.context, neighbourPhysicalCellId, nbrCellX, (nbrCellY + (RADIUS/2)));
+		if(nbrCellY > cellY){
+			ScreenConfig.context.fillText(neighbourNodeId, nbrCellX, (nbrCellY + 2.2*RADIUS) );
+		}
+		else{
+			ScreenConfig.context.fillText(neighbourNodeId, nbrCellX, (nbrCellY - 1.6*RADIUS) );
+		}
             }
 
             ScreenConfig.context.fillStyle = "#00FFFF";
@@ -576,6 +605,8 @@
                 y += lineHeight;
             }
         }
+    
+        
         
         function reset(){
         	netconfServerUserInput = "";
@@ -616,8 +647,8 @@
                                var n = cellList.cells[i].nodeId;
                                var p = cellList.cells[i].physicalCellId;
 
-                               var x = (cellList.cells[i].screenX - ScreenConfig.minX ) * ScreenConfig.xScaleUnit + 20;
-                               var y = (cellList.cells[i].screenY - ScreenConfig.minY ) * ScreenConfig.yScaleUnit + 20;
+                               var x = (cellList.cells[i].screenX - ScreenConfig.minX ) * ScreenConfig.xScaleUnit + 50;
+                               var y = (cellList.cells[i].screenY - ScreenConfig.minY ) * ScreenConfig.yScaleUnit + 50;
                                
                                if (cellList.cells[i].sectorNumber == 1) {
                                    x -= ScreenConfig.RADIUS;

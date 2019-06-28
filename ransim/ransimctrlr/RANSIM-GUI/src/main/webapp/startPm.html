@@ -50,13 +50,19 @@
                   <td><input name = "nodeIdBad" type = "string" ng-model = "nodeIdBad">
                      <br>
                   </td>
-               </tr>  
+               </tr> 
+               <tr>
+		   <td colspan=2> Bad Value: A Cell for which 20% of its neighbors will have very high percentage of Hand-Off failure. The Cell-Neighbor pair should be blackisted.</td>	
+	       </tr> 
 	       <tr>
                   <td>Node Id(poor value):</td>
                   <td><input name = "nodeIdPoor" type = "string" ng-model = "nodeIdPoor">
                      <br>
                   </td>
-               </tr>                              
+               </tr>
+	       <tr>
+		   <td colspan=2> Poor Value: A Cell for which 20% of its neighbors will have a considerable percentage of Hand-Off failure.</td>	
+	       </tr>                               
                <tr>
                   <td colspan=2 align=center>                  
                      <button ng-click="startPm()">Start</button>
@@ -79,7 +85,7 @@
 		}
 		var dataObj = JSON.stringify(formVal);            	
 
-               var res = $http.post('http://ransimsvr:8081/ransim/api/GeneratePmData', dataObj)
+               var res = $http.post('/ransim/api/GeneratePmData', dataObj)
 					.then(function successCallback(response){
 						
 						//alert("Request sent Successfully");

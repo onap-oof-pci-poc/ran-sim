@@ -1827,8 +1827,6 @@ public class RansimController {
         operationLog.setNodeId(nodeId);
         operationLog.setFieldName("PCID");
         operationLog.setOperation("Modify");
-        operationLog.setCurrValue("");
-        operationLog.setPrevValue("");
         operationLog.setSource(source);
         operationLog.setTime(System.currentTimeMillis());
         operationLog.setMessage("PCID value changed from " + oldPciId + " to " + physicalCellId);
@@ -1846,8 +1844,6 @@ public class RansimController {
         operationLogNbrChng.setNodeId(nodeId);
         operationLogNbrChng.setFieldName("Neighbors");
         operationLogNbrChng.setOperation("Modify");
-        operationLogNbrChng.setCurrValue("");
-        operationLogNbrChng.setPrevValue("");
         operationLogNbrChng.setSource(source);
         
         log.info(" Neighbors added " + addedNbrs + ".");
