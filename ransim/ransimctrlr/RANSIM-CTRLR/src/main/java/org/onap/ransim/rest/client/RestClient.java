@@ -72,28 +72,8 @@ public class RestClient {
      */
     public String sendMountRequestToSdnr(String serverId, String ip, int port, String agentIp, String agentPort,
             String agentUsername, String agentPassword) {
-        String requestBody = "<node\r\n" + "    xmlns=\"urn:TBD:params:xml:ns:yang:network-topology\">\r\n"
-                + "    <node-id>" + serverId + "</node-id>\r\n" + "    <host\r\n"
-                + "        xmlns=\"urn:opendaylight:netconf-node-topology\">" + agentIp + "\r\n" + "    </host>\r\n"
-                + "    <port\r\n" + "        xmlns=\"urn:opendaylight:netconf-node-topology\">" + agentPort + "\r\n"
-                + "    </port>\r\n" + "    <username\r\n"
-                + "        xmlns=\"urn:opendaylight:netconf-node-topology\">admin\r\n" + "    </username>\r\n"
-                + "    <password\r\n" + "        xmlns=\"urn:opendaylight:netconf-node-topology\">admin\r\n"
-                + "    </password>\r\n" + "    <tcp-only\r\n"
-                + "        xmlns=\"urn:opendaylight:netconf-node-topology\">false\r\n" + "    </tcp-only>\r\n"
-                + "    <!-- non-mandatory fields with default values, you can safely remove these "
-                + "if you do not wish to override any of these values-->\r\n" + "    <reconnect-on-changed-schema\r\n"
-                + "        xmlns=\"urn:opendaylight:netconf-node-topology\">false\r\n"
-                + "    </reconnect-on-changed-schema>\r\n" + "    <connection-timeout-millis\r\n"
-                + "        xmlns=\"urn:opendaylight:netconf-node-topology\">20000\r\n"
-                + "    </connection-timeout-millis>\r\n" + "    <max-connection-attempts\r\n"
-                + "        xmlns=\"urn:opendaylight:netconf-node-topology\">0\r\n"
-                + "    </max-connection-attempts>\r\n" + "    <between-attempts-timeout-millis\r\n"
-                + "        xmlns=\"urn:opendaylight:netconf-node-topology\">2000\r\n"
-                + "    </between-attempts-timeout-millis>\r\n" + "    <sleep-factor\r\n"
-                + "        xmlns=\"urn:opendaylight:netconf-node-topology\">1.5\r\n" + "    </sleep-factor>\r\n"
-                + "    <keepalive-delay\r\n" + "        xmlns=\"urn:opendaylight:netconf-node-topology\">120\r\n"
-                + "    </keepalive-delay>\r\n" + "</node>";
+        String requestBody = "<node xmlns=\"urn:TBD:params:xml:ns:yang:network-topology\">    <node-id> " + serverId + " </node-id>    <username xmlns=\"urn:opendaylight:netconf-node-topology\">admin</username>    <password xmlns=\"urn:opendaylight:netconf-node-topology\">admin</password>    <host xmlns=\"urn:opendaylight:netconf-node-topology\">" + agentIp + "</host>    <schema-cache-directory xmlns=\"urn:opendaylight:netconf-node-topology\">" + serverId + "</schema-cache-directory>    <port xmlns=\"urn:opendaylight:netconf-node-topology\">" + agentPort + "</port>    <tcp-only xmlns=\"urn:opendaylight:netconf-node-topology\">false</tcp-only>    <schemaless xmlns=\"urn:opendaylight:netconf-node-topology\">false</schemaless>    <max-connection-attempts xmlns=\"urn:opendaylight:netconf-node-topology\">0</max-connection-attempts>    <connection-timeout-millis xmlns=\"urn:opendaylight:netconf-node-topology\">20000</connection-timeout-millis>    <default-request-timeout-millis xmlns=\"urn:opendaylight:netconf-node-topology\">60000</default-request-timeout-millis>    <sleep-factor xmlns=\"urn:opendaylight:netconf-node-topology\">1.1</sleep-factor>    <between-attempts-timeout-millis xmlns=\"urn:opendaylight:netconf-node-topology\">2000</between-attempts-timeout-millis>    <reconnect-on-changed-schema xmlns=\"urn:opendaylight:netconf-node-topology\">false</reconnect-on-changed-schema>    <keepalive-delay xmlns=\"urn:opendaylight:netconf-node-topology\">60</keepalive-delay>    <concurrent-rpc-limit xmlns=\"urn:opendaylight:netconf-node-topology\">0</concurrent-rpc-limit>    <actor-response-wait-time xmlns=\"urn:opendaylight:netconf-node-topology\">60</actor-response-wait-time></node>";
+
         HttpHeaders headers = createHeaders(agentUsername, agentPassword);
 
         log.info("request : " + requestBody);

@@ -21,6 +21,7 @@
 package org.onap.ransim.rest.api.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -655,6 +656,39 @@ public class RansimControllerServices {
             entitymanager.close();
             emfactory.close();
         }
+    }
+
+
+    @ApiOperation("Returns the connection status of all netconf servers")
+    @RequestMapping(value = "/GetNetconfStatus", method = RequestMethod.GET)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successful"),
+            @ApiResponse(code = 500, message = "Failure in GetNetconfServerDetails API") })
+    public ResponseEntity<String> GetNetconfStatus() throws Exception {
+        
+    	RansimControllerDatabase rsDb = new RansimControllerDatabase();
+        try {
+            log.info("Inside GetNetconfServerDetails API...");
+            String result = "";
+            
+                List<NetconfServers> ns = rsDb.getNetconfServersList();
+                if (ns != null) {
+                	GsonBuilder gsonBuilder = new GsonBuilder();  
+                	gsonBuilder.serializeNulls();  
+                	Gson gson = gsonBuilder.create();
+                    //Gson gson = new Gson();
+                    String jsonStr = gson.toJson(ns);
+                    result = jsonStr;
+                } else {
+                    result = ("Server Id does not exist");
+                }
+            
+            return new ResponseEntity<>(result, HttpStatus.OK);
+            
+        } catch (Exception eu) {
+            log.info("/GetNetconfServers", eu);
+            return new ResponseEntity<>("Failure in GetNetconfServerDetails API",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        } 
     }
     
     /**

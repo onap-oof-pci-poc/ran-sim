@@ -48,6 +48,9 @@
 		$scope.showOperationTable = function() {
 			$window.open('operationhistory.html', '','menubar=no, locationbar=no, toolbar=no, width=850px, height=450px');
 		};
+		$scope.showNetconfServerDetails = function() {
+			$window.open('AdditionalFeature.html', '','menubar=no, locationbar=no, toolbar=no, width=850px, height=450px');
+		};
 		$scope.startPm = function() {
 			
 			document.getElementById("stopPm").disabled = false;
@@ -94,6 +97,9 @@
 		<br>
                 <div id="operupdate" name="operuodate">Click view to check details of the updated cells</div>
 		<button ng-click="showOperationTable()">View</button>
+		<br>
+		<br>
+		<button ng-click="showNetconfServerDetails()">Netconf Details</button>
 		<br>
 		<br>
 		<div>PM data</div>
