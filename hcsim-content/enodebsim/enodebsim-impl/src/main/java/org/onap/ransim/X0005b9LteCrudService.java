@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,30 +16,28 @@
 
 package org.onap.ransim;
 
+import io.fd.honeycomb.translate.read.ReadContext;
+import io.fd.honeycomb.translate.read.ReadFailedException;
+import io.fd.honeycomb.translate.write.WriteContext;
+import io.fd.honeycomb.translate.write.WriteFailedException;
+
 import java.math.BigInteger;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.json.JsonObject;
 
 import org.onap.ransim.websocket.model.ModifyPci;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapService;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.X0005b9Lte;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.X0005b9LteBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.FapService;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.X0005b9Lte;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.X0005b9LteBuilder;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier.PathArgument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 //import com.jayway.jsonpath.JsonPath;
-
-import io.fd.honeycomb.translate.read.ReadContext;
-import io.fd.honeycomb.translate.read.ReadFailedException;
-import io.fd.honeycomb.translate.write.WriteContext;
-import io.fd.honeycomb.translate.write.WriteFailedException;
 
 /**
  * Simple example of class handling Crud operations for plugin.
@@ -71,6 +64,11 @@ final class X0005b9LteCrudService implements CrudService<X0005b9Lte> {
 
             // Performs any logic needed for persisting such data
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
+
+            if(!ConfigJsonHandler.getConfigJsonHandler(null).isConfigTopoInitialized) {
+                LOG.info("ConfigTopo not Initialized, so do nothing");
+                return;
+            }
             int stIndex  = identifier.toString().indexOf("[_alias=");
             String subStr = identifier.toString().substring(stIndex+"[_alias=".length());
             String cid = subStr.substring(0, subStr.indexOf("]"));
@@ -133,13 +131,14 @@ final class X0005b9LteCrudService implements CrudService<X0005b9Lte> {
 
             // Performs any logic needed for persisting such data
             LOG.info("Update path[{}] from [{}] to [{}]", identifier, dataOld, dataNew);
-
+            if(!ConfigJsonHandler.getConfigJsonHandler(null).isConfigTopoInitialized)
+                return;
             int stIndex  = identifier.toString().indexOf("[_alias=");
             String subStr = identifier.toString().substring(stIndex+"[_alias=".length());
             String cid = subStr.substring(0, subStr.indexOf("]"));
 
             ModifyPci modifyPci = new ModifyPci();
-	    /*
+            /*
             if(writeContext.getModificationCache().containsKey("modify-pci-object")) {
                 LOG.debug("Get from context");
                 modifyPci = (ModifyPci)writeContext.getModificationCache().get("modify-pci-object");
@@ -147,7 +146,7 @@ final class X0005b9LteCrudService implements CrudService<X0005b9Lte> {
                 modifyPci = new ModifyPci();
                 LOG.debug("Create new");
             }
-	    */
+             */
 
             modifyPci.setPnfName(dataNew.getPnfName());
             modifyPci.setPciId(dataNew.getPhyCellIdInUse().longValue());

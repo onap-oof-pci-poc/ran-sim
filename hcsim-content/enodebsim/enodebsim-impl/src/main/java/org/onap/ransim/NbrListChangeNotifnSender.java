@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,15 +29,15 @@ import javax.json.JsonObject;
 import org.onap.ransim.websocket.model.Neighbor;
 import org.onap.ransim.websocket.model.Topology;
 import org.onap.ransim.websocket.model.UpdateCell;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.NbrlistChangeNotification;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.NbrlistChangeNotificationBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.RadioAccess;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.nbrlist.change.notification.FapService;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.nbrlist.change.notification.FapServiceBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.nbrlist.change.notification.FapServiceKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.nbrlist.change.notification.fap.service.LteRanNeighborListInUseLteCellChanged;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.nbrlist.change.notification.fap.service.LteRanNeighborListInUseLteCellChangedBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.nbrlist.change.notification.fap.service.LteRanNeighborListInUseLteCellChangedKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.NbrlistChangeNotification;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.NbrlistChangeNotificationBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.RadioAccess;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.nbrlist.change.notification.FapService;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.nbrlist.change.notification.FapServiceBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.nbrlist.change.notification.FapServiceKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.nbrlist.change.notification.fap.service.LteRanNeighborListInUseLteCellChanged;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.nbrlist.change.notification.fap.service.LteRanNeighborListInUseLteCellChangedBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.nbrlist.change.notification.fap.service.LteRanNeighborListInUseLteCellChangedKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.opendaylight.yangtools.yang.binding.Notification;
 import org.slf4j.Logger;
@@ -56,38 +51,40 @@ import io.fd.honeycomb.notification.NotificationCollector;
  */
 public class NbrListChangeNotifnSender implements ManagedNotificationProducer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NbrListChangeNotifnSender.class);
-    private static final InstanceIdentifier<RadioAccess> ROOT_CONTAINER_ID = InstanceIdentifier.create(RadioAccess.class);
+    private static final Logger LOG = LoggerFactory
+            .getLogger(NbrListChangeNotifnSender.class);
+    private static final InstanceIdentifier<RadioAccess> ROOT_CONTAINER_ID = InstanceIdentifier
+            .create(RadioAccess.class);
 
     private Thread thread;
     static NotificationCollector collector = null;
 
     public static void sendNotification(UpdateCell updCell) {
-        LOG.info("RANSIM NbrListChangeNotifnSender sendNotification called ****** "+updCell.toString());
-        FapServiceKey fsKey = new FapServiceKey(updCell.getOneCell().getCellId());
+        LOG.info("RANSIM NbrListChangeNotifnSender sendNotification called ****** {}"
+                , updCell.toString());
+        FapServiceKey fsKey = new FapServiceKey(updCell.getOneCell()
+                .getCellId());
         List<LteRanNeighborListInUseLteCellChanged> nbrList = new ArrayList<LteRanNeighborListInUseLteCellChanged>();
-        for(int i=0; i<updCell.getOneCell().getNeighborList().size(); i++) {
+        for (int i = 0; i < updCell.getOneCell().getNeighborList().size(); i++) {
             Neighbor nbr = updCell.getOneCell().getNeighborList().get(i);
-            LteRanNeighborListInUseLteCellChangedKey nbrInUseKey = new LteRanNeighborListInUseLteCellChangedKey(null, null);
+            LteRanNeighborListInUseLteCellChangedKey nbrInUseKey = new LteRanNeighborListInUseLteCellChangedKey(
+                    null, null);
             LteRanNeighborListInUseLteCellChanged nbrInUse = new LteRanNeighborListInUseLteCellChangedBuilder()
-            		.setPnfName(nbr.getServerId())
-                    .setCid(nbr.getNodeId())
+                    .setPnfName(nbr.getServerId()).setCid(nbr.getNodeId())
                     .setPhyCellId(BigInteger.valueOf(nbr.getPhysicalCellId()))
-                    .setPlmnid(nbr.getPlmnId())
-                    .build();
+                    .setPlmnid(nbr.getPlmnId()).build();
             nbrList.add(nbrInUse);
         }
         FapService fsCell = new FapServiceBuilder()
-        		.setAlias(updCell.getOneCell().getCellId())
-        		.setCid(updCell.getOneCell().getCellId())
-                .setLteRanNeighborListInUseLteCellChanged(nbrList)
-                .build();
+                .setAlias(updCell.getOneCell().getCellId())
+                .setCid(updCell.getOneCell().getCellId())
+                .setLteRanNeighborListInUseLteCellChanged(nbrList).build();
         BigInteger fapServiceNumberOfEntriesChanged = BigInteger.ONE;
         List<FapService> fsList = new ArrayList<FapService>();
         fsList.add(fsCell);
         final NbrlistChangeNotification notification = new NbrlistChangeNotificationBuilder()
-                .setFapServiceNumberOfEntriesChanged(fapServiceNumberOfEntriesChanged)
-                .setFapService(fsList)
+                .setFapServiceNumberOfEntriesChanged(
+                        fapServiceNumberOfEntriesChanged).setFapService(fsList)
                 .build();
         LOG.info("Emitting notification: {}", notification);
         collector.onNotification(notification);
@@ -95,24 +92,28 @@ public class NbrListChangeNotifnSender implements ManagedNotificationProducer {
 
     @Override
     public void start(@Nonnull final NotificationCollector collector) {
-    	
+
         NbrListChangeNotifnSender.collector = collector;
         LOG.info("Starting notification stream for interfaces");
 
         // Simulating notification producer
         thread = new Thread(() -> {
-            while(true) {
+                    try { Thread.sleep(25000); } catch(Exception e){}
+            int notfnCount = 0;
+            while (true) {
                 if (Thread.currentThread().isInterrupted()) {
                     return;
                 }
 
                 try {
-                    /*List<Neighbor> nbrs = new ArrayList<Neighbor> ();
-                    nbrs.add(new Neighbor("jio", "1", 1, "ncserver1001", "ncserver1001"));
-                    UpdateCell updCell = new UpdateCell("1", "127.0.0.1", "50000"
-                            , new Topology("ncserver1001", 1, "51", nbrs));*/
-                    Thread.sleep(60000);
-                    /*sendNotification(updCell);*/
+/*        
+        	    LOG.info("Sending notification ..." + notfnCount++);
+                    List<Neighbor> nbrs = new ArrayList<Neighbor> ();
+                    nbrs.add(new Neighbor("jio", "1", 1, "ncserver1001", "ncserver1001", false)); 
+                    UpdateCell updCell = new UpdateCell("1", "127.0.0.1", "50000" , new Topology("ncserver1001", 1, "51", nbrs));
+                    sendNotification(updCell);
+*/
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -120,12 +121,12 @@ public class NbrListChangeNotifnSender implements ManagedNotificationProducer {
             }
         }, "NotificationProducer");
         thread.setDaemon(true);
-        thread.start();        
+        thread.start();
     }
 
     @Override
     public void stop() {
-        if(thread != null) {
+        if (thread != null) {
             thread.interrupt();
         }
     }

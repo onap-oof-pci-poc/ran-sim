@@ -1,0 +1,34 @@
+{
+  "oofpcipoc:radio-access": {
+    "fap-service": [
+      {
+        "alias": "Chn0012",
+        "cell-config": {
+          "lte": {
+            "tunnel-number-of-entries": 5,
+            "lte-ran": {
+              "lte-ran-neighbor-list-in-use": {
+                "max-lte-cell-entries": 20,
+                "lte-cell-number-of-entries": 3,
+                "lte-ran-neighbor-list-in-use-lte-cell": [
+                  {
+                    "plmnid": "RAN001",
+                    "cid": "Chn0017",
+                    "blacklisted": "true",
+                    "phy-cell-id": 2
+                  },
+                  {
+                    "plmnid": "RAN001",
+                    "cid": "Chn0001",
+                    "blacklisted": "true",
+                    "phy-cell-id": 1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

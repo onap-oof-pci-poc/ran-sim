@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,6 +62,9 @@ public final class ModuleConfiguration {
     @InjectConfig("useNetconfDataChangeNotifn")
     public boolean useNetconfDataChangeNotifn;
 
+    @InjectConfig("vesEventListenerUrl")
+    public String vesEventListenerUrl;
+
     Properties netconfConstants = new Properties();
 
     /**
@@ -85,7 +83,7 @@ public final class ModuleConfiguration {
     public void loadConfig() {
         InputStream input = null;
         try {
-            input = new FileInputStream("ransim.properties");
+            input = new FileInputStream("config/ransim.properties");
             netconfConstants.load(input);
             peristConfigPath = netconfConstants.getProperty("peristConfigPath");
             enodebsimIp = netconfConstants.getProperty("enodebsimIp");
@@ -93,6 +91,7 @@ public final class ModuleConfiguration {
             ransimCtrlrIp = netconfConstants.getProperty("ransimCtrlrIp");
             ransimCtrlrPort = Integer.parseInt(netconfConstants.getProperty("ransimCtrlrPort"));
             useNetconfDataChangeNotifn = Boolean.parseBoolean(netconfConstants.getProperty("useNetconfDataChangeNotifn"));
+            vesEventListenerUrl = netconfConstants.getProperty("vesEventListenerUrl");
         } catch (Exception e) {
             LOG.info("Properties file error", e);
         } finally {

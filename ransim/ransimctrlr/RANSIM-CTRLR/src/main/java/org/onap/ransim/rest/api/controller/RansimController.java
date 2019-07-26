@@ -764,8 +764,9 @@ public class RansimController {
                 log.info("listCellIssue.size(): " + listCellIssue.size());
                 for (EventFm cellIssue : listCellIssue) {
                     if (cellIssue.getCommonEventHeader().getReportingEntityName().equals(nc)) {
+                    	data.add(cellIssue);
                         if(!cellsWithIssues.contains(cellIssue.getCommonEventHeader().getSourceName())){
-                            data.add(cellIssue);
+                            //data.add(cellIssue);
                             cellsWithIssues.add(cellIssue.getCommonEventHeader().getSourceName());
                         }
                         
@@ -2015,7 +2016,7 @@ public class RansimController {
                 result = 200;
             }
             
-            checkCellsWithIssue();
+            //checkCellsWithIssue();
             
         } else {
             result = 400;
@@ -2263,7 +2264,7 @@ public class RansimController {
         rcDb.mergeCellDetails(cd);
         updatePciOperationsTable(modifyPci.getCellId(), source, pci, modifyPci.getPciId());
 
-        checkCellsWithIssue();
+        //checkCellsWithIssue();
         //log.info("neighbor list: " + neighborList);
         
         //modifyCellFunction(modifyPci.getCellId(), modifyPci.getPciId(), neighborList, source);
@@ -2302,11 +2303,11 @@ public class RansimController {
                 rsDb.mergeNeighborDetails(nd);
                 cellList.add(modifyNeighbor.getNeighborList().get(i).getNodeId());
                 if(nbrsAdd.equals("")){
-                    nbrsAdd = modifyNeighbor.getNeighborList().get(i).getNodeId();
+                    nbrsDel = modifyNeighbor.getNeighborList().get(i).getNodeId();
                 }
                 else
                 {
-                    nbrsAdd += "," + modifyNeighbor.getNeighborList().get(i).getNodeId();
+                    nbrsDel += "," + modifyNeighbor.getNeighborList().get(i).getNodeId();
                 }
                 //neighborList.add(nd);
             } else {
@@ -2315,11 +2316,11 @@ public class RansimController {
                 rsDb.mergeNeighborDetails(nd);
                 cellList.add(modifyNeighbor.getNeighborList().get(i).getNodeId());
                 if(nbrsDel.equals("")){
-                    nbrsDel = modifyNeighbor.getNeighborList().get(i).getNodeId();
+                    nbrsAdd = modifyNeighbor.getNeighborList().get(i).getNodeId();
                 }
                 else
                 {
-                    nbrsDel += "," + modifyNeighbor.getNeighborList().get(i).getNodeId();
+                    nbrsAdd += "," + modifyNeighbor.getNeighborList().get(i).getNodeId();
                 }
                 //neighborList.add(nd);    
             }
@@ -2333,7 +2334,7 @@ public class RansimController {
         log.info("neighbor list: " + neighborList);
         
         updateNbrsOperationsTable(modifyNeighbor.getCellId(), source, nbrsAdd, nbrsDel);
-        checkCellsWithIssue();
+        //checkCellsWithIssue();
         
         //modifyCellFunction(modifyNeighbor.getCellId(), currentCell.getPhysicalCellId(),neighborList, source);
     }
@@ -2462,28 +2463,39 @@ public class RansimController {
     /**
      * Used to dump session details.
      */
-    public static void dumpSessionDetails() {
-        log.info("serverIdIpPortMapping.size:" + serverIdIpPortMapping.size()
-                + "webSocketSessions.size" + webSocketSessions.size());
-        for (String key : serverIdIpPortMapping.keySet()) {
-            String val = serverIdIpPortMapping.get(key);
-            Session sess = webSocketSessions.get(val);
-            log.info("ServerId:" + key + " IpPort:" + val + " Session:" + sess);
-        }
-        for (String serverId : unassignedServerIds) {
-            log.info("Unassigned ServerId:" + serverId);
-        }
-        for (String serverId : serverIdIpPortMapping.keySet()) {
-            List<String> attachedNoeds = serverIdIpNodeMapping.get(serverId);
-            if (attachedNoeds != null) {
-                log.info("ServerId:" + serverId + " attachedNoeds.size:" + attachedNoeds.size()
-                        + " nodes:" + attachedNoeds.toArray());
-            } else {
-                log.info("ServerId:" + serverId + " attachedNoeds:" + null);
-            }
-        }
-        
-    }
+    synchronized public static void dumpSessionDetails() {
+
+		try {
+
+			log.info("serverIdIpPortMapping.size:"
+					+ serverIdIpPortMapping.size() + "webSocketSessions.size"
+					+ webSocketSessions.size());
+			for (String key : serverIdIpPortMapping.keySet()) {
+				String val = serverIdIpPortMapping.get(key);
+				Session sess = webSocketSessions.get(val);
+				log.info("ServerId:" + key + " IpPort:" + val + " Session:"
+						+ sess);
+			}
+			
+			//ArrayList<String> usi = (ArrayList<String>) unassignedServerIds.clone();
+			for (String serverId : unassignedServerIds) {
+				log.info("Unassigned ServerId:" + serverId);
+			}
+			for (String serverId : serverIdIpPortMapping.keySet()) {
+				List<String> attachedNoeds = serverIdIpNodeMapping
+						.get(serverId);
+				if (attachedNoeds != null) {
+					log.info("ServerId:" + serverId + " attachedNoeds.size:"
+							+ attachedNoeds.size() + " nodes:"
+							+ attachedNoeds.toArray());
+				} else {
+					log.info("ServerId:" + serverId + " attachedNoeds:" + null);
+				}
+			}
+		} catch (Exception e) {
+			log.info("Exception:", e);
+		}
+	}
     
 }
 

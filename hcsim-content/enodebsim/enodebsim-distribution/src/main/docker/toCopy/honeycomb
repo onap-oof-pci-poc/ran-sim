@@ -1,0 +1,32 @@
+#!/bin/sh -
+STATUS=100
+
+enodebsimIp="${enodebsimIp:=10.143.125.163}"
+enodebsimPort="${enodebsimPort:=50000}"
+ransimCtrlrIp="${ransimCtrlrIp:=10.143.125.147}"
+ransimCtrlrPort="${ransimCtrlrPort:=8081}"
+vesEventListenerUrl="${vesEventListenerUrl:=http://10.143.125.147:8090/eventListener/v7}"
+
+RANSIM_PROP_FILE=config/ransim.properties
+
+echo "enodebsimIp=$enodebsimIp" > $RANSIM_PROP_FILE
+echo "enodebsimPort=$enodebsimPort" >> $RANSIM_PROP_FILE
+echo "ransimCtrlrIp=$ransimCtrlrIp" >> $RANSIM_PROP_FILE
+echo "ransimCtrlrPort=$ransimCtrlrPort" >> $RANSIM_PROP_FILE
+echo "vesEventListenerUrl=$vesEventListenerUrl" >> $RANSIM_PROP_FILE
+echo "peristConfigPath=var/lib/honeycomb/persist/config/data.json" >> $RANSIM_PROP_FILE
+echo "useNetconfDataChangeNotifn=false" >> $RANSIM_PROP_FILE
+
+sed -i "s/50000/$enodebsimPort/g" config/netconf.json
+
+while [ $STATUS -eq 100 ]
+do
+  echo "{}" > var/lib/honeycomb/persist/config/data.json
+  java -Xms128m -Xmx512m -jar $(dirname $0)/enodebsim-distribution-1.18.10.jar
+  STATUS=$?
+  echo "Honeycomb exited with status: $STATUS"
+  if [ $STATUS -eq 100 ]
+  then
+    echo "Restarting..."
+  fi
+done

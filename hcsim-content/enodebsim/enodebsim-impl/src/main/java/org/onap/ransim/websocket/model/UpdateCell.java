@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +58,8 @@ public class UpdateCell {
         this.oneCell = oneCell;
     }
 
-    public UpdateCell(String serverId, String ip, String netconfPort, Topology oneCell) {
+    public UpdateCell(String serverId, String ip, String netconfPort,
+            Topology oneCell) {
         super();
         this.serverId = serverId;
         this.ip = ip;

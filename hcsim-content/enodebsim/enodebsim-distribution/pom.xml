@@ -17,12 +17,22 @@
     <main.class>org.onap.ransim.Main</main.class>
     <interfaces.mapping.version>1.0.0-SNAPSHOT</interfaces.mapping.version>
     <honeycomb.min.distro.version>1.18.07</honeycomb.min.distro.version>
+    <docker.image.name>onap/honeycomb</docker.image.name>
     <distribution.modules>
       org.onap.ransim.Module
     </distribution.modules>
   </properties>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.spotify</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>1.1.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -41,6 +51,73 @@
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
+      </plugin>
+
+
+        <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version>
+            <executions>
+                <execution>
+                    <id>copy</id>
+                    <phase>package</phase>
+                    <configuration>
+                        <tasks>
+                            <echo>ANT TASK - copying files....</echo>
+                            <copy todir="${basedir}/target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10/" overwrite="true">
+                                <fileset dir="${basedir}/src/main/docker/toCopy" includes="**/*"/>
+                            </copy>
+                        </tasks>
+                    </configuration>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                </execution>
+                <execution>
+                 <id>remove_files</id>
+                 <phase>package</phase>
+                 <configuration>
+                  <target>
+                   <echo>ANT TASK - removing files....</echo>
+                   <delete file="${basedir}/target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10/bgp.json"/>
+                   <delete file="${basedir}/target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10/restconf.json"/>
+                   <delete file="${basedir}/target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10/restconf-whitelist.xml"/>
+                   <!--delete file="${basedir}/target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10/modules/io-fd-honeycomb_minimal-distribution_1-18-07-module-config"/-->
+                  </target>
+                 </configuration>
+                 <goals>
+                    <goal>run</goal>
+                 </goals>
+                </execution>
+            </executions>
+        </plugin>
+
+
+
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <configuration>
+          <imageName>${docker.image.name}</imageName>
+          <imageTags>
+            <tag>latest</tag>
+          </imageTags>
+          <dockerDirectory>src/main/docker</dockerDirectory>
+          <resources>
+            <resource>
+              <directory>target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10</directory>
+            </resource>
+          </resources>
+          </configuration>
+          <executions>
+            <execution>
+              <id>build-image</id>
+              <phase>package</phase>
+              <goals>
+                <goal>build</goal>
+             </goals>
+            </execution>
+       </executions>
       </plugin>
     </plugins>
   </build>

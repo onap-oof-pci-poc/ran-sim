@@ -485,6 +485,8 @@
             ScreenConfig.context.fillStyle = "black";
             ScreenConfig.context.textAlign = "center";
             fillMultiLineText(ScreenConfig.context, pcId, cellX, (cellY + (RADIUS/2)) );
+	    ScreenConfig.context.font = "bold 12px Arial";
+	    ScreenConfig.context.fillText(cellNodeId, cellX, (cellY - 1.6*RADIUS) );
         }
 
         function modifyNodeNeighbor(cid, pcid) {

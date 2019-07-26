@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>io.fd.honeycomb.common</groupId>
+    <artifactId>minimal-distribution-parent</artifactId>
+    <version>1.18.07</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.onap.ransim</groupId>
+  <artifactId>enodebsim-distribution</artifactId>
+  <version>1.18.10</version>
+
+  <properties>
+    <exec.parameters>-Xms128m -Xmx512m</exec.parameters>
+    <main.class>org.onap.ransim.Main</main.class>
+    <interfaces.mapping.version>1.0.0-SNAPSHOT</interfaces.mapping.version>
+    <honeycomb.min.distro.version>1.18.07</honeycomb.min.distro.version>
+    <docker.image.name>onap/honeycomb</docker.image.name>
+    <distribution.modules>
+      org.onap.ransim.Module
+    </distribution.modules>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.spotify</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>1.1.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>groovy-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+      </plugin>
+
+
+        <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version>
+            <executions>
+                <execution>
+                    <id>copy</id>
+                    <phase>package</phase>
+                    <configuration>
+                        <tasks>
+                            <echo>ANT TASK - copying files....</echo>
+                            <copy todir="${basedir}/target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10/" overwrite="true" flatten="true">
+                                <fileset dir="${basedir}/src/main/docker/toCopy" includes="**/*"/>
+                            </copy>
+                        </tasks>
+                    </configuration>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                </execution>
+                <execution>
+                 <id>clean_files</id>
+                 <phase>package</phase>
+                 <configuration>
+                  <tasks>
+                   <delete file="${basedir}/target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10/bgp.json"/>
+                   <delete file="${basedir}/target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10/restconf.json"/>
+                   <delete file="${basedir}/target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10/restconf-whitelist.xml"/>
+                  </tasks>
+                 </configuration>
+                 <goals>
+                    <goal>run</goal>
+                 </goals>
+                </execution>
+            </executions>
+        </plugin>
+
+
+
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <configuration>
+          <imageName>${docker.image.name}</imageName>
+          <imageTags>
+            <tag>latest</tag>
+          </imageTags>
+          <dockerDirectory>src/main/docker</dockerDirectory>
+          <resources>
+            <resource>
+              <directory>target/enodebsim-distribution-1.18.10-hc/enodebsim-distribution-1.18.10</directory>
+            </resource>
+          </resources>
+          </configuration>
+          <executions>
+            <execution>
+              <id>build-image</id>
+              <phase>package</phase>
+              <goals>
+                <goal>build</goal>
+             </goals>
+            </execution>
+       </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <!-- Dependency on sample plugin -->
+    <dependency>
+      <groupId>org.onap.ransim</groupId>
+      <artifactId>enodebsim-impl</artifactId>
+      <version>${interfaces.mapping.version}</version>
+    </dependency>
+    <!-- Dependency on distribution base -->
+    <dependency>
+      <groupId>io.fd.honeycomb</groupId>
+      <artifactId>minimal-distribution</artifactId>
+      <version>${honeycomb.min.distro.version}</version>
+    </dependency>
+<!--
+        <dependency>
+            <groupId>org.opendaylight.mdsal</groupId>
+            <artifactId>yang-binding</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opendaylight.mdsal</groupId>
+            <artifactId>mdsal-binding-generator-impl</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+-->
+
+  </dependencies>
+</project>

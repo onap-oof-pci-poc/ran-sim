@@ -39,6 +39,12 @@
             <artifactId>enodebsim-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+           <version>2.4</version>
+        </dependency>
+
     <dependency>
       <groupId>io.fd.honeycomb</groupId>
       <artifactId>minimal-distribution</artifactId>
@@ -49,6 +55,12 @@
             <groupId>io.fd.honeycomb</groupId>
             <artifactId>notification-api</artifactId>
             <version>${honeycomb.infra.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.6.2</version>
         </dependency>
 
         <!-- Honeycomb infrastructure-->

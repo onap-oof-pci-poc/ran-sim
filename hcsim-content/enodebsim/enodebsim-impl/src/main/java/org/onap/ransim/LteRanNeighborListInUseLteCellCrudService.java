@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,24 +23,15 @@ import io.fd.honeycomb.translate.write.WriteFailedException;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
 
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.cell.config.lte.lte.ran.lte.ran.neighbor.list.in.use.LteRanNeighborListInUseLteCell;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.cell.config.lte.lte.ran.lte.ran.neighbor.list.in.use.LteRanNeighborListInUseLteCellBuilder;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapService;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapServiceBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.LteRan;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.lte.ran.LteRanNeighborListInUse;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.lte.ran.LteRanNeighborListInUseBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.lte.ran.lte.ran.neighbor.list.in.use.LteRanNeighborListInUseLteCell;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.lte.ran.lte.ran.neighbor.list.in.use.LteRanNeighborListInUseLteCellBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.lte.ran.lte.ran.neighbor.list.in.use.LteRanNeighborListInUseLteCellKey;
 
 /**
  * Simple example of class handling Crud operations for plugin.
@@ -62,19 +48,33 @@ final class LteRanNeighborListInUseLteCellCrudService implements CrudService<Lte
     public void writeData(@Nonnull final InstanceIdentifier<LteRanNeighborListInUseLteCell> identifier
             , @Nonnull final LteRanNeighborListInUseLteCell data
             , @Nonnull final WriteContext writeContext)
-            throws WriteFailedException {
+                    throws WriteFailedException {
         LOG.info("RANSIM LteRanNeighborListInUseLteCellCrudService writeData called");
-        if (data != null) {
+        try {
+            if (data != null) {
+                LOG.info("Writing path[{}] / data [{}]", identifier, data);
+                if(!ConfigJsonHandler.getConfigJsonHandler(null).isConfigTopoInitialized)
+                    return;
+                int stIndex = identifier.toString().indexOf("[_alias=");
+                String subStr = identifier.toString().substring(
+                        stIndex + "[_alias=".length());
+                String cid = subStr.substring(0, subStr.indexOf("]"));
+                LOG.info("cid {} ", cid);
+                ServerCidNbrListHandler sclh = new ServerCidNbrListHandler();
+                sclh.CheckandAdd(cid, data);
+                // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
+                // relationships such as to which parent these data are related to
 
-            // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
-            // relationships such as to which parent these data are related to
-
-            // Performs any logic needed for persisting such data
-            LOG.info("Writing path[{}] / data [{}]", identifier, data);
-        } else {
-            throw new WriteFailedException.CreateFailedException(identifier, data,
-                    new NullPointerException("Provided data are null"));
+                // Performs any logic needed for persisting such data
+                LOG.info("Writing path[{}] / data [{}]", identifier, data);
+            } else {
+                throw new WriteFailedException.CreateFailedException(identifier, data,
+                        new NullPointerException("Provided data are null"));
+            }
+        } catch(Exception e) {
+            LOG.error("Error in writeData {}", e.toString());
         }
+
     }
 
     @Override
@@ -96,10 +96,24 @@ final class LteRanNeighborListInUseLteCellCrudService implements CrudService<Lte
 
     @Override
     public void updateData(@Nonnull final InstanceIdentifier<LteRanNeighborListInUseLteCell> identifier, @Nonnull final LteRanNeighborListInUseLteCell dataOld,
-                           @Nonnull final LteRanNeighborListInUseLteCell dataNew) throws WriteFailedException {
+            @Nonnull final LteRanNeighborListInUseLteCell dataNew) throws WriteFailedException {
         LOG.info("RANSIM LteRanNeighborListInUseLteCellCrudService updateData called");
         if (dataOld != null && dataNew != null) {
+            LOG.info("Update path[{}] from [{}] to [{}]", identifier, dataOld,
+                    dataNew);
+            if(!ConfigJsonHandler.getConfigJsonHandler(null).isConfigTopoInitialized)
+                return;
+            int stIndex = identifier.toString().indexOf("[_alias=");
+            String subStr = identifier.toString().substring(
+                    stIndex + "[_alias=".length());
+            String cid = subStr.substring(0, subStr.indexOf("]"));
+            LOG.info("cid {} ", cid);
+            ServerCidNbrListHandler sclh = new ServerCidNbrListHandler();
+            sclh.CheckandAdd(cid, dataNew);
+            // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
+            // relationships such as to which parent these data are related to
 
+            // Performs any logic needed for persisting such data
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
             // relationships such as to which parent these data are related to
 

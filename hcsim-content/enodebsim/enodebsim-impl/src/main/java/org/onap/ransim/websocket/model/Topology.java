@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,11 +54,13 @@ public class Topology {
 
     @Override
     public String toString() {
-        return "Topology [PnfName = " + pnfName + ", PciId = " + pciId + ", cellId = " + cellId + ", neighborList = "
-                + neighborList + "]";
+        return "Topology [PnfName = " + pnfName + ", PciId = " + pciId
+                + ", cellId = " + cellId + ", neighborList = " + neighborList
+                + "]";
     }
 
-    public Topology(String pnfName, long pciId, String cellId, List<Neighbor> neighborList) {
+    public Topology(String pnfName, long pciId, String cellId,
+            List<Neighbor> neighborList) {
         super();
         this.pnfName = pnfName;
         this.pciId = pciId;

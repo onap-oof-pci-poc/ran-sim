@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +19,9 @@ package org.onap.ransim.websocket.model;
 import java.util.List;
 
 public class SetConfigTopology {
+
     private String serverId;
+    private String uuid;
     private String ip;
     private String netconfPort;
     private List<Topology> topology;
@@ -33,7 +30,20 @@ public class SetConfigTopology {
 
     }
 
-    public SetConfigTopology(String serverId, String ip, String netconfPort, List<Topology> topology) {
+    /**
+     * Cell details for the given netconf server.
+     *
+     * @param serverId
+     *            netconf server id
+     * @param ip
+     *            ip address
+     * @param netconfPort
+     *            port number
+     * @param topology
+     *            cell topology for given server id
+     */
+    public SetConfigTopology(String serverId, String ip, String netconfPort,
+            List<Topology> topology) {
         super();
         this.serverId = serverId;
         this.ip = ip;
@@ -47,6 +57,14 @@ public class SetConfigTopology {
 
     public void setServerId(String serverId) {
         this.serverId = serverId;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getIp() {

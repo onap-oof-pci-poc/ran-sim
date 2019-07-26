@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,19 +19,22 @@ package org.onap.ransim;
 import static org.onap.ransim.ModuleConfiguration.CC_SERVICE_NAME;
 import static org.onap.ransim.ModuleConfiguration.FS_SERVICE_NAME;
 import static org.onap.ransim.ModuleConfiguration.LRC_SERVICE_NAME;
+import static org.onap.ransim.ModuleConfiguration.LRNLIULC_SERVICE_NAME;
 import static org.onap.ransim.ModuleConfiguration.LRNLIU_SERVICE_NAME;
 import static org.onap.ransim.ModuleConfiguration.LRR_SERVICE_NAME;
 import static org.onap.ransim.ModuleConfiguration.LR_SERVICE_NAME;
 import static org.onap.ransim.ModuleConfiguration.L_SERVICE_NAME;
 import static org.onap.ransim.ModuleConfiguration.XL_SERVICE_NAME;
-import static org.onap.ransim.ModuleConfiguration.LRNLIULC_SERVICE_NAME;
+import io.fd.honeycomb.notification.ManagedNotificationProducer;
+import io.fd.honeycomb.translate.read.ReaderFactory;
+import io.fd.honeycomb.translate.write.WriterFactory;
+import net.jmob.guice.conf.core.ConfigurationModule;
 
 import org.onap.ransim.read.CellConfigModuleStateReaderFactory;
 import org.onap.ransim.read.FapServiceModuleStateReaderFactory;
 import org.onap.ransim.read.LteModuleStateReaderFactory;
 import org.onap.ransim.read.LteRanCommonModuleStateReaderFactory;
 import org.onap.ransim.read.LteRanModuleStateReaderFactory;
-import org.onap.ransim.read.LteRanNeighborListInUseLteCellModuleStateReaderFactory;
 import org.onap.ransim.read.LteRanNeighborListInUseModuleStateReaderFactory;
 import org.onap.ransim.read.LteRanRfModuleStateReaderFactory;
 import org.onap.ransim.read.X0005b9LteModuleStateReaderFactory;
@@ -49,15 +47,15 @@ import org.onap.ransim.write.LteRanNeighborListInUseLteCellModuleWriterFactory;
 import org.onap.ransim.write.LteRanNeighborListInUseModuleWriterFactory;
 import org.onap.ransim.write.LteRanRfModuleWriterFactory;
 import org.onap.ransim.write.X0005b9LteModuleWriterFactory;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapService;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.CellConfig;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.X0005b9Lte;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.Lte;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.LteRan;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.lte.ran.LteRanCommon;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.lte.ran.LteRanNeighborListInUse;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.lte.ran.lte.ran.neighbor.list.in.use.LteRanNeighborListInUseLteCell;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.fap.service.cell.config.lte.lte.ran.LteRanRf;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.FapService;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.CellConfig;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.X0005b9Lte;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.cell.config.Lte;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.cell.config.lte.LteRan;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.cell.config.lte.lte.ran.LteRanCommon;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.cell.config.lte.lte.ran.LteRanNeighborListInUse;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.cell.config.lte.lte.ran.LteRanRf;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.fap.service.cell.config.lte.lte.ran.lte.ran.neighbor.list.in.use.LteRanNeighborListInUseLteCell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,11 +63,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
-
-import io.fd.honeycomb.notification.ManagedNotificationProducer;
-import io.fd.honeycomb.translate.read.ReaderFactory;
-import io.fd.honeycomb.translate.write.WriterFactory;
-import net.jmob.guice.conf.core.ConfigurationModule;
 
 /**
  * Module class instantiating enodebsim plugin components.
@@ -161,7 +154,7 @@ public final class Module extends AbstractModule {
 
         readerFactoryBinder.addBinding().to(LteRanNeighborListInUseModuleStateReaderFactory.class);
         writerFactoryBinder.addBinding().to(LteRanNeighborListInUseModuleWriterFactory.class);
-        
+
         bind(new TypeLiteral<CrudService<LteRanNeighborListInUseLteCell>>(){})
         .annotatedWith(Names.named(LRNLIULC_SERVICE_NAME))
         .to(LteRanNeighborListInUseLteCellCrudService.class);
@@ -170,7 +163,7 @@ public final class Module extends AbstractModule {
         //LOG.info("RANSIM Module.configure LteRanNeighborListInUseLteCellModuleStateReaderFactory registered");
         writerFactoryBinder.addBinding().to(LteRanNeighborListInUseLteCellModuleWriterFactory.class);
         LOG.info("RANSIM Module.configure LteRanNeighborListInUseLteCellModuleWriterFactory registered");
-        
+
     }
 }
 

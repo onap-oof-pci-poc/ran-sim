@@ -110,26 +110,20 @@
 
 	</div>
         <p></p>
-        <canvas id="Canvas2" class="can" width="5000" height="5000"></canvas>
+        <canvas id="Canvas2" class="can" width="4000" height="10000"></canvas>
 	</body>
 <script>
 var canvas = document.getElementById('Canvas2');
 var ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, 300, 200);
-                ctx.fillStyle = "#FFFFDF";
-                ctx.fillRect(0, 0, 300, 200);
-                ctx.fillStyle = "grey";
-                ctx.beginPath();
-                ctx.arc(22, 20, 11, 0, Math.PI * 2, true);
-                ctx.strokeStyle = "black";
-                ctx.stroke();
-                ctx.closePath();
-                ctx.fill();
-                ctx.fillStyle = "black";
-                ctx.font = "bold 11px Comic Sans MS";
-                ctx.fillText("No Issues!", 44, 24);
+                ctx.clearRect(0, 0, 300, 420);
+		ctx.fillStyle = "#FFFFDF";
+                ctx.fillRect(0, 0, 300, 420);
 
-		ctx.fillStyle = "#2addda";
+		ctx.fillStyle = "black";
+		ctx.font = "bold 12px Comic Sans MS";
+                ctx.fillText("BASIC LAYOUT", 10, 24);
+               
+                ctx.fillStyle = "#BFBFBF";
                 ctx.beginPath();
                 ctx.arc(22, 50, 11, 0, Math.PI * 2, true);
                 ctx.strokeStyle = "black";
@@ -138,9 +132,9 @@ var ctx = canvas.getContext('2d');
                 ctx.fill();
                 ctx.fillStyle = "black";
                 ctx.font = "bold 11px Comic Sans MS";
-                ctx.fillText("Selected cell!", 44, 54);
-
-		ctx.fillStyle = "Brown";
+                ctx.fillText("Cells with no issues", 44, 54);
+			
+                ctx.fillStyle = "Orange";
                 ctx.beginPath();
                 ctx.arc(22, 80, 11, 0, Math.PI * 2, true);
                 ctx.strokeStyle = "black";
@@ -149,9 +143,9 @@ var ctx = canvas.getContext('2d');
                 ctx.fill();
                 ctx.fillStyle = "black";
                 ctx.font = "bold 11px Comic Sans MS";
-                ctx.fillText("Collision and Confusion!", 44, 84);
-
-                ctx.fillStyle = "Orange";
+                ctx.fillText("Cells with Confusion", 44, 84);
+                
+                ctx.fillStyle = "Red";
                 ctx.beginPath();
                 ctx.arc(22, 110, 11, 0, Math.PI * 2, true);
                 ctx.strokeStyle = "black";
@@ -160,9 +154,9 @@ var ctx = canvas.getContext('2d');
                 ctx.fill();
                 ctx.fillStyle = "black";
                 ctx.font = "bold 11px Comic Sans MS";
-                ctx.fillText("Confusion!", 44, 114);
-                
-                ctx.fillStyle = "Red";
+                ctx.fillText("Cells with Collision", 44, 114);
+
+		ctx.fillStyle = "Brown";
                 ctx.beginPath();
                 ctx.arc(22, 140, 11, 0, Math.PI * 2, true);
                 ctx.strokeStyle = "black";
@@ -171,7 +165,7 @@ var ctx = canvas.getContext('2d');
                 ctx.fill();
                 ctx.fillStyle = "black";
                 ctx.font = "bold 11px Comic Sans MS";
-                ctx.fillText("Collision!", 44, 144);
+                ctx.fillText("Cells with Collision and Confusion", 44, 144);
 
                 ctx.fillStyle = "purple";
                 ctx.beginPath();
@@ -182,6 +176,77 @@ var ctx = canvas.getContext('2d');
                 ctx.fill();
                 ctx.fillStyle = "black";
                 ctx.font = "bold 11px Comic Sans MS";
-                ctx.fillText("Search results!", 44, 174);
+                ctx.fillText("Search results", 44, 174);
+
+		ctx.fillStyle = "black";
+		ctx.font = "bold 12px Comic Sans MS";
+                ctx.fillText("NEIGHBORS LAYOUT", 10, 214);
+		
+		ctx.fillStyle = "#2addda";
+                ctx.beginPath();
+                ctx.arc(22, 240, 11, 0, Math.PI * 2, true);
+                ctx.strokeStyle = "black";
+                ctx.stroke();
+                ctx.closePath();
+                ctx.fill();
+                ctx.fillStyle = "black";
+                ctx.font = "bold 11px Comic Sans MS";
+                ctx.fillText("Selected cell", 44, 244);
+
+		ctx.fillStyle = "#008000";
+                ctx.beginPath();
+                ctx.arc(22, 270, 11, 0, Math.PI * 2, true);
+                ctx.strokeStyle = "black";
+                ctx.stroke();
+                ctx.closePath();
+                ctx.fill();
+                ctx.fillStyle = "black";
+                ctx.font = "bold 11px Comic Sans MS";
+                ctx.fillText("Neighbors with no issues", 44, 274);
+		
+		ctx.fillStyle = "Orange";
+                ctx.beginPath();
+                ctx.arc(22, 300, 11, 0, Math.PI * 2, true);
+                ctx.strokeStyle = "black";
+                ctx.stroke();
+                ctx.closePath();
+                ctx.fill();
+                ctx.fillStyle = "black";
+                ctx.font = "bold 11px Comic Sans MS";
+                ctx.fillText("Neighbors with Confusion", 44, 304);
+                
+                ctx.fillStyle = "Red";
+                ctx.beginPath();
+                ctx.arc(22, 330, 11, 0, Math.PI * 2, true);
+                ctx.strokeStyle = "black";
+                ctx.stroke();
+                ctx.closePath();
+                ctx.fill();
+                ctx.fillStyle = "black";
+                ctx.font = "bold 11px Comic Sans MS";
+                ctx.fillText("Neighbors with Collision", 44, 334);
+
+		ctx.fillStyle = "Brown";
+                ctx.beginPath();
+                ctx.arc(22, 360, 11, 0, Math.PI * 2, true);
+                ctx.strokeStyle = "black";
+                ctx.stroke();
+                ctx.closePath();
+                ctx.fill();
+                ctx.fillStyle = "black";
+                ctx.font = "bold 11px Comic Sans MS";
+                ctx.fillText("Neighbors with Collision and Confusion", 44, 364);
+
+		ctx.fillStyle = "#606060";
+                ctx.beginPath();
+                ctx.arc(22, 390, 11, 0, Math.PI * 2, true);
+                ctx.strokeStyle = "black";
+                ctx.stroke();
+                ctx.closePath();
+                ctx.fill();
+                ctx.fillStyle = "black";
+                ctx.font = "bold 11px Comic Sans MS";
+                ctx.fillText("Blacklisted Neighbors(dotted lines)", 44, 394);
+
 </script>
 </html>

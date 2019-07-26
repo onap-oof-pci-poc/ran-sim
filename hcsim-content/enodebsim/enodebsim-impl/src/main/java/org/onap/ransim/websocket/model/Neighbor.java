@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +23,7 @@ public class Neighbor {
     private long physicalCellId;
     private String serverId;
     private String pnfName;
+    private boolean blacklisted;
 
     public String getPlmnId() {
         return plmnId;
@@ -52,6 +48,7 @@ public class Neighbor {
     public void setPhysicalCellId(long physicalCellId) {
         this.physicalCellId = physicalCellId;
     }
+
     public String getServerId() {
         return serverId;
     }
@@ -68,19 +65,30 @@ public class Neighbor {
         this.pnfName = pnfName;
     }
 
-    @Override
-    public String toString() {
-        return "Neighbor [nodeId=" + nodeId + ", physicalCellId=" + physicalCellId + ", serverId=" + serverId
-                + ", pnfName=" + pnfName + "]";
+    public boolean isBlacklisted() {
+        return blacklisted;
     }
 
-    public Neighbor(String plmnId, String nodeId, long physicalCellId, String serverId, String pnfName) {
+    public void setBlacklisted(boolean blacklisted) {
+        this.blacklisted = blacklisted;
+    }
+
+    @Override
+    public String toString() {
+        return "Neighbor [nodeId=" + nodeId + ", physicalCellId="
+                + physicalCellId + ", serverId=" + serverId + ", pnfName="
+                + pnfName + ", isBlacklisted=" + blacklisted + "]";
+    }
+
+    public Neighbor(String plmnId, String nodeId, long physicalCellId,
+            String serverId, String pnfName, boolean blacklisted) {
         super();
         this.plmnId = plmnId;
         this.nodeId = nodeId;
         this.physicalCellId = physicalCellId;
         this.serverId = serverId;
         this.pnfName = pnfName;
+        this.blacklisted = blacklisted;
     }
 
     public Neighbor() {

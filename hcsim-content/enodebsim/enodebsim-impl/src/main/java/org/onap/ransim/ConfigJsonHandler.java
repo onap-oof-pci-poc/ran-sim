@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +28,11 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 import org.onap.ransim.websocket.client.RansimClientWebSocket;
+import org.onap.ransim.websocket.model.DeviceData;
+import org.onap.ransim.websocket.model.MessageTypes;
+import org.onap.ransim.websocket.model.ModifyNeighbor;
 import org.onap.ransim.websocket.model.Neighbor;
+import org.onap.ransim.websocket.model.NeighborHo;
 import org.onap.ransim.websocket.model.SetConfigTopology;
 import org.onap.ransim.websocket.model.Topology;
 import org.onap.ransim.websocket.model.UpdateCell;
@@ -44,7 +43,8 @@ import com.google.gson.Gson;
 
 public class ConfigJsonHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ConfigJsonHandler.class);
+    private static final Logger LOG = LoggerFactory
+            .getLogger(ConfigJsonHandler.class);
 
     private static ConfigJsonHandler configJsonHandlerInstance = null;
     public JsonObject radioAccessObj = null;
@@ -52,20 +52,28 @@ public class ConfigJsonHandler {
 
     public String peristConfigPath;
     private RansimClientWebSocket ransimAgentWebSocket = null;
-    private String PnfName = "";
+    public static String PnfName = "";
+    public static String PnfUuid = "";
     private ModuleConfiguration modCfgn = null;
+    public boolean isConfigTopoInitialized = false;
 
     private ConfigJsonHandler(String peristConfigPath) {
         this.peristConfigPath = peristConfigPath;
         ransimAgentWebSocket = new RansimClientWebSocket();
         modCfgn = new ModuleConfiguration();
         modCfgn.loadConfig();
-        LOG.info("ModuleConfiguration : peristConfigPath {}", modCfgn.peristConfigPath);
-        LOG.info("ModuleConfiguration : enodebsimIp {} {}", modCfgn.enodebsimIp, modCfgn.enodebsimPort);
-        LOG.info("ModuleConfiguration : ransimCtrlrIp {} {}", modCfgn.ransimCtrlrIp, modCfgn.ransimCtrlrPort);
+        LOG.info("ModuleConfiguration : peristConfigPath {}",
+                modCfgn.peristConfigPath);
+        LOG.info("ModuleConfiguration : enodebsimIp {} {}",
+                modCfgn.enodebsimIp, modCfgn.enodebsimPort);
+        LOG.info("ModuleConfiguration : ransimCtrlrIp {} {}",
+                modCfgn.ransimCtrlrIp, modCfgn.ransimCtrlrPort);
+        LOG.info("ModuleConfiguration : vesEventListenerUrl {}",
+                modCfgn.vesEventListenerUrl);
         loadJsonObject();
-        ransimAgentWebSocket.initWebsocketClient(modCfgn.ransimCtrlrIp, modCfgn.ransimCtrlrPort,
-            modCfgn.enodebsimIp, modCfgn.enodebsimPort);
+        ransimAgentWebSocket.initWebsocketClient(modCfgn.ransimCtrlrIp,
+                modCfgn.ransimCtrlrPort, modCfgn.enodebsimIp,
+                modCfgn.enodebsimPort);
     }
 
     public static ConfigJsonHandler getConfigJsonHandler(String peristConfigPath) {
@@ -86,8 +94,13 @@ public class ConfigJsonHandler {
             // Create JsonReader from Json.
             reader = Json.createReader(is);
             // Get the JsonObject structure from JsonReader.
-            radioAccessObj = reader.readObject().getJsonObject("oofpcipoc:radio-access");
-            LOG.debug("radioAccessObj str is {}", radioAccessObj.toString());
+            radioAccessObj = reader.readObject().getJsonObject(
+                    "oofpcipoc:radio-access");
+            if(radioAccessObj == null) {
+            	LOG.debug("radioAccessObj is null");
+	    } else {
+            	LOG.debug("radioAccessObj str is {}", radioAccessObj.toString());
+            }
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -103,92 +116,125 @@ public class ConfigJsonHandler {
         }
     }
 
-    public void handleUpdateTopology(String jsonStr) {
-        if(jsonStr.startsWith("SetConfigTopology:")) {
-            jsonStr = jsonStr.substring("SetConfigTopology:".length());
-            SetConfigTopology updTopo = new Gson().fromJson(jsonStr, SetConfigTopology.class);
-            writeJsonObject(updTopo);
-            loadJsonObject();
-        } else if(jsonStr.startsWith("UpdateCell:")) {
-            jsonStr = jsonStr.substring("UpdateCell:".length());
-            UpdateCell updCell = new Gson().fromJson(jsonStr, UpdateCell.class);
-            updateJsonObject(ncServerTopology, updCell);
-            if(modCfgn.useNetconfDataChangeNotifn == false) {
-                NbrListChangeNotifnSender.sendNotification(updCell);
-            } else {
-                DataChangeNotifnSender.sendNotification(updCell);
-            }
-        } else {
-            LOG.info("ConfigJsonHandler.handleUpdateTopology jsonStr3:{}", jsonStr);
+    public void handleSetConfigTopology(SetConfigTopology updTopo) {
+        writeJsonObject(updTopo);
+        loadJsonObject();
+        //isConfigTopoInitialized = true;
+/*
+        try {
+            LOG.info("Reinitializing configuration 1...");
+            ConfigJsonHandler.ignoreEvents();
+            LOG.info("Reinitializing configuration 2...");
+            io.fd.honeycomb.infra.distro.Main.main(null);
+            LOG.info("Reinitializing configuration 3...");
+            ConfigJsonHandler.monitorEvents();
+            LOG.info("Configuration reinitialized successfully");
+        } catch (Exception e) {
+            LOG.error("Unable to reinitialize configuration", e);
         }
+*/
+    }
+
+    public void handleUpdateCell(UpdateCell updCell) {
+        updateJsonObject(ncServerTopology, updCell);
+        if (modCfgn.useNetconfDataChangeNotifn == false) {
+            NbrListChangeNotifnSender.sendNotification(updCell);
+        } else {
+            DataChangeNotifnSender.sendNotification(updCell);
+        }
+    }
+
+    public void handleUpdateTopology(UpdateCell updCell) {
+        ModifyNeighbor modNbr = new ModifyNeighbor();
+        modNbr.setCellId(updCell.getOneCell().getCellId());
+        modNbr.setPnfName(PnfName);
+        List<Neighbor> nbrs = updCell.getOneCell().getNeighborList();
+        List<NeighborHo> nbrsWs = new ArrayList<NeighborHo>();
+        for (Neighbor neighbor : nbrs) {
+            NeighborHo aNbr = new NeighborHo();
+            aNbr.setBlacklisted(neighbor.isBlacklisted());
+            aNbr.setNodeId(neighbor.getNodeId());
+            aNbr.setPciId(neighbor.getPhysicalCellId());
+            nbrsWs.add(aNbr);
+        }
+        modNbr.setNeighborList(nbrsWs);
+
+        String jsonStr = new Gson().toJson(modNbr, ModifyNeighbor.class);
+        DeviceData wsMsg = new DeviceData();
+        wsMsg.setType(MessageTypes.HC_TO_RC_MODANR);
+        wsMsg.setMessage(jsonStr);
+        ransimAgentWebSocket.sendMessage(wsMsg);
+    }
+
+    public void handleModifyCell(String jsonStr) {
+        DeviceData wsMsg = new DeviceData();
+        wsMsg.setType(MessageTypes.HC_TO_RC_MODPCI);
+        wsMsg.setMessage(jsonStr);
+        ransimAgentWebSocket.sendMessage(wsMsg);
     }
 
     private void updateJsonObject(SetConfigTopology updTopo, UpdateCell updCell) {
         PnfName = updTopo.getServerId();
+        PnfUuid = updTopo.getUuid();
         StringBuilder sb = new StringBuilder("");
-        sb.append("{\n" +
-                "  \"oofpcipoc:radio-access\": {");
-            sb.append("    \"fap-service\": [\n");
-        for(int i=0; i<updTopo.getTopology().size(); i++) {
+        sb.append("{\n" + "  \"oofpcipoc:radio-access\": {");
+        sb.append("    \"fap-service\": [\n");
+        for (int i = 0; i < updTopo.getTopology().size(); i++) {
             Topology aCell = updTopo.getTopology().get(i);
             if (updCell.getOneCell() != null) {
-             if(aCell.getCellId().equals(updCell.getOneCell().getCellId())) {
-                aCell = updCell.getOneCell();
-                updTopo.getTopology().remove(i);
-                updTopo.getTopology().add(i, aCell);
-             }
+                if (aCell.getCellId().equals(updCell.getOneCell().getCellId())) {
+                    aCell = updCell.getOneCell();
+                    updTopo.getTopology().remove(i);
+                    updTopo.getTopology().add(i, aCell);
+                }
             }
-            sb.append("      {\n" +
-                    "      \"alias\": \"");
+            sb.append("      {\n" + "      \"alias\": \"");
             sb.append(aCell.getCellId());
-            sb.append("\",\n" +
-                    "      \"x-0005b9-lte\": {\n" +
-                    "        \"pnf-name\": \"");
+            sb.append("\",\n" + "      \"x-0005b9-lte\": {\n"
+                    + "        \"pnf-name\": \"");
             sb.append(aCell.getPnfName());
-            sb.append("\",\n" +
-                    "        \"phy-cell-id-in-use\": ");
+            sb.append("\",\n" + "        \"phy-cell-id-in-use\": ");
             sb.append(aCell.getPciId());
-            sb.append("\n" +
-                    "      },\n" +
-                    "      \"cell-config\": {\n" +
-                    "        \"lte\": {\n" +
-                    "          \"tunnel-number-of-entries\":5,\n" +
-                    "          \"lte-ran\": {\n" +
-            "            \"lte-ran-neighbor-list-in-use\": {\n" +
-            "              \"lte-ran-neighbor-list-in-use-lte-cell\" : [\n");
+            sb.append("\n"
+                    + "      },\n"
+                    + "      \"cell-config\": {\n"
+                    + "        \"lte\": {\n"
+                    + "          \"tunnel-number-of-entries\":5,\n"
+                    + "          \"lte-ran\": {\n"
+                    + "            \"lte-ran-neighbor-list-in-use\": {\n"
+                    + "              \"lte-ran-neighbor-list-in-use-lte-cell\" : [\n");
 
-    for(int j=0; j<aCell.getNeighborList().size(); j++) {
-        Neighbor aNeighbor = aCell.getNeighborList().get(j);
+            for (int j = 0; j < aCell.getNeighborList().size(); j++) {
+                Neighbor aNeighbor = aCell.getNeighborList().get(j);
 
-        sb.append("              {\n");
-        sb.append("                  \"plmnid\":\"").append(aNeighbor.getPlmnId()).append("\", \n");
-        sb.append("                  \"cid\":\"").append(aNeighbor.getNodeId()).append("\", \n");
-        sb.append("                  \"phy-cell-id\":").append(aNeighbor.getPhysicalCellId()).append(" \n");
-        sb.append("              }\n");
-        if(j<aCell.getNeighborList().size()-1)
-            sb.append(",\n");
+                sb.append("              {\n");
+                sb.append("                  \"plmnid\":\"")
+                .append(aNeighbor.getPlmnId()).append("\", \n");
+                sb.append("                  \"cid\":\"")
+                .append(aNeighbor.getNodeId()).append("\", \n");
+                sb.append("                  \"phy-cell-id\":")
+                .append(aNeighbor.getPhysicalCellId()).append(", \n");
+                sb.append("                  \"blacklisted\":")
+                .append(aNeighbor.isBlacklisted()).append(" \n");
+                sb.append("              }");
+                if (j < aCell.getNeighborList().size() - 1)
+                    sb.append(",\n");
 
-    }
+            }
 
-    sb.append("              ]\n");
-    
-    sb.append("            }\n" +
-            "          }\n");
-    sb.append("      }\n" +
-            "      }\n" +
-            "    }\n");
-    if(i<updTopo.getTopology().size()-1)
-        sb.append(",\n");
+            sb.append("              ]\n");
+
+            sb.append("            }\n" + "          }\n");
+            sb.append("      }\n" + "      }\n" + "    }\n");
+            if (i < updTopo.getTopology().size() - 1)
+                sb.append(",\n");
 
         }
         sb.append("    ]\n");
 
+        sb.append("  }\n" + "}");
 
-        sb.append("  }\n" +
-                "}");
-
-
-        LOG.debug("NEW TOPOLOGY IS:{}",  sb.toString());
+        LOG.debug("NEW TOPOLOGY IS:{}", sb.toString());
 
         if (peristConfigPath == null)
             peristConfigPath = "var/lib/honeycomb/persist/config/data.json";
@@ -209,77 +255,75 @@ public class ConfigJsonHandler {
             } catch (Exception e) {
             }
         }
-            try {
-                io.fd.honeycomb.infra.distro.Main.main(null);
-                LOG.info("Configuration reinitialized successfully");
-            } catch (Exception e) {
-                LOG.error("Unable to reinitialize configuration", e);
-            }
+        try {
+            LOG.info("Reinitializing configuration 1...");
+            ConfigJsonHandler.ignoreEvents();
+            LOG.info("Reinitializing configuration 2...");
+            io.fd.honeycomb.infra.distro.Main.main(null);
+            LOG.info("Reinitializing configuration 3...");
+            ConfigJsonHandler.monitorEvents();
+            LOG.info("Configuration reinitialized successfully");
+        } catch (Exception e) {
+            LOG.error("Unable to reinitialize configuration", e);
+        }
     }
-    
-    public void handleModifyCell(String jsonStr) {
-        ransimAgentWebSocket.sendMessage(jsonStr);
-    }
+
 
     public void writeJsonObject(SetConfigTopology updTopo) {
         PnfName = updTopo.getServerId();
+        PnfUuid = updTopo.getUuid();
         StringBuilder sb = new StringBuilder();
-        sb.append("{\n" +
-                "  \"oofpcipoc:radio-access\": {");
-            sb.append("    \"fap-service\": [\n");
-        for(int i=0; i<updTopo.getTopology().size(); i++) {
+        sb.append("{\n" + "  \"oofpcipoc:radio-access\": {");
+        sb.append("    \"fap-service\": [\n");
+        for (int i = 0; i < updTopo.getTopology().size(); i++) {
             Topology aCell = updTopo.getTopology().get(i);
-            sb.append("      {\n" +
-                    "      \"alias\": \"");
+            sb.append("      {\n" + "      \"alias\": \"");
             sb.append(aCell.getCellId());
-            sb.append("\",\n" +
-                    "      \"x-0005b9-lte\": {\n" +
-                    "        \"pnf-name\": \"");
+            sb.append("\",\n" + "      \"x-0005b9-lte\": {\n"
+                    + "        \"pnf-name\": \"");
             sb.append(aCell.getPnfName());
-            sb.append("\",\n" +
-                    "        \"phy-cell-id-in-use\": ");
+            sb.append("\",\n" + "        \"phy-cell-id-in-use\": ");
             sb.append(aCell.getPciId());
-            sb.append("\n" +
-                    "      },\n" +
-                    "      \"cell-config\": {\n" +
-                    "        \"lte\": {\n" +
-                    "          \"tunnel-number-of-entries\":5,\n" +
-                    "          \"lte-ran\": {\n" +
-                    "            \"lte-ran-neighbor-list-in-use\": {\n" +
-                    "              \"lte-ran-neighbor-list-in-use-lte-cell\" : [\n");
+            sb.append("\n"
+                    + "      },\n"
+                    + "      \"cell-config\": {\n"
+                    + "        \"lte\": {\n"
+                    + "          \"tunnel-number-of-entries\":5,\n"
+                    + "          \"lte-ran\": {\n"
+                    + "            \"lte-ran-neighbor-list-in-use\": {\n"
+                    + "              \"lte-ran-neighbor-list-in-use-lte-cell\" : [\n");
 
-            for(int j=0; j<aCell.getNeighborList().size(); j++) {
+            for (int j = 0; j < aCell.getNeighborList().size(); j++) {
                 Neighbor aNeighbor = aCell.getNeighborList().get(j);
 
                 sb.append("              {\n");
-                sb.append("                  \"plmnid\":\"").append(aNeighbor.getPlmnId()).append("\", \n");
-                sb.append("                  \"cid\":\"").append(aNeighbor.getNodeId()).append("\", \n");
-                sb.append("                  \"phy-cell-id\":").append(aNeighbor.getPhysicalCellId()).append(" \n");
-                sb.append("              }\n");
-                if(j<aCell.getNeighborList().size()-1)
+                sb.append("                  \"plmnid\":\"")
+                .append(aNeighbor.getPlmnId()).append("\", \n");
+                sb.append("                  \"cid\":\"")
+                .append(aNeighbor.getNodeId()).append("\", \n");
+                sb.append("                  \"phy-cell-id\":")
+                .append(aNeighbor.getPhysicalCellId()).append(", \n");
+                sb.append("                  \"blacklisted\":")
+                .append(aNeighbor.isBlacklisted()).append(" \n");
+                sb.append("              }");
+                if (j < aCell.getNeighborList().size() - 1)
                     sb.append(",\n");
 
             }
 
             sb.append("              ]\n");
-            
-            sb.append("            }\n" +
-                    "          }\n");
-            sb.append("      }\n" +
-                    "      }\n" +
-                    "    }\n");
-            if(i<updTopo.getTopology().size()-1)
+
+            sb.append("            }\n" + "          }\n");
+            sb.append("      }\n" + "      }\n" + "    }\n");
+            if (i < updTopo.getTopology().size() - 1)
                 sb.append(",\n");
 
         }
         sb.append("    ]\n");
 
+        sb.append("  }\n" + "}");
 
-        sb.append("  }\n" +
-                "}");
-
-
-        LOG.debug("NEW TOPOLOGY IS:{}",  sb.toString());
+        LOG.debug("NEW TOPOLOGY IS:{}", sb.toString());
 
         if (peristConfigPath == null)
             peristConfigPath = "var/lib/honeycomb/persist/config/data.json";
@@ -302,5 +346,18 @@ public class ConfigJsonHandler {
             } catch (Exception e) {
             }
         }
+    }
+    public static void ignoreEvents() {
+        LOG.info("ConfigJsonHandler ignoreEvents");
+        ConfigJsonHandler.getConfigJsonHandler(null).isConfigTopoInitialized = false;
+    }
+    public static void monitorEvents() {
+        LOG.info("ConfigJsonHandler monitorEvents");
+        ConfigJsonHandler.getConfigJsonHandler(null).isConfigTopoInitialized = true;
+    }
+
+
+    public ModuleConfiguration getModuleConfiguration() {
+        return modCfgn;
     }
 }

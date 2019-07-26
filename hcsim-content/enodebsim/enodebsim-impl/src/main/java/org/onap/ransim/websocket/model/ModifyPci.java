@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,20 +46,33 @@ public class ModifyPci {
 
     @Override
     public String toString() {
-        return "ModifyPci [PnfName = " + pnfName + ", PciId = " + pciId + ", cellId = " + cellId + "neighborList:"
-                + neighborList + "]";
+        return "ModifyPci [PnfName = " + pnfName + ", PciId = " + pciId
+                + ", cellId = " + cellId + "neighborList:" + neighborList + "]";
     }
 
-    public ModifyPci(String pnfName, long pciId, String cellId, List<Neighbor> neighborList) {
+    public ModifyPci() {
+        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * Modify Pci value from sdnr.
+     *
+     * @param pnfName
+     *            server id name
+     * @param pciId
+     *            pci number
+     * @param cellId
+     *            node id for the cell
+     * @param neighborList
+     *            neighbor list for the cell
+     */
+    public ModifyPci(String pnfName, long pciId, String cellId,
+            List<Neighbor> neighborList) {
         super();
         this.pnfName = pnfName;
         this.pciId = pciId;
         this.cellId = cellId;
         this.neighborList = neighborList;
-    }
-
-    public ModifyPci() {
-        // TODO Auto-generated constructor stub
     }
 
     public String getPnfName() {
@@ -83,11 +91,18 @@ public class ModifyPci {
         this.neighborList = neighborList;
     }
 
+    /**
+     * Checks if all the parameters are set correctly .
+     *
+     * @return returns true if the parameter are set correctly
+     */
     public boolean isAllSet() {
-        if (pnfName == null || pnfName.trim().equals(""))
+        if (pnfName == null || pnfName.trim().equals("")) {
             return false;
-        if (cellId == null || cellId.trim().equals(""))
+        }
+        if (cellId == null || cellId.trim().equals("")) {
             return false;
+        }
         return true;
     }
 

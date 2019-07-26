@@ -214,8 +214,8 @@
         "physicalCellId": 3,
         "pnfName": "ncserver1",
         "sectorNumber": 0,
-        "latitude": "20.29709670006898",
-        "longitude": "-50.39862444759021"
+        "latitude": "20.093454779893126",
+        "longitude": "-50.9797749599232"
       },
       "neighbor": [
         {
@@ -283,8 +283,8 @@
         "physicalCellId": 4,
         "pnfName": "ncserver1",
         "sectorNumber": 0,
-        "latitude": "20.29282000327251",
-        "longitude": "-50.52784768733744"
+        "latitude": "20.45554775611858",
+        "longitude": "-50.979485093199536"
       },
       "neighbor": [
         {
@@ -386,10 +386,6 @@
         },
         {
           "nodeId": "Chn0002",
-          "blacklisted": "false"
-        },
-        {
-          "nodeId": "Chn0016",
           "blacklisted": "false"
         },
         {
@@ -559,8 +555,8 @@
         "physicalCellId": 8,
         "pnfName": "ncserver1",
         "sectorNumber": 0,
-        "latitude": "20.655606913101636",
-        "longitude": "-50.419646178076746"
+        "latitude": "20.541005063488934",
+        "longitude": "-50.82784894571226"
       },
       "neighbor": [
         {
@@ -661,14 +657,6 @@
           "blacklisted": "false"
         },
         {
-          "nodeId": "Chn0003",
-          "blacklisted": "false"
-        },
-        {
-          "nodeId": "Chn0016",
-          "blacklisted": "false"
-        },
-        {
           "nodeId": "Chn0008",
           "blacklisted": "false"
         },
@@ -697,8 +685,8 @@
         "physicalCellId": 10,
         "pnfName": "ncserver1",
         "sectorNumber": 0,
-        "latitude": "20.765928461158662",
-        "longitude": "-50.67126426158861"
+        "latitude": "21.00290859235497",
+        "longitude": "-50.67500409737939"
       },
       "neighbor": [
         {
@@ -766,8 +754,8 @@
         "physicalCellId": 0,
         "pnfName": "ncserver1",
         "sectorNumber": 0,
-        "latitude": "21.00290859235497",
-        "longitude": "-50.67500409737939"
+        "latitude": "20.765928461158662",
+        "longitude": "-50.67126426158861"
       },
       "neighbor": [
         {
@@ -851,8 +839,8 @@
         "physicalCellId": 1,
         "pnfName": "ncserver1",
         "sectorNumber": 0,
-        "latitude": "21.23349748142569",
-        "longitude": "-50.65681984654838"
+       "latitude": "20.905443462816146",
+        "longitude": "-50.35261324080344"
       },
       "neighbor": [
         {
@@ -1074,7 +1062,7 @@
         "physicalCellId": 13,
         "pnfName": "ncserver2",
         "sectorNumber": 0,
-        "latitude": "21.334874444612552",
+        "latitude": "21.234874444612552",
         "longitude": "-51.00975286482709"
       },
       "neighbor": [
@@ -1143,7 +1131,7 @@
         "physicalCellId": 14,
         "pnfName": "ncserver2",
         "sectorNumber": 0,
-        "latitude": "21.304561392788322",
+        "latitude": "22.304561392788322",
         "longitude": "-51.087181724511254"
       },
       "neighbor": [
@@ -6904,8 +6892,8 @@
         "physicalCellId": 31,
         "pnfName": "ncserver5",
         "sectorNumber": 0,
-        "latitude": "21.005443462816146",
-        "longitude": "-50.35261324080344"
+        "latitude": "21.260234366276542",
+        "longitude": "-50.50994593645002"
       },
       "neighbor": [
         {
@@ -7386,8 +7374,8 @@
         "physicalCellId": 5,
         "pnfName": "ncserver5",
         "sectorNumber": 0,
-        "latitude": "22.004422395672478",
-        "longitude": "-51.90525608679273"
+        "latitude": "20.824592553622807",
+        "longitude": "-51.037480744681204"
       },
       "neighbor": [
         {
@@ -11988,7 +11976,7 @@
         "physicalCellId": 21,
         "pnfName": "ncserver8",
         "sectorNumber": 0,
-        "latitude": "20.093454779893126",
+        "latitude": "22.093454779893126",
         "longitude": "-50.9797749599232"
       },
       "neighbor": [
@@ -12125,7 +12113,7 @@
         "physicalCellId": 22,
         "pnfName": "ncserver8",
         "sectorNumber": 0,
-        "latitude": "20.441005063488934",
+        "latitude": "21.441005063488934",
         "longitude": "-50.92784894571226"
       },
       "neighbor": [
@@ -12262,7 +12250,7 @@
         "physicalCellId": 23,
         "pnfName": "ncserver8",
         "sectorNumber": 0,
-        "latitude": "20.45554775611858",
+        "latitude": "21.45554775611858",
         "longitude": "-50.979485093199536"
       },
       "neighbor": [
@@ -12399,7 +12387,7 @@
         "physicalCellId": 24,
         "pnfName": "ncserver9",
         "sectorNumber": 0,
-        "latitude": "20.824592553622807",
+        "latitude": "22.824592553622807",
         "longitude": "-51.037480744681204"
       },
       "neighbor": [
@@ -12673,8 +12661,8 @@
         "physicalCellId": 26,
         "pnfName": "ncserver9",
         "sectorNumber": 0,
-        "latitude": "20.47999995016475",
-        "longitude": "-51.44530024217892"
+        "latitude": "20.511183649705668",
+        "longitude": "-51.43223924946536"
       },
       "neighbor": [
         {
@@ -12810,8 +12798,8 @@
         "physicalCellId": 27,
         "pnfName": "ncserver9",
         "sectorNumber": 0,
-        "latitude": "20.66940224990633",
-        "longitude": "-51.52520737943418"
+        "latitude": "20.511183649705668",
+        "longitude": "-51.43223924946536"
       },
       "neighbor": [
         {
@@ -84943,8 +84931,8 @@
         "physicalCellId": 17,
         "pnfName": "ncserver54",
         "sectorNumber": 0,
-        "latitude": "20.377346824833932",
-        "longitude": "-57.88093230118866"
+        "latitude": "21.377346824833932",
+        "longitude": "-55.88093230118866"
       },
       "neighbor": [
         {
@@ -85469,15 +85457,7 @@
           "blacklisted": "false"
         },
         {
-          "nodeId": "Chn0834",
-          "blacklisted": "false"
-        },
-        {
           "nodeId": "Chn0831",
-          "blacklisted": "false"
-        },
-        {
-          "nodeId": "Chn0824",
           "blacklisted": "false"
         },
         {
@@ -85490,10 +85470,6 @@
         },
         {
           "nodeId": "Chn0804",
-          "blacklisted": "false"
-        },
-        {
-          "nodeId": "Chn0822",
           "blacklisted": "false"
         },
         {
@@ -85513,18 +85489,6 @@
           "blacklisted": "false"
         },
         {
-          "nodeId": "Chn0805",
-          "blacklisted": "false"
-        },
-        {
-          "nodeId": "Chn0833",
-          "blacklisted": "false"
-        },
-        {
-          "nodeId": "Chn0827",
-          "blacklisted": "false"
-        },
-        {
           "nodeId": "Chn0829",
           "blacklisted": "false"
         },
@@ -85533,23 +85497,11 @@
           "blacklisted": "false"
         },
         {
-          "nodeId": "Chn0807",
-          "blacklisted": "false"
-        },
-        {
           "nodeId": "Chn0828",
           "blacklisted": "false"
         },
         {
           "nodeId": "Chn0803",
-          "blacklisted": "false"
-        },
-        {
-          "nodeId": "Chn0832",
-          "blacklisted": "false"
-        },
-        {
-          "nodeId": "Chn0798",
           "blacklisted": "false"
         },
         {
@@ -85569,8 +85521,8 @@
         "physicalCellId": 5,
         "pnfName": "ncserver54",
         "sectorNumber": 0,
-        "latitude": "20.40106483021893",
-        "longitude": "-59.22877899629776"
+        "latitude": "20.377346824833932",
+        "longitude": "-57.88093230118866"
       },
       "neighbor": [
         {
@@ -86352,8 +86304,8 @@
         "physicalCellId": 1,
         "pnfName": "ncserver54",
         "sectorNumber": 0,
-        "latitude": "20.6904196687578",
-        "longitude": "-59.32149955609473"
+        "latitude": "22.6904196687578",
+        "longitude": "-58.32149955609473"
       },
       "neighbor": [
         {
@@ -86481,8 +86433,8 @@
         "physicalCellId": 0,
         "pnfName": "ncserver55",
         "sectorNumber": 0,
-        "latitude": "20.977305783512612",
-        "longitude": "-59.384825802906114"
+        "latitude": "21.917586595167947",
+        "longitude": "-59.42819632250333"
       },
       "neighbor": [
         {
@@ -86602,8 +86554,8 @@
         "physicalCellId": 1,
         "pnfName": "ncserver55",
         "sectorNumber": 0,
-        "latitude": "21.130473515576448",
-        "longitude": "-59.158129402671875"
+        "latitude": "22.171078258839735",
+        "longitude": "-59.59293369893601"
       },
       "neighbor": [
         {
@@ -86723,7 +86675,7 @@
         "physicalCellId": 2,
         "pnfName": "ncserver55",
         "sectorNumber": 0,
-        "latitude": "21.34880431053136",
+        "latitude": "21.29880431053136",
         "longitude": "-58.90905048519845"
       },
       "neighbor": [
@@ -88587,8 +88539,8 @@
         "physicalCellId": 17,
         "pnfName": "ncserver56",
         "sectorNumber": 0,
-        "latitude": "21.01416907087083",
-        "longitude": "-59.97991303087929"
+        "latitude": "20.553432419670703",
+        "longitude": "-59.670715393402986"
       },
       "neighbor": [
         {
@@ -88696,8 +88648,8 @@
         "physicalCellId": 18,
         "pnfName": "ncserver56",
         "sectorNumber": 0,
-        "latitude": "21.95225635226011",
-        "longitude": "-59.64408127501924"
+        "latitude": "20.6904196687578",
+        "longitude": "-59.32149955609473"
       },
       "neighbor": [
         {
@@ -88805,8 +88757,8 @@
         "physicalCellId": 19,
         "pnfName": "ncserver56",
         "sectorNumber": 0,
-        "latitude": "21.917586595167947",
-        "longitude": "-59.42819632250333"
+        "latitude": "20.977305783512612",
+        "longitude": "-59.384825802906114"
       },
       "neighbor": [
         {
@@ -88914,8 +88866,8 @@
         "physicalCellId": 20,
         "pnfName": "ncserver56",
         "sectorNumber": 0,
-        "latitude": "22.171078258839735",
-        "longitude": "-59.59293369893601"
+        "latitude": "21.130473515576448",
+        "longitude": "-59.078129402671875"
       },
       "neighbor": [
         {

@@ -1,10 +1,5 @@
 /*
- * ============LICENSE_START=======================================================
- * RAN Simulator - HoneyComb
- * ================================================================================
  * Copyright (C) 2018 Wipro Limited.
- * ================================================================================
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +23,10 @@ import javax.annotation.Nonnull;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.RadioAccess;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapService;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapServiceBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev181127.radio.access.FapServiceKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.RadioAccess;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.FapService;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.FapServiceBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.oofpcipoc.rev190308.radio.access.FapServiceKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,6 +111,8 @@ final class FapServiceCrudService implements CrudService<FapService> {
         // read key specified in path identifier
         final FapServiceKey key = identifier.firstKeyOf(FapService.class);
         ConfigJsonHandler cfg = ConfigJsonHandler.getConfigJsonHandler(null);
+        if(cfg == null)
+            return null;
         JsonArray fsArr = cfg.radioAccessObj.getJsonArray("fap-service");
         if(fsArr != null){
         for (int i = 0; i < fsArr.size(); i++) {
@@ -140,8 +137,12 @@ final class FapServiceCrudService implements CrudService<FapService> {
     @Override
     public List<FapService> readAll() throws ReadFailedException {
         ConfigJsonHandler cfg = ConfigJsonHandler.getConfigJsonHandler(null);
-        JsonArray fsArr = cfg.radioAccessObj.getJsonArray("fap-service");
         List<FapService> fsList = new ArrayList<FapService>();
+        if(cfg ==null)
+            return fsList;
+        if(cfg.radioAccessObj ==null)
+            return fsList;
+        JsonArray fsArr = cfg.radioAccessObj.getJsonArray("fap-service");
         for (int i = 0; i < fsArr.size(); i++) {
             JsonObject fsObj = fsArr.getJsonObject(i);
             FapService fs = readSpecific(InstanceIdentifier.create(RadioAccess.class).child(FapService.class,

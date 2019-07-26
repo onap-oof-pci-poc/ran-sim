@@ -1,0 +1,1480 @@
+{
+  "oofpcipoc:radio-access": {    "fap-service": [
+      {
+      "alias": "Chn0166",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 10
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0172", 
+                  "phy-cell-id":16, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0165", 
+                  "phy-cell-id":9, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0164", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0159", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0160", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0173", 
+                  "phy-cell-id":17, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0158", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0162", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0163", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0169", 
+                  "phy-cell-id":13, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0156", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0161", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0170", 
+                  "phy-cell-id":14, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0157", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0167", 
+                  "phy-cell-id":11, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0171", 
+                  "phy-cell-id":15, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0168", 
+                  "phy-cell-id":12, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0165",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 9
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0163", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0156", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0160", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0157", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0158", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0172", 
+                  "phy-cell-id":16, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0164", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0171", 
+                  "phy-cell-id":15, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0170", 
+                  "phy-cell-id":14, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0173", 
+                  "phy-cell-id":17, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0169", 
+                  "phy-cell-id":13, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0166", 
+                  "phy-cell-id":10, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0159", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0162", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0168", 
+                  "phy-cell-id":12, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0167", 
+                  "phy-cell-id":11, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0161", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0172",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 16
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0166", 
+                  "phy-cell-id":10, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0167", 
+                  "phy-cell-id":11, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0162", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0173", 
+                  "phy-cell-id":17, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0160", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0163", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0169", 
+                  "phy-cell-id":13, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0165", 
+                  "phy-cell-id":9, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0158", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0168", 
+                  "phy-cell-id":12, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0157", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0171", 
+                  "phy-cell-id":15, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0170", 
+                  "phy-cell-id":14, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0156", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0164", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0161", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0159", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0174",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 0
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0179", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0178", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0181", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0175", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0182", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0180", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0176", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0177", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0173",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 17
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0167", 
+                  "phy-cell-id":11, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0162", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0168", 
+                  "phy-cell-id":12, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0158", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0160", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0161", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0157", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0169", 
+                  "phy-cell-id":13, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0159", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0156", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0165", 
+                  "phy-cell-id":9, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0163", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0171", 
+                  "phy-cell-id":15, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0170", 
+                  "phy-cell-id":14, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0164", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0172", 
+                  "phy-cell-id":16, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0166", 
+                  "phy-cell-id":10, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0179",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 5
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0176", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0178", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0175", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0181", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0180", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0182", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0174", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0177", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0170",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 14
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0167", 
+                  "phy-cell-id":11, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0156", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0169", 
+                  "phy-cell-id":13, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0159", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0161", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0166", 
+                  "phy-cell-id":10, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0172", 
+                  "phy-cell-id":16, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0162", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0173", 
+                  "phy-cell-id":17, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0158", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0157", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0164", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0171", 
+                  "phy-cell-id":15, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0165", 
+                  "phy-cell-id":9, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0160", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0168", 
+                  "phy-cell-id":12, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0163", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0168",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 12
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0165", 
+                  "phy-cell-id":9, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0170", 
+                  "phy-cell-id":14, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0171", 
+                  "phy-cell-id":15, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0166", 
+                  "phy-cell-id":10, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0173", 
+                  "phy-cell-id":17, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0161", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0160", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0169", 
+                  "phy-cell-id":13, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0156", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0157", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0164", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0172", 
+                  "phy-cell-id":16, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0162", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0158", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0167", 
+                  "phy-cell-id":11, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0159", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0163", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0175",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 1
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0174", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0180", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0178", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0177", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0181", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0179", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0182", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0176", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0169",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 13
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0165", 
+                  "phy-cell-id":9, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0173", 
+                  "phy-cell-id":17, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0168", 
+                  "phy-cell-id":12, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0159", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0162", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0172", 
+                  "phy-cell-id":16, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0158", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0167", 
+                  "phy-cell-id":11, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0163", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0170", 
+                  "phy-cell-id":14, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0164", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0156", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0160", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0166", 
+                  "phy-cell-id":10, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0161", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0157", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0171", 
+                  "phy-cell-id":15, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0167",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 11
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0156", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0161", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0172", 
+                  "phy-cell-id":16, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0158", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0157", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0170", 
+                  "phy-cell-id":14, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0168", 
+                  "phy-cell-id":12, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0162", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0166", 
+                  "phy-cell-id":10, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0165", 
+                  "phy-cell-id":9, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0164", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0169", 
+                  "phy-cell-id":13, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0160", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0171", 
+                  "phy-cell-id":15, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0173", 
+                  "phy-cell-id":17, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0159", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0163", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0176",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 2
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0177", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0175", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0180", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0174", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0178", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0181", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0182", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0179", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0178",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 4
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0175", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0174", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0181", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0182", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0180", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0176", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0179", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0177", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0171",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 15
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0156", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0159", 
+                  "phy-cell-id":3, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0169", 
+                  "phy-cell-id":13, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0165", 
+                  "phy-cell-id":9, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0157", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0162", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0164", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0166", 
+                  "phy-cell-id":10, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0160", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0167", 
+                  "phy-cell-id":11, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0172", 
+                  "phy-cell-id":16, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0161", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0158", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0170", 
+                  "phy-cell-id":14, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0168", 
+                  "phy-cell-id":12, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0173", 
+                  "phy-cell-id":17, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0163", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+,
+      {
+      "alias": "Chn0177",
+      "x-0005b9-lte": {
+        "pnf-name": "ncserver12",
+        "phy-cell-id-in-use": 3
+      },
+      "cell-config": {
+        "lte": {
+          "tunnel-number-of-entries":5,
+          "lte-ran": {
+            "lte-ran-neighbor-list-in-use": {
+              "lte-ran-neighbor-list-in-use-lte-cell" : [
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0178", 
+                  "phy-cell-id":4, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0174", 
+                  "phy-cell-id":0, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0181", 
+                  "phy-cell-id":7, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0182", 
+                  "phy-cell-id":8, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0180", 
+                  "phy-cell-id":6, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0179", 
+                  "phy-cell-id":5, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0176", 
+                  "phy-cell-id":2, 
+                  "blacklisted":false 
+              },
+              {
+                  "plmnid":"ran-1", 
+                  "cid":"Chn0175", 
+                  "phy-cell-id":1, 
+                  "blacklisted":false 
+              }              ]
+            }
+          }
+      }
+      }
+    }
+    ]
+  }
+}

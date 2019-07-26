@@ -17,7 +17,7 @@ module oofpcipoc {
      WG List:  <mailto:wireless-transport@login.opennetworking.org>
      WG Chair: Lyndon Ong         <mailto:lyong@ciena.com>
      WG Chair: Giorgio Cazzaniga  <mailto:giorgio.cazzaniga@sm-optics.com>
-     Editors:  Ramakrishnan, Shanthakumar (Shanth) <Shanthakumar.Ramakrishnan@commscope.com>                    Martin Skorupski   <mailto:martin.skorupski@highstreet-technologies.com>";
+     Editors: Ramakrishnan, Shanthakumar (Shanth) <Shanthakumar.Ramakrishnan@commscope.com>  Martin Skorupski <mailto:martin.skorupski@highstreet-technologies.com> Sandeep Shah <mailto:sandeep.shah2@techmahindra.com>"; 
   description
     "This module contains a collection of YANG definitions for managing radio access network (RAN) devices.";
 
@@ -37,6 +37,11 @@ module oofpcipoc {
     reference
       "ONF TR ???: A YANG Data Model for Radio Access Networks.
        BBF TR-196 2.0.3 full";
+  }
+  revision 2019-03-08 {
+    description
+      "Updated to support Centralized ANR functionality for Dublin
+      Included blacklisted leaf node";
   }
 
       grouping configuration-phy-cell-id-request {
@@ -78,7 +83,6 @@ module oofpcipoc {
         type string;
       }
     }
-	
 container radio-access {
 
 
@@ -118,15 +122,16 @@ container radio-access {
               "Container for object class FAPService.{i}.CellConfig.LTE.RAN.RF.";
           }
           container lte-ran-neighbor-list-in-use {
-            uses lte-ran-neighbor-list-in-use-g;
+              uses lte-ran-neighbor-list-in-use-g;
             description
               "Container for object class FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.";
-            list lte-ran-neighbor-list-in-use-lte-cell {
-              key "plmnid cid";
-              uses lte-ran-neighbor-list-in-use-lte-cell-g;
-              description
-                "List of object class FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.";
-            }
+              list lte-ran-neighbor-list-in-use-lte-cell {
+                key "plmnid cid";
+                uses lte-ran-neighbor-list-in-use-lte-cell-g;
+                description
+                  "List of object class FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.";
+              }
+
           }
 		}
       }
@@ -224,60 +229,6 @@ container radio-access {
     reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.PHY.";
   }
 
-  grouping lte-ran-neighbor-list-lte-cell-g {
-    description
-      "Table containing the E-UTRA (i.e. intra-RAT) cell list provided by the ACS. The table contents MAY be added/deleted/modified during operation, in which case these changes shall be reflected in the broadcast information as soon as possible.";
-    leaf enable {
-      type boolean;
-      config false;
-      description
-        "Enables or disables this entry.";
-      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.Enable";
-    }
-    leaf alias {
-      type string {
-        length "1..64";
-      }
-      description
-        "{{datatype|expand}}";
-      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.Alias";
-    }
-    leaf must-include {
-      type boolean;
-      config false;
-      description
-        "Indicates whether this instance of the neighbor shall be included or excluded in the FAP's NL configuration.";
-      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.MustInclude";
-    }
-    leaf plmnid {
-      type string {
-        length "0..6";
-      }
-      description
-        "PLMN ID consists of Mobile Country Code (MCC) and Mobile Network Code (MNC) {{bibref|3GPP-TS.23.003}}, {{bibref|3GPP-TS.24.008}}. Mobile Country Code consists of three digits and uniquely identifies the country of domicile of the subscriber. Mobile Network Code consists of two or three digits and identifies the Home PLMN within a country. For a 2-digit MNC the total string length of {{param}} is 5.";
-      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.PLMNID";
-    }
-    leaf cid {
-       type string {
-         length "0..52";
-      }
-      description
-        "Cell Identity. {{bibref|3GPP-TS.36.331|Section 6.3.4}}. Combination of {{param|PLMNID}} and {{param}} constitutes the Cell Global ID (CGI).";
-      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.CID";
-    }
-    leaf phy-cell-id {
-      type uint64 {
-        range "0..503";
-      }
-      config false;
-      description
-        "Physical cell ID, as specified in {{bibref|3GPP-TS.36.211|Section 6.11}}.";
-      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.PhyCellID";
-    }
-    reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborList.LTECell.{i}.";
-  }
-
-
   grouping lte-ran-neighbor-list-in-use-g {
     description
       "This object contains parameters relating to the neighbor list used by the FAP based on its self-configuration capability and {{object|.CellConfig.LTE.RAN.NeighborList.}} configuration of adding and excluding cells.";
@@ -331,9 +282,17 @@ container radio-access {
       description
         "PNF name ";
     }
+    leaf blacklisted {
+      type string;
+      description
+        "Indicates whether this neighbor cell is allowed for UEs as handover target or not. If {{true}}, handover is prohibited towards this cell. If {{false}}, handover is allowed toward this cell. The {{param}} parameter allows this cell to be prohibited as a handover target, while still allowing this cell to be included in the BCCH SIB4 or 5.";
+      reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.Blacklisted";
+    }
 
     reference "BBF TR-196 2.0.3 full - FAPService.{i}.CellConfig.LTE.RAN.NeighborListInUse.LTECell.{i}.";
   }
+
+
 
   notification nbrlist-change-notification {
     description "RAN Neighbor List change notification.";
@@ -491,3 +450,4 @@ container radio-access {
      } // notification netconf-config-change
 
 }
+	

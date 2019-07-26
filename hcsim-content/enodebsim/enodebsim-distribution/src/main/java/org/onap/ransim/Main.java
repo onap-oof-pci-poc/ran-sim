@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Module;
 import io.fd.honeycomb.infra.distro.activation.ActivationModule;
 import java.util.List;
+import org.onap.ransim.ConfigJsonHandler;
 
 public class Main {
 
@@ -32,6 +33,8 @@ public class Main {
         io.fd.honeycomb.infra.distro.Main.init(sampleModules);
 */
         //io.fd.honeycomb.infra.distro.Main.init(new ActivationModule());
+        ConfigJsonHandler.ignoreEvents();
         io.fd.honeycomb.infra.distro.Main.main(args);
+        ConfigJsonHandler.monitorEvents();
     }
 }
