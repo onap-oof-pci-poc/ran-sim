@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+   honeycomb:
+      container_name: honeycomb
+      image: gnbsim:latest
+      ports:
+        - "2831:2831"
+      hostname: honeycomb
+      command: honeycomb
+      volumes:
+        - ./config:/opt/app/honeycomb/config
+      restart: on-failure

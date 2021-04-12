@@ -1,0 +1,8 @@
+{
+  "ransimIp": "10.31.4.44",
+  "ransimPort": 8081,
+  "hcIp": "10.31.4.44",
+  "hcPort": 2831,
+  "endpoint": "ransim/RansimAgent",
+  "vesEventListenerUrl": "http://10.143.125.158:8080/eventListener/v7"
+}
