@@ -1,0 +1,39 @@
+{
+  "oof-slicing-poc:radio-access": {
+    "number-of-cells": 1,
+    "cells": [
+      {
+        "alias": "VC03",
+        "slices": [
+          {
+            "name": "GEN_SLICE",
+            "s-nssai": [
+		{
+		    "SST": 2,
+                    "SD": "urllc1"
+		}
+	     ],
+             "slice-profiles":[
+		{
+			"slice-profile-id": "e2e_slice1"
+		}
+	     ],
+             "ran-profile":{
+		"ran-profile-id": "ran-profile-1"
+		},
+            "allocation": [
+              {
+                "time-interval": "10:00:00-11:00:00",
+                "bw-allocation": 2300
+              },
+              {
+                "time-interval": "09:00:00-10:00:00",
+                "bw-allocation": 2300
+              }
+            ]
+          }        
+        ]
+      }
+    ]
+  }
+}
