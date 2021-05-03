@@ -76,18 +76,15 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
             rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getRRMPolicyDedicatedRatio().intValue());
             rrmPolicyRatioModel.setResourceID("");
             rrmPolicyRatioModel.setSliceType("");
-            WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
-            DeviceData deviceData = new DeviceData();
+            ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             try{
                  ObjectMapper Obj = new ObjectMapper();
                  String message = Obj.writeValueAsString(rrmPolicyRatioModel);
                   LOG.info("parsed message: " + message);
-                 deviceData.setMessage(message);
+		  configurationHandler.sendDatabaseUpdate(message,MessageType.HC_TO_RC_RRM_POLICY);
             }catch(JsonProcessingException jsonProcessingException){
                  LOG.error("Error parsing json");
             }
-            deviceData.setMessageType(MessageType.HC_TO_RC_RRM_POLICY);
-            websocketClient.sendMessage(deviceData);
         } else {
             throw new WriteFailedException.CreateFailedException(identifier, data,
                     new NullPointerException("Provided data are null"));

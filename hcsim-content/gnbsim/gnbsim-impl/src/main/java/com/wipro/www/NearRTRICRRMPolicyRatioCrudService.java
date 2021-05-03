@@ -62,29 +62,29 @@ public class NearRTRICRRMPolicyRatioCrudService implements CrudService<RRMPolicy
             List<RRMPolicyMember> rrmPolicyMemberList = new ArrayList<RRMPolicyMember>();
             List<RRMPolicyMemberList> rRMPolicyMemberDataList = data.getAttributes().getRRMPolicyMemberList();
             for (RRMPolicyMemberList rrmp : rRMPolicyMemberDataList) {
-                 RRMPolicyMember rrmPolicyMember = new RRMPolicyMember();
-                 rrmPolicyMember.setpLMNId(rrmp.getIdx().toString());
-                 rrmPolicyMember.setsNSSAI(
-                                 rrmp.getSNSSAI().toString().substring(14, rrmp.getSNSSAI().toString().length() - 1));
-                 rrmPolicyMemberList.add(rrmPolicyMember);
+                  RRMPolicyMember rrmPolicyMember = new RRMPolicyMember();
+                  String mcc = rrmp.getMcc().toString().substring(11,rrmp.getMcc().toString().length()-1);
+                  String mnc = rrmp.getMnc().toString().substring(11,rrmp.getMnc().toString().length()-1);
+                  rrmPolicyMember.setpLMNId(mcc + "-" + mnc);
+                  rrmPolicyMember.setsNSSAI(
+                  rrmp.getSNSSAI().toString().substring(14, rrmp.getSNSSAI().toString().length() - 1));
+                  rrmPolicyMemberList.add(rrmPolicyMember);
             }
+
             rrmPolicyRatioModel.setrRMPolicyMemberList(rrmPolicyMemberList);
             rrmPolicyRatioModel.setQuotaType(data.getAttributes().getQuotaType().toString());
             rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getAttributes().getRRMPolicyMaxRatio().intValue());
             rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getAttributes().getRRMPolicyMinRatio().intValue());
             rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getAttributes().getRRMPolicyDedicatedRatio().intValue());
-            WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
-            DeviceData deviceData = new DeviceData();
+            ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             try{
                 ObjectMapper Obj = new ObjectMapper();
                 String message = Obj.writeValueAsString(rrmPolicyRatioModel);
                 LOG.info("parsed message: " + message );
-                deviceData.setMessage(message);
+		configurationHandler.sendDatabaseUpdate(message,MessageType.HC_TO_RC_RRM_POLICY);
             }catch(JsonProcessingException jsonProcessingException){
                 LOG.error("Error parsing json");
             }
-            deviceData.setMessageType(MessageType.HC_TO_RC_RRM_POLICY);
-            websocketClient.sendMessage(deviceData);
 
         } else {
             throw new WriteFailedException.CreateFailedException(identifier, data,

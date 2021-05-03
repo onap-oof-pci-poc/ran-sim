@@ -29,8 +29,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wipro.www.websocket.WebsocketClient;
-import com.wipro.www.websocket.models.DeviceData;
 import com.wipro.www.websocket.models.MessageType;
 import com.wipro.www.websocket.models.SliceProfile;
 
@@ -56,8 +54,11 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
             SliceProfile sliceProfile = new SliceProfile();
             sliceProfile.setSliceProfileId(data.getSliceProfileId());
             String snssaiString = data.getSNSSAI().toString();
+	    int snssaiIndex = snssaiString.indexOf("{_value=");
+            String snssaiSubStr = snssaiString.substring(snssaiIndex + "{_value=".length());
+            String snssai = snssaiSubStr.substring(0, snssaiSubStr.indexOf("}"));
+            sliceProfile.setsNSSAI(snssai);
             sliceProfile.setsNSSAI(snssaiString.substring(14,snssaiString.length()));
-            //sliceProfile.setpLMNIdList();
             sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
             sliceProfile.setCoverageareaList(data.getCoverageAreaList().toString());
             sliceProfile.setLatency(data.getLatency().intValue());
@@ -66,18 +67,15 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
             sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
             sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
             sliceProfile.setUemobilitylevel(data.getUEMobilityLevel()); 
-            WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
-            DeviceData deviceData = new DeviceData();
+            ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             try {
                 ObjectMapper obj = new ObjectMapper();
                 String message = obj.writeValueAsString(sliceProfile);
                 LOG.info("parsed message: " + message);
-                deviceData.setMessage(message);
+		configurationHandler.sendDatabaseUpdate(message,MessageType.HC_TO_RC_SLICE_PROFILE);
             } catch (JsonProcessingException jsonProcessingException) {
                 LOG.error("Error parsing json");
             }
-           deviceData.setMessageType(MessageType.HC_TO_RC_SLICE_PROFILE);
-           websocketClient.sendMessage(deviceData); 
         } else {
             throw new WriteFailedException.CreateFailedException(identifier, data,
                     new NullPointerException("Provided data are null"));
@@ -96,8 +94,10 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
             SliceProfile sliceProfile = new SliceProfile();
             sliceProfile.setSliceProfileId(data.getSliceProfileId());
             String snssaiString = data.getSNSSAI().toString();
-            sliceProfile.setsNSSAI(snssaiString.substring(14,snssaiString.length()));
-            //sliceProfile.setpLMNIdList();
+	    int snssaiIndex = snssaiString.indexOf("{_value=");
+            String snssaiSubStr = snssaiString.substring(snssaiIndex + "{_value=".length());
+            String snssai = snssaiSubStr.substring(0, snssaiSubStr.indexOf("}"));
+            sliceProfile.setsNSSAI(snssai);
             sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
             sliceProfile.setCoverageareaList(data.getCoverageAreaList().toString());
             sliceProfile.setLatency(data.getLatency().intValue());
@@ -106,18 +106,15 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
             sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
             sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
             sliceProfile.setUemobilitylevel(data.getUEMobilityLevel());
-            WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
-            DeviceData deviceData = new DeviceData();
+            ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             try {
                 ObjectMapper obj = new ObjectMapper();
                 String message = obj.writeValueAsString(sliceProfile);
                 LOG.info("parsed message: " + message);
-                deviceData.setMessage(message);
+		configurationHandler.sendDatabaseUpdate(message,MessageType.HC_TO_RC_SLICE_PROFILE_DEL);
             } catch (JsonProcessingException jsonProcessingException) {
                 LOG.error("Error parsing json");
             }
-           deviceData.setMessageType(MessageType.HC_TO_RC_SLICE_PROFILE_DEL);
-           websocketClient.sendMessage(deviceData);
         } else {
             throw new WriteFailedException.DeleteFailedException(identifier,
                     new NullPointerException("Provided data are null"));

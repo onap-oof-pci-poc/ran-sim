@@ -26,9 +26,23 @@ import com.wipro.www.websocket.models.InitialConfig;
 import com.wipro.www.websocket.models.NearRTRIC;
 import com.wipro.www.websocket.models.GNBDUFunction;
 import com.wipro.www.websocket.models.MessageType;
+import com.wipro.www.websocket.models.PLMNInfoModel;
 import com.wipro.www.websocket.models.SliceDetailsMessage;
+import java.util.List;
+import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.fd.honeycomb.translate.read.ReadFailedException;
+import io.fd.honeycomb.translate.write.WriteFailedException;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.PLMNInfoList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.PLMNInfoListKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.PLMNInfoListBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
 public class ConfigurationHandler {
 
@@ -56,6 +70,7 @@ public class ConfigurationHandler {
         }
         return instance;
     }
+    
 
     public void handleInitialConfig(String message){
         ObjectMapper mapper = new ObjectMapper();
@@ -82,6 +97,7 @@ public class ConfigurationHandler {
                                           initialConfig.getVictimSetID());
                //InMemoryDataTree.getInstance().setNrCellDu(
                //                           initialConfig.getnRCellDU());
+	       LOG.info(" handleInitialConfig: "+ message);
                LOG.info("Initial configuration is set successfully                                           for GNBDUFunction");               
             } 
                

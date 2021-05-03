@@ -54,7 +54,7 @@ public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList
 
             // Performs any logic needed for persisting such data
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
-	    WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
+	    ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
 	    int idNearRTRICIndex = identifier.toString().indexOf("_idNearRTRIC=");
 	    String idNearRTRICSubStr = identifier.toString().substring(idNearRTRICIndex + "_idNearRTRIC=".length());
 	    String idNearRTRIC = idNearRTRICSubStr.substring(0, idNearRTRICSubStr.indexOf("}"));
@@ -82,23 +82,19 @@ public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList
 	    for (SNSSAIList s : snssaiList) {
 		    List<ConfigData> configDataList = s.getConfigData();
 		    for (ConfigData c : configDataList) {
-			    if (c.getConfigParameter().equalsIgnoreCase("maxNumberOfConns")) {
-				    plmnInfoModel.setMaxNumberOfConns(c.getConfigValue());
-			    }
+			    plmnInfoModel.setConfigParameter(c.getConfigParameter());
+                            plmnInfoModel.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
 		    }
 		    plmnInfoModel.setSnssai(s.getSNssai());
 		    plmnInfoModel.setStatus(s.getStatus());
-		    DeviceData deviceData = new DeviceData();
 		    try {
 			    ObjectMapper obj = new ObjectMapper();
 			    String message = obj.writeValueAsString(plmnInfoModel);
 			    LOG.info("parsed message: " + message);
-                            deviceData.setMessage(message);
+		            configurationHandler.sendDatabaseUpdate(message,MessageType.HC_TO_RC_PLMN);
 		    } catch (JsonProcessingException jsonProcessingException) {
 			    LOG.error("Error parsing json");
 		    }
-		    deviceData.setMessageType(MessageType.HC_TO_RC_PLMN);
-		    websocketClient.sendMessage(deviceData);
 	    }
 
         } else {
@@ -144,9 +140,11 @@ public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList
             for (SNSSAIList s : snssaiList) {
                     List<ConfigData> configDataList = s.getConfigData();
                     for (ConfigData c : configDataList) {
-                            if (c.getConfigParameter().equalsIgnoreCase("maxNumberOfConns")) {
-                                    plmnInfoModel.setMaxNumberOfConns(c.getConfigValue());
-                            }
+//                            if (c.getConfigParameter().equalsIgnoreCase("maxNumberOfConns")) {
+//                                    plmnInfoModel.setMaxNumberOfConns(c.getConfigValue());
+//                            }
+			    plmnInfoModel.setConfigParameter(c.getConfigParameter());
+                            plmnInfoModel.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
                     }
                     plmnInfoModel.setSnssai(s.getSNssai());
                     plmnInfoModel.setStatus(s.getStatus());

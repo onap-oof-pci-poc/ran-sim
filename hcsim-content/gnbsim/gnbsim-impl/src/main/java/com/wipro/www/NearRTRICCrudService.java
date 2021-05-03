@@ -47,6 +47,7 @@ public class NearRTRICCrudService implements CrudService<NearRTRIC> {
 
             // Performs any logic needed for persisting such data
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
+
         } else {
             throw new WriteFailedException.CreateFailedException(identifier, data,
                     new NullPointerException("Provided data are null"));
