@@ -41,6 +41,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class NRCellDURRMPolicyRatioCrudService implements CrudService<RRMPolicyRatio> {
 
@@ -56,7 +57,11 @@ public class NRCellDURRMPolicyRatioCrudService implements CrudService<RRMPolicyR
             // Performs any logic needed for persisting such data
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
 	    RRMPolicyRatioModel rrmPolicyRatioModel = new RRMPolicyRatioModel();
-            rrmPolicyRatioModel.setRrmPolicyID(Integer.parseInt(data.getId()));
+	    int rrmPolicyIDIndex = identifier.toString().indexOf("RRMPolicyRatioKey{_id=");
+            String rrmPolicyIDSubStr = identifier.toString().substring(rrmPolicyIDIndex + "RRMPolicyRatioKey{_id=".length());
+            String rrmPolicyID = rrmPolicyIDSubStr.substring(0, rrmPolicyIDSubStr.indexOf("}"));
+
+            rrmPolicyRatioModel.setRrmPolicyID(rrmPolicyID);
             rrmPolicyRatioModel.setResourceType(data.getAttributes().getResourceType());
             List<RRMPolicyMember> rrmPolicyMemberList = new ArrayList<RRMPolicyMember>();
             List<RRMPolicyMemberList> rRMPolicyMemberDataList = data.getAttributes().getRRMPolicyMemberList();
@@ -71,11 +76,16 @@ public class NRCellDURRMPolicyRatioCrudService implements CrudService<RRMPolicyR
             }
             rrmPolicyRatioModel.setrRMPolicyMemberList(rrmPolicyMemberList);
             rrmPolicyRatioModel.setQuotaType(data.getAttributes().getQuotaType().toString());
+	    if(!(Objects.isNull(data.getAttributes().getRRMPolicyMaxRatio()))){
             rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getAttributes().getRRMPolicyMaxRatio().intValue());
+            }
+            if(!(Objects.isNull(data.getAttributes().getRRMPolicyMinRatio()))){
             rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getAttributes().getRRMPolicyMinRatio().intValue());
+            }
+
             rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getAttributes().getRRMPolicyDedicatedRatio().intValue());
-            rrmPolicyRatioModel.setResourceID("");
-            rrmPolicyRatioModel.setSliceType("");
+            //rrmPolicyRatioModel.setResourceID("");
+            //rrmPolicyRatioModel.setSliceType("");
             ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             try{
                  ObjectMapper Obj = new ObjectMapper();
@@ -102,7 +112,11 @@ public class NRCellDURRMPolicyRatioCrudService implements CrudService<RRMPolicyR
             // Performs any logic needed for persisting such data
             LOG.info("Removing path[{}] / data [{}]", identifier, data);
             RRMPolicyRatioModel rrmPolicyRatioModel = new RRMPolicyRatioModel();
-            rrmPolicyRatioModel.setRrmPolicyID(Integer.parseInt(data.getId()));
+	    int rrmPolicyIDIndex = identifier.toString().indexOf("RRMPolicyRatioKey{_id=");
+            String rrmPolicyIDSubStr = identifier.toString().substring(rrmPolicyIDIndex + "RRMPolicyRatioKey{_id=".length());
+            String rrmPolicyID = rrmPolicyIDSubStr.substring(0, rrmPolicyIDSubStr.indexOf("}"));
+
+            rrmPolicyRatioModel.setRrmPolicyID(rrmPolicyID);
             rrmPolicyRatioModel.setResourceType(data.getAttributes().getResourceType());
             List<RRMPolicyMember> rrmPolicyMemberList = new ArrayList<RRMPolicyMember>();
             List<RRMPolicyMemberList> rRMPolicyMemberDataList = data.getAttributes().getRRMPolicyMemberList();
@@ -117,11 +131,16 @@ public class NRCellDURRMPolicyRatioCrudService implements CrudService<RRMPolicyR
             }
             rrmPolicyRatioModel.setrRMPolicyMemberList(rrmPolicyMemberList);
             rrmPolicyRatioModel.setQuotaType(data.getAttributes().getQuotaType().toString());
+	    if(!(Objects.isNull(data.getAttributes().getRRMPolicyMaxRatio()))){
             rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getAttributes().getRRMPolicyMaxRatio().intValue());
+            }
+            if(!(Objects.isNull(data.getAttributes().getRRMPolicyMinRatio()))){
             rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getAttributes().getRRMPolicyMinRatio().intValue());
+            }
+
             rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getAttributes().getRRMPolicyDedicatedRatio().intValue());
-            rrmPolicyRatioModel.setResourceID("");
-            rrmPolicyRatioModel.setSliceType("");
+//            rrmPolicyRatioModel.setResourceID("");
+//            rrmPolicyRatioModel.setSliceType("");
             WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
             DeviceData deviceData = new DeviceData();
             try{

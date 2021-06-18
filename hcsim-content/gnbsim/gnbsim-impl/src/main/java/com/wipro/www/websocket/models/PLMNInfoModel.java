@@ -20,23 +20,24 @@
 
 package com.wipro.www.websocket.models;
 
+import java.util.List;
+
 public class PLMNInfoModel {
 	private String pLMNId;
 	private String snssai;
 	private String status;
 	private String gnbType;
-	private int gnbId;
+	private String gnbId;
 	private int nrCellId;
 	private String nearrtricid;
-	private String configParameter;
-	private Integer configValue;
+	private List<ConfigData> configData;
 
 	public PLMNInfoModel() {
 
 	}
 
-	public PLMNInfoModel(String pLMNId, String snssai, String status, String gnbType, int gnbId, int nrCellId,
-			String nearrtricid, String configParameter, Integer configValue) {
+	public PLMNInfoModel(String pLMNId, String snssai, String status, String gnbType, String gnbId, int nrCellId,
+			String nearrtricid, List<ConfigData> configData) {
 		super();
 		this.pLMNId = pLMNId;
 		this.snssai = snssai;
@@ -45,8 +46,7 @@ public class PLMNInfoModel {
 		this.gnbId = gnbId;
 		this.nrCellId = nrCellId;
 		this.nearrtricid = nearrtricid;
-		this.configParameter = configParameter;
-		this.configValue = configValue;
+		this.configData = configData;
 	}
 
 	public String getpLMNId() {
@@ -81,11 +81,11 @@ public class PLMNInfoModel {
 		this.gnbType = gnbType;
 	}
 
-	public int getGnbId() {
+	public String getGnbId() {
 		return gnbId;
 	}
 
-	public void setGnbId(int gnbId) {
+	public void setGnbId(String gnbId) {
 		this.gnbId = gnbId;
 	}
 
@@ -105,28 +105,21 @@ public class PLMNInfoModel {
 		this.nearrtricid = nearrtricid;
 	}
 
-	public String getConfigParameter() {
-		return configParameter;
+	public List<ConfigData> getConfigData() {
+		return configData;
 	}
 
-	public void setConfigParameter(String configParameter) {
-		this.configParameter = configParameter;
+	public void setConfigData(List<ConfigData> configData) {
+		this.configData = configData;
 	}
 
-	public Integer getConfigValue() {
-		return configValue;
-	}
-
-	public void setConfigValue(Integer configValue) {
-		this.configValue = configValue;
-	}
        
 	@Override
 	public String toString() {
 		return "PLMNInfoModel [pLMNId=" + pLMNId + ", snssai=" + snssai + ", status=" + status
 				+ ", gnbType=" + gnbType + ", gnbId=" + gnbId + ", nrCellId=" + nrCellId
-				+ ", nearrtricid=" + nearrtricid + ", configParameter=" + configParameter
-				+ ", configValue=" + configValue + "]";
+				+ ", nearrtricid=" + nearrtricid
+				+ ", configData=" + configData + "]";
 	}
 }
 

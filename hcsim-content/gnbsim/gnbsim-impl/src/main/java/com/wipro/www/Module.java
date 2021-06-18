@@ -23,6 +23,7 @@ import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 import com.wipro.www.websocket.WebsocketClient;
 import com.wipro.www.write.ModuleWriterFactory;
+import com.wipro.www.read.ModuleStateReaderFactory;
 import io.fd.honeycomb.translate.read.ReaderFactory;
 import io.fd.honeycomb.translate.write.WriterFactory;
 import net.jmob.guice.conf.core.ConfigurationModule;
@@ -277,8 +278,8 @@ public final class Module extends AbstractModule {
 
         // creates reader factory binding
         // can hold multiple binding for separate yang modules
-        /*final Multibinder<ReaderFactory> readerFactoryBinder = Multibinder.newSetBinder(binder(), ReaderFactory.class);
-        readerFactoryBinder.addBinding().to(ModuleStateReaderFactory.class); */
+        final Multibinder<ReaderFactory> readerFactoryBinder = Multibinder.newSetBinder(binder(), ReaderFactory.class);
+        readerFactoryBinder.addBinding().to(ModuleStateReaderFactory.class); 
 
         // create writer factory binding
         // can hold multiple binding for separate yang modules

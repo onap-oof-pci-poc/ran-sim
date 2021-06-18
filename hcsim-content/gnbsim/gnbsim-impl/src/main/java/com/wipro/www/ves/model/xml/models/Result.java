@@ -23,9 +23,11 @@ import javax.xml.bind.annotation.XmlValue;
 public class Result {
 private int p;
 private int measValue;
+//private String measValue;
 public Result() {
 }
 public Result(int p, int measValue) {
+//public Result(int p, String measValue) {
 super();
 this.p = p;
 this.measValue = measValue;
@@ -38,7 +40,7 @@ public void setP(int p) {
 this.p = p;
 }
 @XmlValue
-public double getMeasValue() {
+public int getMeasValue() {
 return measValue;
 }
 public void setMeasValue(int measValue) {

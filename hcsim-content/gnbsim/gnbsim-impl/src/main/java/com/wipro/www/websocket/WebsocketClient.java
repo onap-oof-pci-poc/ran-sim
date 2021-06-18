@@ -112,7 +112,7 @@ public class WebsocketClient {
 
     public void connectWebsocket() throws Exception{
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        LOG.info("**************************Connecting to Server*********8");
+        LOG.info("Connecting to Server");
         clientSession = container.connectToServer(this, new URI(url));
         LOG.info("Connected to server, Session id: {}", clientSession.getId());
         LOG.info("Sending connection request...");

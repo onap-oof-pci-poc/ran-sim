@@ -1,37 +1,13 @@
 package com.wipro.www.websocket.models;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class NRCellDU {
 
-    public String idNRCellDU;
-    public Attributes attributes;
-    public enum operationalState {
-       DISABLED,
-       ENABLED
-    }
-    public enum cellState {
-       IDLE,
-       INACTIVE,
-       ACTIVE
-    }
-    public operationalState eoperationalState;
-    public cellState ecellState;
+    private String idNRCellDU;
+    
+    private Attributes attributes;
 
-    public operationalState getoperationalState() {
-        return eoperationalState;
-    }
-
-    public void setoperationalState(operationalState valoperationalState) {
-       this.eoperationalState = valoperationalState;
-    }
-
-    public cellState getcellState() {
-        return ecellState;
-    }
-
-    public void setcellState(cellState valcellState) {
-       this.ecellState = valcellState;
-    }
- 
     public String getIdNRCellDU() {
       return idNRCellDU;
     }
@@ -52,6 +28,5 @@ public class NRCellDU {
     {
         
     }
-    
 }
 

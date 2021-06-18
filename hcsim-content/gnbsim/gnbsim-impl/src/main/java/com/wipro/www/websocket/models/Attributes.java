@@ -1,17 +1,18 @@
-package com.wipro.www.websocket.models; 
+
+package com.wipro.www.websocket.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Attributes {
 
-    @JsonProperty("location-name")
-    public String locationName;
-    public String gNBId;    
-    public String operationalState;
-    public String cellState;
-    public String gNBCUUPId;
+    @JsonProperty("locationName")
+    private String locationName;
+    private String gNBId;    
+    private String operationalState;
+    private String cellState;
+    private String gNBCUUPId;
    
     public String getLocationName() {
       return locationName;

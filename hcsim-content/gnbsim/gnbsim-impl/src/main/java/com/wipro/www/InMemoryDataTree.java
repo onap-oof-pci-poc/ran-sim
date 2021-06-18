@@ -32,15 +32,16 @@ import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryDataTree {
 
-  private String locationName;
+ /* private String locationName;
   private String nearRTRICgNBId;
   private String managedBy;
 
-  private int gNBId;
+  private String idNearRTRIC;
+  private String gNBId;
   private int aggressorSetID;
   private int victimSetID;
 
@@ -63,7 +64,7 @@ public class InMemoryDataTree {
 
   public void setoperationalState(operationalState valoperationalState) {
      this.eoperationalState = valoperationalState;
-  }
+  }*/
  
   private static InMemoryDataTree instance;
   
@@ -75,6 +76,26 @@ public class InMemoryDataTree {
        instance = new InMemoryDataTree();
    }
    return instance;
+  }
+
+  Map<String, Integer> hashMapgNBDUFunc 
+	              = new HashMap<String, Integer>(); 
+  /*List<NearRTRIC> nearRTRIC;
+
+  public List<NearRTRIC> getNearRTRIC() {
+    return nearRTRIC;
+  }
+
+  public void setNearRTRIC(List<NearRTRIC> nearRTRIC) {
+     this.nearRTRIC = nearRTRIC;
+  }
+
+  public String getIdNearRTRIC() {
+	  return idNearRTRIC;
+  }
+
+  public void setIdNearRTRIC(String idNearRTRIC) {
+	  this.idNearRTRIC = idNearRTRIC;
   }
 
   public String getLocationName() {
@@ -101,11 +122,11 @@ public class InMemoryDataTree {
      this.managedBy = managedBy;
   }
 
-  public int getGNBId() {
+  public String getGNBId() {
      return gNBId;
   }
   
-  public void setGNBId(int gNBId) {
+  public void setGNBId(String gNBId) {
      this.gNBId = gNBId;
   }
 
@@ -124,28 +145,35 @@ public class InMemoryDataTree {
   public void setVictimSetID(int victimSetID) {
      this.victimSetID = victimSetID;
   }  
-  
+ 
   public List<ConfigNRCellDU> getNRCellDU() {
       return nrCellDu;
   }
 
   public void setNrCellDU(List<ConfigNRCellDU> nrCellDu) {
       this.nrCellDu = nrCellDu;
-  }
+  }*/
 
-  public void setNearRTRIC(@Nonnull NearRTRIC data) {
-      //data.
-  }
+   private List<nearRTRIC> nearRTRIC;
+
+   public List<nearRTRIC> getNearRTRIC() {
+          return nearRTRIC;
+   }
+
+   public void setNearRTRIC(List<nearRTRIC> nearRTRIC) {
+          this.nearRTRIC = nearRTRIC;
+   }
+
     
-/*    List<NearRTRIC> nearRTRIC;
+/*    List<nearRTRIC> nearRTRIC;
     String idNearRTRIC;
-    public Attributes attributes;
-    public List<GNBDUFunction> gNBDUFunction;
-    public List<GNBCUUPFunction> gNBCUUPFunction;
-    public String idGNBCUUPFunction;
-    public String idGNBDUFunction;
-    public List<NRCellDU> nRCellDU;
-    public String idNRCellDU;
+    private Attributes attributes;
+    private List<GNBDUFunction> gNBDUFunction;
+    private List<GNBCUUPFunction> gNBCUUPFunction;
+    private String idGNBCUUPFunction;
+    private String idGNBDUFunction;
+    private List<NRCellDU> nRCellDU;
+    private String idNRCellDU;
      
     public List<NearRTRIC> getNearRTRIC() {
       return nearRTRIC;
@@ -155,12 +183,11 @@ public class InMemoryDataTree {
        this.nearRTRIC = nearRTRIC;
     }
 
-
+     public void setIdNearRTRIC(String idNearRTRIC) {
+	     this.idNearRTRIC = idNearRTRIC;
+     }
      public String getIdNearRTRIC () {
        return idNearRTRIC;
-     }
-     public void setIdNearRTRIC(String idNearRTRIC) {
-       this.idNearRTRIC = idNearRTRIC;
      }
      public Attributes getAttributes() {
        return attributes;
@@ -202,6 +229,6 @@ public class InMemoryDataTree {
     public void setIdNRCellDU(String idNRCellDU) {
       this.idNRCellDU = idNRCellDU;
     }
-*/
 
+*/
 }

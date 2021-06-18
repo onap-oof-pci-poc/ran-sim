@@ -26,10 +26,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "name",
     "hashMap",
-    "location",
-    "compression",
-    "fileFormatType",
-    "fileFormatVersion"
+//    "location",
+//   "compression",
+//   "fileFormatType",
+//   "fileFormatVersion"
 
 })
 
@@ -39,7 +39,7 @@ public class NamedHashMap {
    private Map<String,String> hashMap;
    @JsonProperty("name")
    private String name;
-   @JsonProperty("location")
+/*   @JsonProperty("location")
    private String location;
    @JsonProperty("compression")
    private String compression;
@@ -47,7 +47,7 @@ public class NamedHashMap {
    private String fileFormatType;
    @JsonProperty("fileFormatVersion")
    private String fileFormatVersion;
-
+*/
    @JsonProperty("name")
    public String getName() {
      return name;
@@ -73,7 +73,7 @@ public class NamedHashMap {
      return "NotificationFields [name=" + name + ", hashMap=" + hashMap + "]";
    } 
 
-    @JsonProperty("location")
+/*    @JsonProperty("location")
     public String getLocation() {
        if(hashMap.containsKey("location")) {
          return hashMap.get("location");
@@ -125,5 +125,5 @@ public class NamedHashMap {
     public void setFileFormatVersion(String fileFormatVersion) {
        hashMap.put("fileFormatVersion",fileFormatVersion);
     }
-     
+  */   
 }

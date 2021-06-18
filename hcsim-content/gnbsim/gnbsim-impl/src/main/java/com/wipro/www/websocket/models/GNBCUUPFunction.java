@@ -1,3 +1,4 @@
+
 package com.wipro.www.websocket.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -5,8 +6,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GNBCUUPFunction {
 
-    public String idGNBCUUPFunction;
-    public Attributes attributes;
+    private String idGNBCUUPFunction;
+    
+    private Attributes attributes;
     
     public String getIdGNBCUUPFunction() {
         return idGNBCUUPFunction;

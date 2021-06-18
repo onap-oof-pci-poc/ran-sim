@@ -37,6 +37,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceProfilesList> {
 
@@ -53,20 +54,29 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
             SliceProfile sliceProfile = new SliceProfile();
             sliceProfile.setSliceProfileId(data.getSliceProfileId());
+	    if(!(Objects.isNull(data.getSNSSAI()))){
             String snssaiString = data.getSNSSAI().toString();
+	    
 	    int snssaiIndex = snssaiString.indexOf("{_value=");
             String snssaiSubStr = snssaiString.substring(snssaiIndex + "{_value=".length());
             String snssai = snssaiSubStr.substring(0, snssaiSubStr.indexOf("}"));
             sliceProfile.setsNSSAI(snssai);
-            sliceProfile.setsNSSAI(snssaiString.substring(14,snssaiString.length()));
+	    }
+            //sliceProfile.setsNSSAI(snssaiString.substring(14,snssaiString.length()));
             sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
+	    if(!(Objects.isNull(data.getCoverageAreaList()))){
             sliceProfile.setCoverageareaList(data.getCoverageAreaList().toString());
+	    }
             sliceProfile.setLatency(data.getLatency().intValue());
             sliceProfile.setdLThptPerSlice(data.getDLThptPerSlice().intValue());
             sliceProfile.setuLThptPerSlice(data.getULThptPerSlice().intValue());
             sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
-            sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
+            if(!(Objects.isNull(data.getResourceSharingLevel()))){
+	    sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
+	    }
+	    if(!(Objects.isNull(data.getUEMobilityLevel()))){
             sliceProfile.setUemobilitylevel(data.getUEMobilityLevel()); 
+	    }
             ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             try {
                 ObjectMapper obj = new ObjectMapper();
@@ -99,13 +109,20 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
             String snssai = snssaiSubStr.substring(0, snssaiSubStr.indexOf("}"));
             sliceProfile.setsNSSAI(snssai);
             sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
+            if(!(Objects.isNull(data.getCoverageAreaList()))){
             sliceProfile.setCoverageareaList(data.getCoverageAreaList().toString());
+            }
             sliceProfile.setLatency(data.getLatency().intValue());
             sliceProfile.setdLThptPerSlice(data.getDLThptPerSlice().intValue());
             sliceProfile.setuLThptPerSlice(data.getULThptPerSlice().intValue());
             sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
+            if(!(Objects.isNull(data.getResourceSharingLevel()))){
             sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
+            }
+            if(!(Objects.isNull(data.getUEMobilityLevel()))){
             sliceProfile.setUemobilitylevel(data.getUEMobilityLevel());
+            }
+
             ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             try {
                 ObjectMapper obj = new ObjectMapper();

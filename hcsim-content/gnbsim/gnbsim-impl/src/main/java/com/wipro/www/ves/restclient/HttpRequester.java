@@ -22,9 +22,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Base64;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 
 public class HttpRequester {
 
@@ -38,22 +44,33 @@ public class HttpRequester {
     private static final Logger LOG = LoggerFactory
             .getLogger(HttpRequester.class);
 
+
+    private static class NullHostnameVerifier implements HostnameVerifier {
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+    }
+
     /**
      * Send Post Request.
      */
     public static String sendPostRequest(String requestUrl, String requestBody) {
         String response = "";
-        HttpURLConnection connection = null;
+        HttpsURLConnection connection = null;
         BufferedReader br = null;
         try {
             URL url = new URL(requestUrl);
-            connection = (HttpURLConnection) url
+            connection = (HttpsURLConnection) url
                     .openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty(ACCEPT, JSON);
             connection.setRequestProperty(CONTENT, JSON);
+       	    connection.setHostnameVerifier(new NullHostnameVerifier());
+	    String userCredentials = "sample1:sample1";
+            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+            connection.setRequestProperty ("Authorization", basicAuth);
             OutputStreamWriter writer = new OutputStreamWriter(
                     connection.getOutputStream(), UTF);
             writer.write(requestBody);

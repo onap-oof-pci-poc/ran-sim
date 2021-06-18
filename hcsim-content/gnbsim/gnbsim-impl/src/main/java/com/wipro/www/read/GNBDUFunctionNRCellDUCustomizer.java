@@ -22,9 +22,12 @@ import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.spi.read.Initialized;
 import io.fd.honeycomb.translate.spi.read.InitializingListReaderCustomizer;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetworkBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRIC;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICKey;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDU;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDUKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDUBuilder;
 import org.opendaylight.yangtools.concepts.Builder;
 import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
@@ -35,56 +38,59 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NearRTRICCustomizer implements InitializingListReaderCustomizer<NearRTRIC, NearRTRICKey, NearRTRICBuilder> {
+public class GNBDUFunctionNRCellDUCustomizer implements InitializingListReaderCustomizer<NRCellDU, NRCellDUKey, NRCellDUBuilder> {
 
-    private final CrudService<NearRTRIC> crudService;
+    private final CrudService<NRCellDU> crudService;
 
-    public NearRTRICCustomizer(final CrudService<NearRTRIC> crudService) {
+    private static final Logger LOG = LoggerFactory.getLogger(GNBDUFunctionNRCellDUCustomizer.class);
+
+    public GNBDUFunctionNRCellDUCustomizer(final CrudService<NRCellDU> crudService) {
         this.crudService = crudService;
     }
 
     @Nonnull
     @Override
-    public List<NearRTRICKey> getAllIds(@Nonnull final InstanceIdentifier<NearRTRIC> id, @Nonnull final ReadContext context)
+    public List<NRCellDUKey> getAllIds(@Nonnull final InstanceIdentifier<NRCellDU> id, @Nonnull final ReadContext context)
             throws ReadFailedException {
         // perform read operation and extract keys from data
         try {
         return crudService.readAll()
                 .stream()
-                .map(a -> new NearRTRICKey(a.getIdNearRTRIC()))
+                .map(a -> new NRCellDUKey(a.getIdNRCellDU()))
                 .collect(Collectors.toList());
 	} catch (Exception E) {
+		LOG.info("Exception in getAllIds:[{}]", E);
                 return null;
 	}
     }
 
     @Override
-    public void merge(@Nonnull final Builder<? extends DataObject> builder, @Nonnull final List<NearRTRIC> readData) {
+    public void merge(@Nonnull final Builder<? extends DataObject> builder, @Nonnull final List<NRCellDU> readData) {
         // merge children data to parent builder
         // used by infrastructure to merge data loaded in separated customizers
-        ((RanNetworkBuilder) builder).setNearRTRIC(readData);
+        ((GNBDUFunctionBuilder) builder).setNRCellDU(readData);
     }
 
     
     @Nonnull
     @Override
-    public NearRTRICBuilder getBuilder(@Nonnull final InstanceIdentifier<NearRTRIC> id) {
+    public NRCellDUBuilder getBuilder(@Nonnull final InstanceIdentifier<NRCellDU> id) {
         // return new builder for this data node
-        return new NearRTRICBuilder();
+        return new NRCellDUBuilder();
     }
 
     @Override
-    public void readCurrentAttributes(@Nonnull final InstanceIdentifier<NearRTRIC> id,
-                                      @Nonnull final NearRTRICBuilder builder,
+    public void readCurrentAttributes(@Nonnull final InstanceIdentifier<NRCellDU> id,
+                                      @Nonnull final NRCellDUBuilder builder,
                                       @Nonnull final ReadContext ctx) throws ReadFailedException {
         // this stage is used after reading all ids by getAllIds,to read specific details about data
 
         // perform read of details of data specified by key of Element in id
-        final NearRTRIC data = crudService.readSpecific(id);
+        final NRCellDU data = crudService.readSpecific(id);
 
         // and sets it to builder
-        builder.setIdNearRTRIC(data.getIdNearRTRIC());
-        //builder.setKey("RTRIC2");
+        builder.setIdNRCellDU(data.getIdNRCellDU());
+        //builder.setKey(data.getKey());
         builder.setAttributes(data.getAttributes());
     }
     /**
@@ -97,8 +103,8 @@ public class NearRTRICCustomizer implements InitializingListReaderCustomizer<Nea
      */
     @Nonnull
     @Override
-    public Initialized<? extends DataObject> init(@Nonnull final InstanceIdentifier<NearRTRIC> id,
-                                                  @Nonnull final NearRTRIC readValue,
+    public Initialized<? extends DataObject> init(@Nonnull final InstanceIdentifier<NRCellDU> id,
+                                                  @Nonnull final NRCellDU readValue,
                                                   @Nonnull final ReadContext ctx) {
         return Initialized.create(id, readValue);
     }

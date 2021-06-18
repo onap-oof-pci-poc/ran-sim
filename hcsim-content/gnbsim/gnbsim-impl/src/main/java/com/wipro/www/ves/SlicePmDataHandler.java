@@ -17,18 +17,30 @@
 package com.wipro.www.ves;
 
 import com.google.gson.Gson;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.Marshaller;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.StringReader;
 import java.io.ByteArrayOutputStream;
-
+import com.jcraft.jsch.*;
+import com.jcraft.jsch.ChannelSftp.LsEntry;
+import java.io.FileInputStream; 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.zip.GZIPOutputStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wipro.www.Configuration;
 import com.wipro.www.InMemoryDataTree;
 import com.wipro.www.ves.model.CommonEventHeader;
 import com.wipro.www.ves.model.Event;
@@ -44,15 +56,22 @@ import com.wipro.www.websocket.models.SlicingPmMessage;
 import com.wipro.www.ves.model.xml.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.net.InetAddress;
 
 
 public class SlicePmDataHandler {
 
+    //private static String SFTPHOST = (Configuration.getInstance().getHcIp()).trim();
+    private static String SFTPHOST = (System.getenv("enodebsimIp")).trim();;
+    private static int SFTPPORT = 2222;
+    private static String SFTPUSER = "ubuntu";
+    private static String SFTPPASS = "pass";
+    private static String SFTPWORKINGDIR = "/sftptest/upload/";	
     private static final Logger LOG = LoggerFactory
             .getLogger(SlicePmDataHandler.class);
 
     private String vesEventListenerUrl;
-
+    
     public SlicePmDataHandler(String vesEventListenerUrl){
         this.vesEventListenerUrl = vesEventListenerUrl;
     }
@@ -72,7 +91,7 @@ public class SlicePmDataHandler {
             return;
           }
           LOG.info("PM Message :{} ", slicePmdata.getPmData());
-
+	 // LOG.info("SFTPhost: " + Configuration.getInstance().getHcIp().trim());
         //for (EventSlicePm pmEvent : slicePmdata.getEventPmList()) {
             
             Event event = convertToVesFormatSlicePmData(slicePmdata);
@@ -103,31 +122,101 @@ public class SlicePmDataHandler {
 
     }
 
+    public boolean pmFileTransfer (String fileName) {
 
-  //  Event convertToVesFormatSlicePmData(EventSlicePm slicePmdata) {
+	    /*
+	    int SFTPPORT = 2222;
+	    String SFTPUSER = "ubuntu";
+	    String SFTPPASS = "pass";
+            String SFTPWORKINGDIR = "/sftptest/upload/";
+            */
+	    Session session = null;
+	    Channel channel = null;
+            ChannelSftp channelSftp = null;
+	    LOG.info("preparing the host information for sftp.");
+
+            try {
+               JSch jsch = new JSch();
+	       InetAddress localhost = InetAddress.getLocalHost();
+               session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
+               session.setPassword(SFTPPASS);
+               java.util.Properties config = new java.util.Properties();
+               config.put("StrictHostKeyChecking", "no");
+               session.setConfig(config);
+               session.connect();
+
+               System.out.println("Host connected.");
+               channel = session.openChannel("sftp");
+               channel.connect();
+               LOG.info("sftp channel opened and connected.");
+               channelSftp = (ChannelSftp) channel;
+               channelSftp.cd(SFTPWORKINGDIR);
+               File f = new File(fileName);
+	       String inputFile = "/tmp/"+fileName;
+	       String outputFile = fileName;
+	       LOG.info("inputFile: " + inputFile);
+	       LOG.info("outputFile: " + outputFile);
+               channelSftp.put(inputFile, outputFile);
+               LOG.info("File transfered successfully to host.");
+            } catch (Exception ex) {
+               LOG.info("Exception found while tranfer the response. " + ex);
+               return false;
+            } finally {
+              channelSftp.exit();
+              LOG.info("sftp Channel exited.");
+              channel.disconnect();
+              LOG.info("Channel disconnected.");
+              session.disconnect();
+              LOG.info("Host Session disconnected.");
+              
+          } 
+	  return true;
+    }
+    
+
       Event convertToVesFormatSlicePmData(SlicingPmMessage slicePmdata) {
-
-
+	String inputFile = slicePmdata.getFileName();      
+        String compressedFileName =  inputFile + ".gz";    
 	try{
 	//Prepare pmfile content
 	String pmMessage = slicePmdata.getPmData();
-	
-	//String pmMessage = "{\"sourceName\":\"cucpserver1\",\"fileName\":\"./A2021-01-05T09-32-02.757-2021-01-05T09-32-02.758-3360-cucpserver1.xml\",\"startEpochMicrosec\":1609839122757000,\"lastEpochMicrosec\":1609839122758000,\"pmData\":\"MeasCollecFile [fileHeader\\u003dFileHeader [dnPrefix\\u003dPrefix, vendorName\\u003dAcme Ltd, fileFormatVersion\\u003d32.435 V10.0, measCollec\\u003dMeasCollec [beginTime\\u003d2021-01-05T09:32:02.757], fileSender\\u003dFileSender [localDn\\u003dcucpserver1]], measData\\u003d[MeasData [managedElement\\u003dManagedElement [swVersion\\u003dr0.1, localDn\\u003dcucpserver1], measInfo\\u003d[MeasInfo [measInfoId\\u003dmeasInfoIsVal, job\\u003dJob [jobId\\u003d3360], granPeriod\\u003dGranularityPeriod [endTime\\u003d2021-01-05T09:32:02.758, duration\\u003dPT900S], repPeriod\\u003dReportingPeriod [duration\\u003dPT900S], measType\\u003d[MeasType [measType\\u003dSM.PDUSessionSetupReq.0011-0010, p\\u003d1], MeasType [measType\\u003dSM.PDUSessionSetupSucc.0011-0010, p\\u003d2], MeasType [measType\\u003dSM.PDUSessionSetupFail.0, p\\u003d3], MeasType [measType\\u003dSM.PDUSessionSetupReq.0010-1110, p\\u003d4], MeasType [measType\\u003dSM.PDUSessionSetupSucc.0010-1110, p\\u003d5]], measValue\\u003d[MeasValue [measObjLdn\\u003d13999, r\\u003d[Result [p\\u003d4, measValue\\u003d3244], Result [p\\u003d5, measValue\\u003d2038], Result [p\\u003d1, measValue\\u003d1676], Result [p\\u003d2, measValue\\u003d1235]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d14000, r\\u003d[Result [p\\u003d4, measValue\\u003d2560], Result [p\\u003d5, measValue\\u003d1563], Result [p\\u003d1, measValue\\u003d1539], Result [p\\u003d2, measValue\\u003d1051]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15155, r\\u003d[Result [p\\u003d4, measValue\\u003d6122], Result [p\\u003d5, measValue\\u003d4344], Result [p\\u003d1, measValue\\u003d4694], Result [p\\u003d2, measValue\\u003d3514]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15174, r\\u003d[Result [p\\u003d4, measValue\\u003d8366], Result [p\\u003d5, measValue\\u003d6029], Result [p\\u003d1, measValue\\u003d5650], Result [p\\u003d2, measValue\\u003d3566]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15175, r\\u003d[Result [p\\u003d4, measValue\\u003d7150], Result [p\\u003d5, measValue\\u003d4609], Result [p\\u003d1, measValue\\u003d6204], Result [p\\u003d2, measValue\\u003d3915]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15176, r\\u003d[Result [p\\u003d4, measValue\\u003d3418], Result [p\\u003d5, measValue\\u003d2094], Result [p\\u003d1, measValue\\u003d1761], Result [p\\u003d2, measValue\\u003d1230]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15289, r\\u003d[Result [p\\u003d4, measValue\\u003d7239], Result [p\\u003d5, measValue\\u003d5196], Result [p\\u003d1, measValue\\u003d4886], Result [p\\u003d2, measValue\\u003d2949]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15290, r\\u003d[Result [p\\u003d4, measValue\\u003d8145], Result [p\\u003d5, measValue\\u003d5956], Result [p\\u003d1, measValue\\u003d5766], Result [p\\u003d2, measValue\\u003d4125]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15296, r\\u003d[Result [p\\u003d4, measValue\\u003d6221], Result [p\\u003d5, measValue\\u003d3831], Result [p\\u003d1, measValue\\u003d5880], Result [p\\u003d2, measValue\\u003d4028]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15425, r\\u003d[Result [p\\u003d4, measValue\\u003d2181], Result [p\\u003d5, measValue\\u003d1334], Result [p\\u003d1, measValue\\u003d1441], Result [p\\u003d2, measValue\\u003d978]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15426, r\\u003d[Result [p\\u003d4, measValue\\u003d2665], Result [p\\u003d5, measValue\\u003d1651], Result [p\\u003d1, measValue\\u003d2537], Result [p\\u003d2, measValue\\u003d1632]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15687, r\\u003d[Result [p\\u003d4, measValue\\u003d7653], Result [p\\u003d5, measValue\\u003d5562], Result [p\\u003d1, measValue\\u003d5695], Result [p\\u003d2, measValue\\u003d3947]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15689, r\\u003d[Result [p\\u003d4, measValue\\u003d6939], Result [p\\u003d5, measValue\\u003d4592], Result [p\\u003d1, measValue\\u003d4764], Result [p\\u003d2, measValue\\u003d3018]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15825, r\\u003d[Result [p\\u003d4, measValue\\u003d3318], Result [p\\u003d5, measValue\\u003d2323], Result [p\\u003d1, measValue\\u003d2396], Result [p\\u003d2, measValue\\u003d1727]], suspect\\u003dfalse], MeasValue [measObjLdn\\u003d15826, r\\u003d[Result [p\\u003d4, measValue\\u003d3025], Result [p\\u003d5, measValue\\u003d2235], Result [p\\u003d1, measValue\\u003d1460], Result [p\\u003d2, measValue\\u003d950]], suspect\\u003dfalse]]]]]], fileFooter\\u003dFileFooter [measCollec\\u003dorg.onap.ransim.rest.xml.models.MeasCollecEnd@55de39ba]]\"}";
+	boolean pmFileTransferStatus = false;
 
 	LOG.info("Received PM message : {} " , pmMessage);
-	//JAXBContext jaxbContext = JAXBContext.newInstance(MeasCollecFile.class);
-	//Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-	//MeasCollecFile measCollecFile = (MeasCollecFile) jaxbUnmarshaller.unmarshal(new StringReader(pmMessage));
         MeasCollecFile measCollecFile = new Gson().fromJson(pmMessage, MeasCollecFile.class);	
-
+ 
         JAXBContext jaxbContext = JAXBContext.newInstance(MeasCollecFile.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+	jaxbMarshaller.setProperty("jaxb.encoding", "UTF-8");
+        jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-	jaxbMarshaller.setProperty("com.sun.xml.bind.xmlDeclaration", false);
-	jaxbMarshaller.setProperty("com.sun.xml.bind.xmlHeaders","<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-	jaxbMarshaller.marshal(measCollecFile, new File("/tmp/pmDataFile"));
+        jaxbMarshaller.setProperty("com.sun.xml.bind.xmlHeaders", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+	jaxbMarshaller.marshal(measCollecFile, new File("/tmp/"+ inputFile));
         jaxbMarshaller.marshal(measCollecFile, System.out);
+	
 	LOG.info("PM data in measCollectFile : {} ", measCollecFile.toString());
+        LOG.info("Compressing file");
+
+	FileInputStream fileInput = new FileInputStream("/tmp/" + inputFile);
+	FileOutputStream fileOutputStream = new FileOutputStream("/tmp/" + compressedFileName);
+	GZIPOutputStream gzipOuputStream = new GZIPOutputStream(fileOutputStream);
+
+	byte[] buffer = new byte[1024];
+	int b;
+	while ((b = fileInput.read(buffer)) > 0) {
+		gzipOuputStream.write(buffer, 0, b);
+	}
+	fileInput.close();
+	gzipOuputStream.finish();
+	gzipOuputStream.close();
+        LOG.info("Initiate SFTP transfer for PM data file");
+//	String fileData = measCollecFile.toString();
+
+//	byte b[]=fileData.getBytes();
+//        gos.write(b);
+//	gos.close();
+
+        pmFileTransferStatus = pmFileTransfer(compressedFileName);
 
 	} catch (Exception e) {
 		LOG.info("Exception occurred : {} " + e);
@@ -144,6 +233,7 @@ public class SlicePmDataHandler {
         eventHeader.setPriority("Normal");
         eventHeader.setSequence((long) 0);
         eventHeader.setSourceName(slicePmdata.getSourceName());
+	eventHeader.setReportingEntityName(slicePmdata.getSourceName());
         eventHeader.setStartEpochMicrosec(slicePmdata.getStartEpochMicrosec());
         eventHeader.setLastEpochMicrosec(slicePmdata.getLastEpochMicrosec());      
         eventHeader.setVersion("4.0.1");
@@ -158,18 +248,21 @@ public class SlicePmDataHandler {
 
         List<NamedHashMap> arrayOfNamedHashMap = new ArrayList<NamedHashMap>();
         Map<String,String> hashMap = new HashMap<String,String>();
-        hashMap.put("location", "ftpes://192.168.0.101:22/ftp/rop/"+pmFileName+".bin.gz");
-        hashMap.put("compression","gzip");
+//        hashMap.put("location", "ftpes://10.31.4.14:22/upload/" + compressedFileName);
+        hashMap.put("location", "sftp://" + SFTPUSER + ":" + SFTPPASS + "@" + SFTPHOST + ":" + String.valueOf(SFTPPORT) + SFTPWORKINGDIR + compressedFileName);
+	hashMap.put("compression","gzip");
         hashMap.put("fileFormatType","org.3GPP.32.435#measCollec");
         hashMap.put("fileFormatVersion","V10");
         NamedHashMap namedHashMap = new NamedHashMap(); 
-        namedHashMap.setName("A20161224.1045-1100.bin.gz");
-        namedHashMap.setHashMap(hashMap);
+        namedHashMap.setName(compressedFileName);
+   	namedHashMap.setHashMap(hashMap);
         arrayOfNamedHashMap.add(namedHashMap); 
         notificationfields.setArrayOfNamedHashMap(arrayOfNamedHashMap); 
         pmEvent.setCommonEventHeader(eventHeader);
         pmEvent.setNotificationFields(notificationfields);
+	LOG.info("compressed: " + compressedFileName);
         return pmEvent;
     }
+
 
 }

@@ -18,9 +18,15 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetwork;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRIC;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICKey;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionKey;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.AttributesBuilder;
+
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,11 +90,84 @@ public class NearRTRICGNBDUFunctionCrudService implements CrudService<GNBDUFunct
     public GNBDUFunction readSpecific(@Nonnull InstanceIdentifier<GNBDUFunction> identifier) throws ReadFailedException {
 
         LOG.info("Read path[{}] ", identifier);
-        return null;
+
+        final GNBDUFunctionKey key = identifier.firstKeyOf(GNBDUFunction.class);
+
+	String gNBId = null;
+	boolean isDataReady = false;
+
+	List<com.wipro.www.websocket.models.nearRTRIC> nearRTRICList = InMemoryDataTree.getInstance().getNearRTRIC();
+
+        for(int i=0; i < nearRTRICList.size() ; i++)
+        {
+                List<com.wipro.www.websocket.models.GNBDUFunction> inList = (nearRTRICList.get(i)).getgNBDUFunction();
+
+                for(int j=0; j < inList.size(); j++)
+                {                                                                                                                                                                                 if((inList.get(j)).getIdGNBDUFunction() == key.getIdGNBDUFunction())
+                        {
+                                gNBId = (inList.get(j)).getAttributes().getgNBId();
+                                isDataReady = true;
+                                break;
+                        }
+                }
+		if(isDataReady == true)
+		{
+			break;
+		}
+        }
+		
+		
+       if(isDataReady)                                                                                                                                          {
+             LOG.info("gNBID value:[{}]", gNBId);
+             final Attributes attributes = new AttributesBuilder().setGNBId(Long.parseLong(gNBId)).build();
+             return new GNBDUFunctionBuilder()
+                .setIdGNBDUFunction(key.getIdGNBDUFunction())
+                .setAttributes(attributes)
+                .build();
+        } else {
+             return null;
+        }
+
+        //final Attributes attributes = new AttributesBuilder().setGNBId(2L).build();
+
+        //return new GNBDUFunctionBuilder()
+        //        .setIdGNBDUFunction(key.getIdGNBDUFunction())
+        //        .setAttributes(attributes)
+        //        .build();
+
     }
 
     @Override
     public List<GNBDUFunction> readAll() throws ReadFailedException {
-        return null;
+
+        List<com.wipro.www.websocket.models.nearRTRIC> listNearRTRIC = InMemoryDataTree.getInstance().getNearRTRIC();
+        List<GNBDUFunction> outList = new ArrayList<GNBDUFunction>();
+        String idNearRTRIC=null;
+        String idGNBDUFunction=null;
+
+        try {
+                for(int i=0; i < listNearRTRIC.size(); i++)
+                {
+                        idNearRTRIC = (listNearRTRIC.get(i)).getIdNearRTRIC();
+                        List<com.wipro.www.websocket.models.GNBDUFunction> inputList = (listNearRTRIC.get(i)).getgNBDUFunction();
+
+			for(int j=0; j < inputList.size(); j++)
+			{
+                            idGNBDUFunction = (inputList.get(j)).getIdGNBDUFunction();
+     
+                            LOG.info("GNBDUFunction ID:[{}]",idGNBDUFunction);
+
+                            outList.add(readSpecific(InstanceIdentifier.create(RanNetwork.class).child(NearRTRIC.class, new NearRTRICKey(idNearRTRIC)).child(GNBDUFunction.class, new GNBDUFunctionKey(idGNBDUFunction))));
+			}
+
+                }
+                return outList;
+        } catch (Exception e) {
+                LOG.info("Exception:[{}]", e);
+                return null;
+        }
+        
+        //return Collections.singletonList(
+        //                       readSpecific(InstanceIdentifier.create(RanNetwork.class).child(NearRTRIC.class, new NearRTRICKey("RTRIC2")).child(GNBDUFunction.class, new GNBDUFunctionKey("GNBDUFUN2"))));
     }
 }

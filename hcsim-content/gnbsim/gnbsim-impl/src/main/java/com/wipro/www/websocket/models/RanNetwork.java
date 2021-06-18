@@ -22,18 +22,20 @@ package com.wipro.www.websocket.models;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RanNetwork {
     
     @JsonProperty("NearRTRIC")
-    List<NearRTRIC> nearRTRIC;
+    private List<nearRTRIC> nearRTRICInstance;
     
-    public List<NearRTRIC> getNearRTRIC() {
-		return nearRTRIC;
+    public List<nearRTRIC> getNearRTRIC() {
+		return nearRTRICInstance;
 	}
 
-	public void setNearRTRIC(List<NearRTRIC> nearRTRIC) {
-		this.nearRTRIC = nearRTRIC;
+	public void setNearRTRIC(List<nearRTRIC> nearRTRICInstance) {
+		this.nearRTRICInstance = nearRTRICInstance;
 	}
 	
 	public RanNetwork()

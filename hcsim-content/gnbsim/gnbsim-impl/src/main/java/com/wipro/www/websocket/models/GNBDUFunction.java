@@ -1,19 +1,18 @@
+
 package com.wipro.www.websocket.models;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GNBDUFunction {
-    public String idGNBDUFunction;
-    public Attributes attributes;
-    @JsonProperty("NRCellDU")
+    
+    private String idGNBDUFunction;
+    
+    private Attributes attributes;
+    
     public List<NRCellDU> nRCellDU;
-
-    public int gNBId;    
-    public int aggressorSetID;
-    public int victimSetID;
     
     public String getIdGNBDUFunction() {
      return idGNBDUFunction;
@@ -37,30 +36,5 @@ public class GNBDUFunction {
     {
     
     }
-
-  public int getGNBId() {
-     return gNBId;
-  }
-  
-  public void setGNBId(int gNBId) {
-     this.gNBId = gNBId;
-  }
-
-  public int getAggressorSetID() {
-     return aggressorSetID;
-  }
-
-  public void setAggressorSetID(int aggressorSetID) {
-     this.aggressorSetID = aggressorSetID;
-  }
-
-  public int getVictimSetID() {
-     return victimSetID;
-  }
-
-  public void setVictimSetID(int victimSetID) {
-     this.victimSetID = victimSetID;
-  }
-
 }
 

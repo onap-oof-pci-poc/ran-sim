@@ -40,6 +40,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList> {
 
@@ -76,15 +77,22 @@ public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList
 	    plmnInfoModel.setpLMNId(mcc + "-" + mnc);
 	    plmnInfoModel.setNearrtricid(idNearRTRIC);
 	    plmnInfoModel.setGnbType("gnbdu");
-	    plmnInfoModel.setGnbId(Integer.parseInt(idGNBDUFunction));
+	    plmnInfoModel.setGnbId(idGNBDUFunction);
 	    plmnInfoModel.setNrCellId(Integer.parseInt(idNRCellDU));
 	    List<SNSSAIList> snssaiList = data.getSNSSAIList();
 	    for (SNSSAIList s : snssaiList) {
-		    List<ConfigData> configDataList = s.getConfigData();
-		    for (ConfigData c : configDataList) {
-			    plmnInfoModel.setConfigParameter(c.getConfigParameter());
-                            plmnInfoModel.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
+		    List<com.wipro.www.websocket.models.ConfigData> dataList = new ArrayList<com.wipro.www.websocket.models.ConfigData>();
+                    List<ConfigData> configDataList = s.getConfigData();
+                    for (ConfigData c : configDataList) {
+			    if(!(Objects.isNull(c.getConfigValue()))){
+                            com.wipro.www.websocket.models.ConfigData configData = new com.wipro.www.websocket.models.ConfigData();
+                            configData.setConfigParameter(c.getConfigParameter());
+                            configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
+                            dataList.add(configData);
+			    }
+
 		    }
+		    plmnInfoModel.setConfigData(dataList);
 		    plmnInfoModel.setSnssai(s.getSNssai());
 		    plmnInfoModel.setStatus(s.getStatus());
 		    try {
@@ -134,18 +142,22 @@ public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList
             plmnInfoModel.setpLMNId(mcc + "-" + mnc);
             plmnInfoModel.setNearrtricid(idNearRTRIC);
             plmnInfoModel.setGnbType("gnbdu");
-            plmnInfoModel.setGnbId(Integer.parseInt(idGNBDUFunction));
+            plmnInfoModel.setGnbId(idGNBDUFunction);
             plmnInfoModel.setNrCellId(Integer.parseInt(idNRCellDU));
             List<SNSSAIList> snssaiList = data.getSNSSAIList();
             for (SNSSAIList s : snssaiList) {
+		    List<com.wipro.www.websocket.models.ConfigData> dataList = new ArrayList<com.wipro.www.websocket.models.ConfigData>();
                     List<ConfigData> configDataList = s.getConfigData();
                     for (ConfigData c : configDataList) {
-//                            if (c.getConfigParameter().equalsIgnoreCase("maxNumberOfConns")) {
-//                                    plmnInfoModel.setMaxNumberOfConns(c.getConfigValue());
-//                            }
-			    plmnInfoModel.setConfigParameter(c.getConfigParameter());
-                            plmnInfoModel.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
+			    if(!(Objects.isNull(c.getConfigValue()))){
+                            com.wipro.www.websocket.models.ConfigData configData = new com.wipro.www.websocket.models.ConfigData();
+                            configData.setConfigParameter(c.getConfigParameter());
+                            configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
+                            dataList.add(configData);
+			    }
+
                     }
+                    plmnInfoModel.setConfigData(dataList);
                     plmnInfoModel.setSnssai(s.getSNssai());
                     plmnInfoModel.setStatus(s.getStatus());
                     DeviceData deviceData = new DeviceData();

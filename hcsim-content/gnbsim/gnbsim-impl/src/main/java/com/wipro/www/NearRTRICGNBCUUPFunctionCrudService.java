@@ -18,7 +18,14 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetwork;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRIC;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionKey;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUUPFunction;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.AttributesBuilder;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUUPFunctionKey;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUUPFunctionBuilder;
 
@@ -26,11 +33,14 @@ import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.wipro.www.websocket.models.nearRTRIC;
 import javax.annotation.Nonnull;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class NearRTRICGNBCUUPFunctionCrudService implements CrudService<GNBCUUPFunction> {
 
@@ -85,11 +95,82 @@ public class NearRTRICGNBCUUPFunctionCrudService implements CrudService<GNBCUUPF
     public GNBCUUPFunction readSpecific(@Nonnull InstanceIdentifier<GNBCUUPFunction> identifier) throws ReadFailedException {
 
         LOG.info("Read path[{}] ", identifier);
-        return null;
+        
+	final GNBCUUPFunctionKey key = identifier.firstKeyOf(GNBCUUPFunction.class);
+       
+	String gNBCUUPId = null;
+	boolean isDataReady = false;
+
+	List<nearRTRIC> nearRTRICList = InMemoryDataTree.getInstance().getNearRTRIC();
+
+	for(int i=0; i < nearRTRICList.size() ; i++)
+	{
+		LOG.info("gnbCUUPList: "+(nearRTRICList.get(i)).getgNBCUUPFunction());
+		List<com.wipro.www.websocket.models.GNBCUUPFunction> inList = (nearRTRICList.get(i)).getgNBCUUPFunction();
+
+		for(int j=0; j < inList.size(); j++) 
+		{
+			//if((inList.get(j)).getIdGNBCUUPFunction() == key.getIdGNBCUUPFunction()) 
+			if((inList.get(j)).getIdGNBCUUPFunction().equalsIgnoreCase(key.getIdGNBCUUPFunction()))
+			{
+				gNBCUUPId = (inList.get(j)).getAttributes().getgNBCUUPId();
+				isDataReady = true;
+				break;
+			}
+		}
+		if(isDataReady == true)
+		{
+			break;
+		}
+
+	}
+	LOG.info("isDataReady: " + isDataReady);
+	LOG.info("Returning data..");
+
+	if(isDataReady) 
+	{
+	     BigInteger bigInteger = new BigInteger(gNBCUUPId);
+	     LOG.info("BigInteger value:[{}]", bigInteger);
+             final Attributes attributes = new AttributesBuilder().setGNBCUUPId(bigInteger).build();                                                                
+             return new GNBCUUPFunctionBuilder()
+                .setIdGNBCUUPFunction(key.getIdGNBCUUPFunction())
+                .setAttributes(attributes)
+                .build();
+	} else {
+             return null;
+        }	
+
     }
 
     @Override
     public List<GNBCUUPFunction> readAll() throws ReadFailedException {
-        return null;
+
+	List<nearRTRIC> listNearRTRIC = InMemoryDataTree.getInstance().getNearRTRIC();
+	List<GNBCUUPFunction> outList = new ArrayList<GNBCUUPFunction>();
+        String idNearRTRIC=null;
+	String idGNBCUUPFunction=null;
+
+	try {
+		for(int i=0; i < listNearRTRIC.size(); i++)
+		{
+			idNearRTRIC = (listNearRTRIC.get(i)).getIdNearRTRIC();
+			List<com.wipro.www.websocket.models.GNBCUUPFunction> inputList = (listNearRTRIC.get(i)).getgNBCUUPFunction();
+			if(!(Objects.isNull(inputList)) && !(inputList.isEmpty())){
+			idGNBCUUPFunction = (inputList.get(i)).getIdGNBCUUPFunction();
+
+			LOG.info("GNBCUUPFunction ID:[{}]",idGNBCUUPFunction);
+
+			outList.add(readSpecific(InstanceIdentifier.create(RanNetwork.class).child(NearRTRIC.class, new NearRTRICKey(idNearRTRIC)).child(GNBCUUPFunction.class, new GNBCUUPFunctionKey(idGNBCUUPFunction))));
+			}
+		}
+		return outList;
+	} catch (Exception e) {
+		LOG.info("Exception:[{}]", e);
+		return null;
+	}
+
+        //return Collections.singletonList(
+	//		readSpecific(InstanceIdentifier.create(RanNetwork.class).child(NearRTRIC.class, new NearRTRICKey("RTRIC2")).child(GNBCUUPFunction.class, new GNBCUUPFunctionKey("GNBDUFUNUP1"))));
+	
     }
 }

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class RRMPolicyRatioModel{
 
-        private Integer rrmPolicyID;
+        private String rrmPolicyID;
         private String resourceID;
         private String resourceType;
         private String sliceType;
@@ -28,10 +28,10 @@ public class RRMPolicyRatioModel{
         private Integer rRMPolicyMaxRatio;
         private Integer rRMPolicyMinRatio;
         private Integer rRMPolicyDedicatedRatio;
-        public Integer getRrmPolicyID() {
+        public String getRrmPolicyID() {
                 return rrmPolicyID;
         }
-        public void setRrmPolicyID(Integer rrmPolicyID) {
+        public void setRrmPolicyID(String rrmPolicyID) {
                 this.rrmPolicyID = rrmPolicyID;
         }
         public String getResourceID() {

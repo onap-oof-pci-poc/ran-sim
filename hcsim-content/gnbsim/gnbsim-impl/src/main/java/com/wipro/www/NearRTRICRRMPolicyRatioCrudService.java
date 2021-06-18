@@ -41,6 +41,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class NearRTRICRRMPolicyRatioCrudService implements CrudService<RRMPolicyRatio> {
 
@@ -57,7 +58,11 @@ public class NearRTRICRRMPolicyRatioCrudService implements CrudService<RRMPolicy
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
 
 	    RRMPolicyRatioModel rrmPolicyRatioModel = new RRMPolicyRatioModel();
-            rrmPolicyRatioModel.setRrmPolicyID(Integer.parseInt(data.getId())); 
+            int rrmPolicyIDIndex = identifier.toString().indexOf("RRMPolicyRatioKey{_id=");
+            String rrmPolicyIDSubStr = identifier.toString().substring(rrmPolicyIDIndex + "RRMPolicyRatioKey{_id=".length());
+            String rrmPolicyID = rrmPolicyIDSubStr.substring(0, rrmPolicyIDSubStr.indexOf("}"));
+
+            rrmPolicyRatioModel.setRrmPolicyID(rrmPolicyID);
             rrmPolicyRatioModel.setResourceType(data.getAttributes().getResourceType());
             List<RRMPolicyMember> rrmPolicyMemberList = new ArrayList<RRMPolicyMember>();
             List<RRMPolicyMemberList> rRMPolicyMemberDataList = data.getAttributes().getRRMPolicyMemberList();
@@ -73,8 +78,13 @@ public class NearRTRICRRMPolicyRatioCrudService implements CrudService<RRMPolicy
 
             rrmPolicyRatioModel.setrRMPolicyMemberList(rrmPolicyMemberList);
             rrmPolicyRatioModel.setQuotaType(data.getAttributes().getQuotaType().toString());
+	    if(!(Objects.isNull(data.getAttributes().getRRMPolicyMaxRatio()))){
             rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getAttributes().getRRMPolicyMaxRatio().intValue());
+            }
+            if(!(Objects.isNull(data.getAttributes().getRRMPolicyMinRatio()))){
             rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getAttributes().getRRMPolicyMinRatio().intValue());
+            }
+
             rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getAttributes().getRRMPolicyDedicatedRatio().intValue());
             ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             try{
