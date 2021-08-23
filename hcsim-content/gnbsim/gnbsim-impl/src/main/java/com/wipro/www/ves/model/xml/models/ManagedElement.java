@@ -23,43 +23,49 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ManagedElement {
     private String swVersion;
     private String localDn;
-//    private String userLabel;
-   
+    // private String userLabel;
+
     public ManagedElement() {
 
-}
+    }
+
     public ManagedElement(String swVersion, String localDn) {
-super();
-this.swVersion = swVersion;
-this.localDn = localDn;
-//this.userLabel = userLabel;
-}
-@XmlAttribute
-public String getSwVersion() {
-return swVersion;
-}
-public void setSwVersion(String swVersion) {
-this.swVersion = swVersion;
-}
-@XmlAttribute
-public String getLocalDn() {
-return localDn;
-}
-public void setLocalDn(String localDn) {
-this.localDn = localDn;
-}
-/*
-@XmlAttribute
-public String getUserLabel() {
-return userLabel;
-}
-public void setUserLabel(String userLabel) {
-this.userLabel = userLabel;
-}*/
-@Override
-public String toString() {
-return "ManagedElement [swVersion=" + swVersion + ", localDn=" + localDn + "]";
-}
+        super();
+        this.swVersion = swVersion;
+        this.localDn = localDn;
+        // this.userLabel = userLabel;
+    }
+
+    @XmlAttribute
+    public String getSwVersion() {
+        return swVersion;
+    }
+
+    public void setSwVersion(String swVersion) {
+        this.swVersion = swVersion;
+    }
+
+    @XmlAttribute
+    public String getLocalDn() {
+        return localDn;
+    }
+
+    public void setLocalDn(String localDn) {
+        this.localDn = localDn;
+    }
+
+    /*
+     * @XmlAttribute
+     * public String getUserLabel() {
+     * return userLabel;
+     * }
+     * public void setUserLabel(String userLabel) {
+     * this.userLabel = userLabel;
+     * }
+     */
+    @Override
+    public String toString() {
+        return "ManagedElement [swVersion=" + swVersion + ", localDn=" + localDn + "]";
+    }
 
 }
-

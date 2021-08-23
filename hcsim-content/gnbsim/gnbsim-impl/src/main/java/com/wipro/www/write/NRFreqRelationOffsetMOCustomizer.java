@@ -17,34 +17,39 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.WriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrfreqrelationgroup.OffsetMO;
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
 import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrfreqrelationgroup.OffsetMO;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
 public class NRFreqRelationOffsetMOCustomizer implements WriterCustomizer<OffsetMO> {
 
     private final CrudService<OffsetMO> crudService;
 
-    public  NRFreqRelationOffsetMOCustomizer(@Nonnull final CrudService<OffsetMO> crudService){
+    public NRFreqRelationOffsetMOCustomizer(@Nonnull final CrudService<OffsetMO> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<OffsetMO> instanceIdentifier, @Nonnull OffsetMO offsetmo, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<OffsetMO> instanceIdentifier,
+            @Nonnull OffsetMO offsetmo, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, offsetmo);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<OffsetMO> instanceIdentifier, @Nonnull OffsetMO offsetmo, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<OffsetMO> instanceIdentifier,
+            @Nonnull OffsetMO offsetmo, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, offsetmo);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<OffsetMO> id, @Nonnull OffsetMO dataBefore, @Nonnull OffsetMO dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<OffsetMO> id, @Nonnull OffsetMO dataBefore,
+            @Nonnull OffsetMO dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 }

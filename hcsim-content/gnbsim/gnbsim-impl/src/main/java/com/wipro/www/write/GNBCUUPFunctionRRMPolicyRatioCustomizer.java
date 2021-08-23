@@ -17,35 +17,42 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.RRMPolicyRatio;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.RRMPolicyRatioKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
-import javax.annotation.Nonnull;
-
-public class GNBCUUPFunctionRRMPolicyRatioCustomizer implements ListWriterCustomizer<RRMPolicyRatio, RRMPolicyRatioKey> {
+public class GNBCUUPFunctionRRMPolicyRatioCustomizer
+        implements ListWriterCustomizer<RRMPolicyRatio, RRMPolicyRatioKey> {
 
     private final CrudService<RRMPolicyRatio> crudService;
 
-    public GNBCUUPFunctionRRMPolicyRatioCustomizer(@Nonnull final CrudService<RRMPolicyRatio> crudService){
+    public GNBCUUPFunctionRRMPolicyRatioCustomizer(@Nonnull final CrudService<RRMPolicyRatio> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyRatio> instanceIdentifier, @Nonnull RRMPolicyRatio rrmpolicyratio, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyRatio> instanceIdentifier,
+            @Nonnull RRMPolicyRatio rrmpolicyratio, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, rrmpolicyratio);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyRatio> id, @Nonnull RRMPolicyRatio dataBefore, @Nonnull RRMPolicyRatio dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyRatio> id,
+            @Nonnull RRMPolicyRatio dataBefore, @Nonnull RRMPolicyRatio dataAfter, @Nonnull WriteContext writeContext)
+            throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyRatio> instanceIdentifier, @Nonnull RRMPolicyRatio rrmpolicyratio, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyRatio> instanceIdentifier,
+            @Nonnull RRMPolicyRatio rrmpolicyratio, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, rrmpolicyratio);
     }
 }

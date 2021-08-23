@@ -16,36 +16,38 @@
 
 package com.wipro.www.write;
 
+import static com.wipro.www.ModuleConfiguration.*;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.impl.write.GenericWriter;
 import io.fd.honeycomb.translate.write.WriterFactory;
 import io.fd.honeycomb.translate.write.registry.ModifiableWriterRegistryBuilder;
-import javax.annotation.Nonnull;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetwork;
 
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRIC;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoList;
-//import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.SliceProfilesList;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.RRMPolicyRatio;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberList;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAP;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDU;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUUPFunction;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUCPFunction;
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetwork;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.PLMNId;
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAP;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.RRMPolicyRatio;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.SliceProfilesList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellrelationgroup.CellIndividualOffset;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrfreqrelationgroup.OffsetMO;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRIC;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUCPFunction;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUUPFunction;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.NRCellCU;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRCellRelation;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellrelationgroup.CellIndividualOffset;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRFreqRelation;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrfreqrelationgroup.OffsetMO;
-import static com.wipro.www.ModuleConfiguration.*;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDU;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
 /**
  * Factory producing writers for gnbsim plugin's data.
@@ -58,7 +60,7 @@ public final class ModuleWriterFactory implements WriterFactory {
      * Injected crud service to be passed to customizers instantiated in this factory.
      */
 
-    //NearRTRIC
+    // NearRTRIC
 
     @Inject
     @Named(RANNETWORK_SERVICE_NAME)
@@ -95,17 +97,16 @@ public final class ModuleWriterFactory implements WriterFactory {
     @Inject
     @Named(RANNETWORK_NRTRIC_RRMPOLICYRATIO_ATTR_SERVICE_NAME)
     private CrudService<org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.rrmpolicyratio.Attributes> nearRtRicRRMPolicyRatioAttrCrudService;
- 
+
     @Inject
     @Named(RANNETWORK_NRTRIC_RRMPOLICY_MEMBER_LIST_SERVICE_NAME)
     private CrudService<RRMPolicyMemberList> nearRtRicRRMPolicyMemberListCrudService;
 
-    //GNBDUFUNCTION
+    // GNBDUFUNCTION
 
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBDUFUNCTION_SERVICE_NAME)
     private CrudService<GNBDUFunction> nearRtRicGNBDUFunctionCrudService;
-
 
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBDUFN_ATTR_SERVICE_NAME)
@@ -118,16 +119,16 @@ public final class ModuleWriterFactory implements WriterFactory {
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBDUFUNCTION_RRMPOLICYRATIOATTR_SERVICE_NAME)
     private CrudService<org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.rrmpolicyratio.Attributes> gnbduFunctionAttrrrmpolicyratioAttrCrudService;
- 
+
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBDUFUNCTION_SAP_SERVICE_NAME)
     private CrudService<SAP> GNBDUFunctionSAPCrudService;
 
-    //NRCELLDU
+    // NRCELLDU
 
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBDUFUNCTION_NRCELLDU_SERVICE_NAME)
-    private CrudService<NRCellDU> GNBDUFunctionNRCellDUCrudService; 
+    private CrudService<NRCellDU> GNBDUFunctionNRCellDUCrudService;
 
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBDUFUNCTION_NRCELLDU_ATTR_SERVICE_NAME)
@@ -140,11 +141,11 @@ public final class ModuleWriterFactory implements WriterFactory {
     @Inject
     @Named(RANNETWORK_NRTRIC_NRCELLDU_RRMPOLICYRATIO_SERVICE_NAME)
     private CrudService<org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.RRMPolicyRatio> nrcellDURrmpolicyratioCrudService;
- 
+
     @Inject
     @Named(RANNETWORK_NRTRIC_NRCELLDU_RRMPOLICYRATIOATTR_SERVICE_NAME)
     private CrudService<org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.rrmpolicyratio.Attributes> nrcellDURrmpolicyratioAttrCrudService;
-   
+
     // GNBCUUPFUNCTION
 
     @Inject
@@ -167,8 +168,7 @@ public final class ModuleWriterFactory implements WriterFactory {
     @Named(RANNETWORK_NRTRIC_GNBCUUP_RRMPOLICYRATIOATTR_SERVICE_NAME)
     private CrudService<org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.rrmpolicyratio.Attributes> GNBCUUPFunctionRrmPolicyRatioAttrCrudService;
 
-
-    //GNBCUCPFunction
+    // GNBCUCPFunction
 
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBCUCPFN_SERVICE_NAME)
@@ -190,7 +190,7 @@ public final class ModuleWriterFactory implements WriterFactory {
     @Named(RANNETWORK_NRTRIC_GNBCUCP_RRMPOLICYRATIOATTR_SERVICE_NAME)
     private CrudService<org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.rrmpolicyratio.Attributes> GNBCUCPFunctionAttrRrmpolicyRatioAttrCrudService;
 
-    //NRCELLCU
+    // NRCELLCU
 
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBCUCPFN_NRCELLCU_SERVICE_NAME)
@@ -230,144 +230,325 @@ public final class ModuleWriterFactory implements WriterFactory {
 
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBCUCPFN_NRCELLCU_NRFREQREL_ATTR_SERVICE_NAME)
-    private CrudService<org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrfreqrelation.Attributes> nearRtRicGNBCUCPFunctionNRCellCUNRfreqRelAttrCrudService ;
+    private CrudService<org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrfreqrelation.Attributes> nearRtRicGNBCUCPFunctionNRCellCUNRfreqRelAttrCrudService;
 
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBCUCPFN_NRCELLCU_NRFREQREL_OFFSETMO_SERVICE_NAME)
-    private CrudService<OffsetMO> nearRtRicGNBCUCPFunctionNRCellCUNRfreqRelOffsetMOCrudService ;
+    private CrudService<OffsetMO> nearRtRicGNBCUCPFunctionNRCellCUNRfreqRelOffsetMOCrudService;
 
     @Override
     public void init(@Nonnull final ModifiableWriterRegistryBuilder registry) {
 
-        //adds writer for child node
-        //no need to add writers for empty nodes
+        // adds writer for child node
+        // no need to add writers for empty nodes
 
-        //NearRTRIC
+        // NearRTRIC
 
         registry.add(new GenericWriter<>(ROOT_CONTAINER_ID, new RanNetworkCustomizer(ranNetworkCrudService)));
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class), new NearRTRICCustomizer(nearrtricCrudService))); 
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class), new NearRTRICAttributesCustomizer(nearRtRicAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class),
+                new NearRTRICCustomizer(nearrtricCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class),
+                new NearRTRICAttributesCustomizer(nearRtRicAttrCrudService)));
 
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class).child(SliceProfilesList.class), new NearRTRICSliceProfilesListCustomizer(nearRtRicSliceProfilesListCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class)
+                .child(SliceProfilesList.class),
+                new NearRTRICSliceProfilesListCustomizer(nearRtRicSliceProfilesListCrudService)));
 
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.RRMPolicyRatio.class), new NearRTRICRRMPolicyRatioCustomizer(nearRtRicRRMPolicyRatioCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.RRMPolicyRatio.class),
+                new NearRTRICRRMPolicyRatioCustomizer(nearRtRicRRMPolicyRatioCrudService)));
 
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class).child(RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.rrmpolicyratio.Attributes.class), new NearRTRICRRMPolicyRatioAttributesCustomizer(nearRtRicRRMPolicyRatioAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class)
+                .child(RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.rrmpolicyratio.Attributes.class),
+                new NearRTRICRRMPolicyRatioAttributesCustomizer(nearRtRicRRMPolicyRatioAttrCrudService)));
 
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class).child(RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.rrmpolicyratio.Attributes.class).child(RRMPolicyMemberList.class), new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class)
+                .child(RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.rrmpolicyratio.Attributes.class)
+                .child(RRMPolicyMemberList.class),
+                new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
 
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class).child(PLMNInfoList.class), new NearRTRICpLMNInfoListCustomizer(nearRtRicAttrpLMNCrudService)));
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class).child(PLMNInfoList.class).child(SNSSAIList.class), new NearRTRICpLMNSNSSAICustomizer(nearRtRicAttrpLMNSnssaiCrudService)));
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class).child(PLMNInfoList.class).child(SNSSAIList.class).child(ConfigData.class), new NearRTRICConfigCustomizer(nearRtRicConfigDataCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class)
+                .child(PLMNInfoList.class), new NearRTRICpLMNInfoListCustomizer(nearRtRicAttrpLMNCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class)
+                .child(PLMNInfoList.class).child(SNSSAIList.class),
+                new NearRTRICpLMNSNSSAICustomizer(nearRtRicAttrpLMNSnssaiCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.Attributes.class)
+                .child(PLMNInfoList.class).child(SNSSAIList.class).child(ConfigData.class),
+                new NearRTRICConfigCustomizer(nearRtRicConfigDataCrudService)));
 
-        //GNBDUFunction
-   
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class), new NearRTRICGNBDUFunctionCustomizer(nearRtRicGNBDUFunctionCrudService)));
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class), new GNBDUFunctionAttributesCustomizer(gnbduFunctionAttrCrudService)));
+        // GNBDUFunction
 
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class),
+                new NearRTRICGNBDUFunctionCustomizer(nearRtRicGNBDUFunctionCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class),
+                new GNBDUFunctionAttributesCustomizer(gnbduFunctionAttrCrudService)));
 
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.RRMPolicyRatio.class), new GNBDUFunctionRRMPolicyRatioCustomizer(gnbduFunctionAttrrrmpolicyratioCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.RRMPolicyRatio.class),
+                new GNBDUFunctionRRMPolicyRatioCustomizer(gnbduFunctionAttrrrmpolicyratioCrudService)));
 
-        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.rrmpolicyratio.Attributes.class), new GNBDUFunctionRRMPolicyRatioAttrCustomizer(gnbduFunctionAttrrrmpolicyratioAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.rrmpolicyratio.Attributes.class),
+                new GNBDUFunctionRRMPolicyRatioAttrCustomizer(gnbduFunctionAttrrrmpolicyratioAttrCrudService)));
 
-       registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.rrmpolicyratio.Attributes.class).child(RRMPolicyMemberList.class), new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbdufunctiongroup.rrmpolicyratio.Attributes.class)
+                .child(RRMPolicyMemberList.class),
+                new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
 
-       registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class).child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes.class)
+                .child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
 
-      //NRCellDU
+        // NRCellDU
 
-      registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class), new GNBDUFunctionNRCellDUCustomizer(GNBDUFunctionNRCellDUCrudService)));
+        registry.add(new GenericWriter<>(
+                ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class),
+                new GNBDUFunctionNRCellDUCustomizer(GNBDUFunctionNRCellDUCrudService)));
 
-     registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class), new NRCellDUAttributesCustomizer(nrcellDUAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class)
+                .child(NRCellDU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class),
+                new NRCellDUAttributesCustomizer(nrcellDUAttrCrudService)));
 
-     registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class).child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class)
+                .child(NRCellDU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class)
+                .child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
 
-     registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoList.class), new NRCellDUpLMNInfoListCustomizer(nrcellDUpLMNInfoCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class)
+                .child(NRCellDU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoList.class),
+                new NRCellDUpLMNInfoListCustomizer(nrcellDUpLMNInfoCrudService)));
 
-    //Fix added for SDN error for ConfigData
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoList.class).child(SNSSAIList.class), new NearRTRICpLMNSNSSAICustomizer(nearRtRicAttrpLMNSnssaiCrudService)));
+        // Fix added for SDN error for ConfigData
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class)
+                .child(NRCellDU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoList.class)
+                .child(SNSSAIList.class), new NearRTRICpLMNSNSSAICustomizer(nearRtRicAttrpLMNSnssaiCrudService)));
 
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoList.class).child(SNSSAIList.class).child(ConfigData.class), new NearRTRICConfigCustomizer(nearRtRicConfigDataCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class)
+                .child(NRCellDU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoList.class)
+                .child(SNSSAIList.class).child(ConfigData.class),
+                new NearRTRICConfigCustomizer(nearRtRicConfigDataCrudService)));
 
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class)
+                .child(NRCellDU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.RRMPolicyRatio.class),
+                new NRCellDURRMPolicyRatioCustomizer(nrcellDURrmpolicyratioCrudService)));
 
-     registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.RRMPolicyRatio.class), new NRCellDURRMPolicyRatioCustomizer(nrcellDURrmpolicyratioCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class)
+                .child(NRCellDU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.rrmpolicyratio.Attributes.class),
+                new NRCellDURRMPolicyRatioAttrCustomizer(nrcellDURrmpolicyratioAttrCrudService)));
 
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.rrmpolicyratio.Attributes.class), new NRCellDURRMPolicyRatioAttrCustomizer(nrcellDURrmpolicyratioAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class)
+                .child(NRCellDU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.rrmpolicyratio.Attributes.class)
+                .child(RRMPolicyMemberList.class),
+                new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
 
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.nrcelldu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.rrmpolicyratio.Attributes.class).child(RRMPolicyMemberList.class), new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
+        // GNBCUUPFunction
 
-    //GNBCUUPFunction
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class),
+                new NearRTRICGNBCUUPFunctionCustomizer(nearRtRicGNBCUUPFunctionCrudService)));
 
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class), new NearRTRICGNBCUUPFunctionCustomizer(nearRtRicGNBCUUPFunctionCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class),
+                new GNBCUUPFunctionAttributesCustomizer(nearRtRicGNBCUUPFunctionAttrCrudService)));
 
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class), new GNBCUUPFunctionAttributesCustomizer(nearRtRicGNBCUUPFunctionAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class)
+                .child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
 
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class).child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.PLMNInfoList.class),
+                new GNBCUUPFunctionpLMNInfoListCustomizer(nearRtRicGNBCUUPFunctionplmnCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.PLMNInfoList.class), new GNBCUUPFunctionpLMNInfoListCustomizer(nearRtRicGNBCUUPFunctionplmnCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.PLMNInfoList.class)
+                .child(SNSSAIList.class), new NearRTRICpLMNSNSSAICustomizer(nearRtRicAttrpLMNSnssaiCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.PLMNInfoList.class).child(SNSSAIList.class), new NearRTRICpLMNSNSSAICustomizer(nearRtRicAttrpLMNSnssaiCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.PLMNInfoList.class)
+                .child(SNSSAIList.class).child(ConfigData.class),
+                new NearRTRICConfigCustomizer(nearRtRicConfigDataCrudService)));
 
-  registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.PLMNInfoList.class).child(SNSSAIList.class).child(ConfigData.class), new NearRTRICConfigCustomizer(nearRtRicConfigDataCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.RRMPolicyRatio.class),
+                new GNBCUUPFunctionRRMPolicyRatioCustomizer(GNBCUUPFunctionRrmPolicyRatioCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.RRMPolicyRatio.class), new GNBCUUPFunctionRRMPolicyRatioCustomizer(GNBCUUPFunctionRrmPolicyRatioCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.rrmpolicyratio.Attributes.class),
+                new GNBCUUPFunctionRRMPolicyRatioAttrCustomizer(GNBCUUPFunctionRrmPolicyRatioAttrCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.rrmpolicyratio.Attributes.class), new GNBCUUPFunctionRRMPolicyRatioAttrCustomizer(GNBCUUPFunctionRrmPolicyRatioAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.rrmpolicyratio.Attributes.class)
+                .child(RRMPolicyMemberList.class),
+                new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
 
-   
-registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcuupfunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.rrmpolicyratio.Attributes.class).child(RRMPolicyMemberList.class), new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
+        // GNBCUCPFunction
 
-   //GNBCUCPFunction
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class),
+                new NearRTRICGNBCUCPFunctionCustomizer(nearRtRicGNBCUCPFunctionCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class), new NearRTRICGNBCUCPFunctionCustomizer(nearRtRicGNBCUCPFunctionCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class),
+                new GNBCUCPFunctionAttributesCustomizer(nearRtRicGNBCUCPFunctionAttrCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class), new GNBCUCPFunctionAttributesCustomizer(nearRtRicGNBCUCPFunctionAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class)
+                .child(PLMNId.class),
+                new GNBCUCPFunctionPLMNIdCustomizer(nearRtRicGNBCUCPFunctionAttrPLMNIdCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class).child(PLMNId.class), new GNBCUCPFunctionPLMNIdCustomizer(nearRtRicGNBCUCPFunctionAttrPLMNIdCrudService)));
-   
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class).child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class)
+                .child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
 
-  registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.RRMPolicyRatio.class), new GNBCUCPFunctionRRMPolicyRatioCustomizer(GNBCUCPFunctionAttrRrmpolicyRatioCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.RRMPolicyRatio.class),
+                new GNBCUCPFunctionRRMPolicyRatioCustomizer(GNBCUCPFunctionAttrRrmpolicyRatioCrudService)));
 
-  
-  registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.rrmpolicyratio.Attributes.class), new GNBCUCPFunctionRRMPolicyRatioAttrCustomizer(GNBCUCPFunctionAttrRrmpolicyRatioAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.rrmpolicyratio.Attributes.class),
+                new GNBCUCPFunctionRRMPolicyRatioAttrCustomizer(GNBCUCPFunctionAttrRrmpolicyRatioAttrCrudService)));
 
-  registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.rrmpolicyratio.Attributes.class).child(RRMPolicyMemberList.class), new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(
+                org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.rrmpolicyratio.Attributes.class)
+                .child(RRMPolicyMemberList.class),
+                new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
 
-   //NRCellCU
+        // NRCellCU
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class), new GNBCUCPFunctionNRCellCUCustomizer(nearRtRicGNBCUCPFunctionNRCellCUCrudService)));
+        registry.add(new GenericWriter<>(
+                ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class),
+                new GNBCUCPFunctionNRCellCUCustomizer(nearRtRicGNBCUCPFunctionNRCellCUCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class), new NRCELLCUAttributesCustomizer(nearRtRicGNBCUCPFunctionNRCellCUAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class),
+                new NRCELLCUAttributesCustomizer(nearRtRicGNBCUCPFunctionNRCellCUAttrCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class).child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class)
+                .child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.RRMPolicyRatio.class), new NRCellCURRMPolicyRatioCustomizer(GNBCUCPFunctionNRCellCURRMPolicyRatioCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.RRMPolicyRatio.class),
+                new NRCellCURRMPolicyRatioCustomizer(GNBCUCPFunctionNRCellCURRMPolicyRatioCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.rrmpolicyratio.Attributes.class), new NRCellCURRMPolicyRatioAttrCustomizer(GNBCUCPFunctionNRCellCURRMPolicyRatioAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.rrmpolicyratio.Attributes.class),
+                new NRCellCURRMPolicyRatioAttrCustomizer(GNBCUCPFunctionNRCellCURRMPolicyRatioAttrCrudService)));
 
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.RRMPolicyRatio.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.rrmpolicyratio.Attributes.class)
+                .child(RRMPolicyMemberList.class),
+                new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.RRMPolicyRatio.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.rrmpolicyratio.Attributes.class).child(RRMPolicyMemberList.class), new NearRTRICRRMPolicyMemberListCustomizer(nearRtRicRRMPolicyMemberListCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.PLMNInfoList.class),
+                new NRCELLCUpLMNInfoListCustomizer(nearRtRicGNBCUCPFunctionNRCellCUplmnCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.PLMNInfoList.class), new NRCELLCUpLMNInfoListCustomizer(nearRtRicGNBCUCPFunctionNRCellCUplmnCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.PLMNInfoList.class)
+                .child(SNSSAIList.class), new NearRTRICpLMNSNSSAICustomizer(nearRtRicAttrpLMNSnssaiCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.PLMNInfoList.class).child(SNSSAIList.class), new NearRTRICpLMNSNSSAICustomizer(nearRtRicAttrpLMNSnssaiCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.PLMNInfoList.class)
+                .child(SNSSAIList.class).child(ConfigData.class),
+                new NearRTRICConfigCustomizer(nearRtRicConfigDataCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.Attributes.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellcugroup.PLMNInfoList.class).child(SNSSAIList.class).child(ConfigData.class), new NearRTRICConfigCustomizer(nearRtRicConfigDataCrudService)));
+        registry.add(new GenericWriter<>(
+                ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class)
+                        .child(NRCellRelation.class),
+                new NRCellCUNRCellRelationCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRCellCrudService)));
 
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(NRCellRelation.class), new NRCellCUNRCellRelationCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRCellCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class).child(NRCellRelation.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrcellrelation.Attributes.class),
+                new NRCellCUNRCellRelationAttrCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRCellAttrCrudService)));
 
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(NRCellRelation.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrcellrelation.Attributes.class), new NRCellCUNRCellRelationAttrCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRCellAttrCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class).child(NRCellRelation.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrcellrelation.Attributes.class)
+                .child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
 
-    registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(NRCellRelation.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrcellrelation.Attributes.class).child(SAP.class), new GNBDUFunctionSAPCustomizer(GNBDUFunctionSAPCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class).child(NRCellRelation.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrcellrelation.Attributes.class)
+                .child(CellIndividualOffset.class),
+                new NRCellRelationCellIndividualOffsetCustomizer(
+                        nearRtRicGNBCUCPFunctionNRCellCUNRCellInOffsetCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(NRCellRelation.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrcellrelation.Attributes.class).child(CellIndividualOffset.class), new NRCellRelationCellIndividualOffsetCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRCellInOffsetCrudService)));
+        registry.add(new GenericWriter<>(
+                ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class)
+                        .child(NRFreqRelation.class),
+                new NRCellCUNRFreqRelationCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRFREQRELCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(NRFreqRelation.class), new NRCellCUNRFreqRelationCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRFREQRELCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class).child(NRFreqRelation.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrfreqrelation.Attributes.class),
+                new NRCellCUNRFreqRelationAttrCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRfreqRelAttrCrudService)));
 
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(NRFreqRelation.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrfreqrelation.Attributes.class), new NRCellCUNRFreqRelationAttrCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRfreqRelAttrCrudService)));
-
-   registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class).child(NRCellCU.class).child(NRFreqRelation.class).child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrfreqrelation.Attributes.class).child(OffsetMO.class), new NRFreqRelationOffsetMOCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRfreqRelOffsetMOCrudService)));
+        registry.add(new GenericWriter<>(ROOT_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUCPFunction.class)
+                .child(NRCellCU.class).child(NRFreqRelation.class)
+                .child(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrfreqrelation.Attributes.class)
+                .child(OffsetMO.class),
+                new NRFreqRelationOffsetMOCustomizer(nearRtRicGNBCUCPFunctionNRCellCUNRfreqRelOffsetMOCrudService)));
 
     }
 }

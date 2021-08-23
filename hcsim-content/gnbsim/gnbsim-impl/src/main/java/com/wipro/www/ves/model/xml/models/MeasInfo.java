@@ -21,8 +21,9 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 @XmlRootElement
-@XmlType(propOrder={"measInfoId","job","granPeriod","repPeriod","measType","measValue"})
+@XmlType(propOrder = {"measInfoId", "job", "granPeriod", "repPeriod", "measType", "measValue"})
 public class MeasInfo {
     private String measInfoId;
     private Job job;
@@ -30,83 +31,73 @@ public class MeasInfo {
     private ReportingPeriod repPeriod;
     private List<MeasType> measType;
     private List<MeasValue> measValue;
-   
-   
+
     public MeasInfo(String measInfoId, Job job, GranularityPeriod granPeriod, ReportingPeriod repPeriod,
-List<MeasType> measType, List<MeasValue> measValue) {
-super();
-this.measInfoId = measInfoId;
-this.job = job;
-this.granPeriod = granPeriod;
-this.repPeriod = repPeriod;
-this.measType = measType;
-this.measValue = measValue;
+            List<MeasType> measType, List<MeasValue> measValue) {
+        super();
+        this.measInfoId = measInfoId;
+        this.job = job;
+        this.granPeriod = granPeriod;
+        this.repPeriod = repPeriod;
+        this.measType = measType;
+        this.measValue = measValue;
+    }
+
+    public MeasInfo() {
+    }
+
+    @XmlAttribute
+    public String getMeasInfoId() {
+        return measInfoId;
+    }
+
+    public void setMeasInfoId(String measInfoId) {
+        this.measInfoId = measInfoId;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    public GranularityPeriod getGranPeriod() {
+        return granPeriod;
+    }
+
+    public void setGranPeriod(GranularityPeriod granPeriod) {
+        this.granPeriod = granPeriod;
+    }
+
+    public ReportingPeriod getRepPeriod() {
+        return repPeriod;
+    }
+
+    public void setRepPeriod(ReportingPeriod repPeriod) {
+        this.repPeriod = repPeriod;
+    }
+
+    public List<MeasType> getMeasType() {
+        return measType;
+    }
+
+    public void setMeasType(List<MeasType> measType) {
+        this.measType = measType;
+    }
+
+    public List<MeasValue> getMeasValue() {
+        return measValue;
+    }
+
+    public void setMeasValue(List<MeasValue> measValue) {
+        this.measValue = measValue;
+    }
+
+    @Override
+    public String toString() {
+        return "MeasInfo [measInfoId=" + measInfoId + ", job=" + job + ", granPeriod=" + granPeriod + ", repPeriod="
+                + repPeriod + ", measType=" + measType + ", measValue=" + measValue + "]";
+    }
 }
-   
-
-public MeasInfo() {
-}
-
-
-@XmlAttribute
-public String getMeasInfoId() {
-return measInfoId;
-}
-
-public void setMeasInfoId(String measInfoId) {
-this.measInfoId = measInfoId;
-}
-
-
-public Job getJob() {
-return job;
-}
-
-
-public void setJob(Job job) {
-this.job = job;
-}
-
-
-public GranularityPeriod getGranPeriod() {
-return granPeriod;
-}
-
-
-public void setGranPeriod(GranularityPeriod granPeriod) {
-this.granPeriod = granPeriod;
-}
-
-
-public ReportingPeriod getRepPeriod() {
-return repPeriod;
-}
-
-
-public void setRepPeriod(ReportingPeriod repPeriod) {
-this.repPeriod = repPeriod;
-}
-
-public List<MeasType> getMeasType() {
-return measType;
-}
-
-public void setMeasType(List<MeasType> measType) {
-this.measType = measType;
-}
-
-public List<MeasValue> getMeasValue() {
-return measValue;
-}
-
-public void setMeasValue(List<MeasValue> measValue) {
-this.measValue = measValue;
-}
-
-@Override
-public String toString() {
-return "MeasInfo [measInfoId=" + measInfoId + ", job=" + job + ", granPeriod=" + granPeriod + ", repPeriod="
-+ repPeriod + ", measType=" + measType + ", measValue=" + measValue + "]";
-}
-}
-

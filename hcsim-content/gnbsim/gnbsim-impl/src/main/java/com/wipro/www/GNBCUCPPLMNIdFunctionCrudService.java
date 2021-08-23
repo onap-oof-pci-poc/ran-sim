@@ -18,26 +18,28 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.PLMNId;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.PLMNIdKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.PLMNIdBuilder;
 
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.PLMNId;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.PLMNIdBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.PLMNIdKey;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GNBCUCPPLMNIdFunctionCrudService implements CrudService<PLMNId> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GNBCUCPPLMNIdFunctionCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<PLMNId> identifier, @Nonnull PLMNId data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<PLMNId> identifier, @Nonnull PLMNId data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -52,7 +54,8 @@ public class GNBCUCPPLMNIdFunctionCrudService implements CrudService<PLMNId> {
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<PLMNId> identifier, @Nonnull PLMNId data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<PLMNId> identifier, @Nonnull PLMNId data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -67,7 +70,8 @@ public class GNBCUCPPLMNIdFunctionCrudService implements CrudService<PLMNId> {
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<PLMNId> identifier, @Nonnull PLMNId dataOld, @Nonnull PLMNId dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<PLMNId> identifier, @Nonnull PLMNId dataOld,
+            @Nonnull PLMNId dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify

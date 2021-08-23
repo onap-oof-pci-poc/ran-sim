@@ -19,16 +19,16 @@ package com.wipro.www.ves.model.xml.models;
 import java.util.List;
 
 public class MeasResult {
-private String position;
-private String result;
-public MeasResult(String position, String result) {
-super();
-this.position = position;
-this.result = result;
-}
-public MeasResult() {
-}
-   
+    private String position;
+    private String result;
+
+    public MeasResult(String position, String result) {
+        super();
+        this.position = position;
+        this.result = result;
+    }
+
+    public MeasResult() {
+    }
 
 }
-

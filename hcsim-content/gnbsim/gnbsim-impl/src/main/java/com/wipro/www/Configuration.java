@@ -66,14 +66,14 @@ public class Configuration {
         this.vesEventListenerUrl = vesEventListenerUrl;
     }
 
-    private Configuration(){
+    private Configuration() {
 
     }
 
     private static Configuration instance;
 
     public static Configuration getInstance() {
-        if (instance ==null){
+        if (instance == null) {
             instance = new Configuration();
         }
         return instance;

@@ -20,44 +20,53 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+
 @XmlRootElement
 public class MeasValue {
-private Integer measObjLdn;
-private List<Result> r;
-public MeasValue() {
+    private Integer measObjLdn;
+    private List<Result> r;
+
+    public MeasValue() {
+
+    }
+
+    public MeasValue(Integer measObjLdn, List<Result> r, boolean suspect) {
+        super();
+        this.measObjLdn = measObjLdn;
+        this.r = r;
+        this.suspect = suspect;
+    }
+
+    private boolean suspect;
+
+    @XmlAttribute
+    public Integer getMeasObjLdn() {
+        return measObjLdn;
+    }
+
+    public void setMeasObjLdn(Integer measObjLdn) {
+        this.measObjLdn = measObjLdn;
+    }
+
+    public List<Result> getR() {
+        return r;
+    }
+
+    public void setR(List<Result> r) {
+        this.r = r;
+    }
+
+    public boolean isSuspect() {
+        return suspect;
+    }
+
+    public void setSuspect(boolean suspect) {
+        this.suspect = suspect;
+    }
+
+    @Override
+    public String toString() {
+        return "MeasValue [measObjLdn=" + measObjLdn + ", r=" + r + ", suspect=" + suspect + "]";
+    }
 
 }
-public MeasValue(Integer measObjLdn, List<Result> r, boolean suspect) {
-super();
-this.measObjLdn = measObjLdn;
-this.r = r;
-this.suspect = suspect;
-}
-private boolean suspect;
-@XmlAttribute
-public Integer getMeasObjLdn() {
-return measObjLdn;
-}
-public void setMeasObjLdn(Integer measObjLdn) {
-this.measObjLdn = measObjLdn;
-}
-public List<Result> getR() {
-return r;
-}
-public void setR(List<Result> r) {
-this.r = r;
-}
-public boolean isSuspect() {
-return suspect;
-}
-public void setSuspect(boolean suspect) {
-this.suspect = suspect;
-}
-@Override
-public String toString() {
-return "MeasValue [measObjLdn=" + measObjLdn + ", r=" + r + ", suspect=" + suspect + "]";
-}
-
-}
-
-

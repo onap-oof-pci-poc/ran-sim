@@ -17,35 +17,40 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.NRCellCU;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.NRCellCUKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
 
 public class GNBCUCPFunctionNRCellCUCustomizer implements ListWriterCustomizer<NRCellCU, NRCellCUKey> {
 
     private final CrudService<NRCellCU> crudService;
 
-    public GNBCUCPFunctionNRCellCUCustomizer(@Nonnull final CrudService<NRCellCU> crudService){
+    public GNBCUCPFunctionNRCellCUCustomizer(@Nonnull final CrudService<NRCellCU> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<NRCellCU> instanceIdentifier, @Nonnull NRCellCU nrcellcu, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<NRCellCU> instanceIdentifier,
+            @Nonnull NRCellCU nrcellcu, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, nrcellcu);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<NRCellCU> id, @Nonnull NRCellCU dataBefore, @Nonnull NRCellCU dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<NRCellCU> id, @Nonnull NRCellCU dataBefore,
+            @Nonnull NRCellCU dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<NRCellCU> instanceIdentifier, @Nonnull NRCellCU nrcellcu, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<NRCellCU> instanceIdentifier,
+            @Nonnull NRCellCU nrcellcu, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, nrcellcu);
     }
 }

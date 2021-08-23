@@ -17,35 +17,41 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUUPFunction;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUUPFunctionKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
 
 public class NearRTRICGNBCUUPFunctionCustomizer implements ListWriterCustomizer<GNBCUUPFunction, GNBCUUPFunctionKey> {
 
     private final CrudService<GNBCUUPFunction> crudService;
 
-    public NearRTRICGNBCUUPFunctionCustomizer(@Nonnull final CrudService<GNBCUUPFunction> crudService){
+    public NearRTRICGNBCUUPFunctionCustomizer(@Nonnull final CrudService<GNBCUUPFunction> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<GNBCUUPFunction> instanceIdentifier, @Nonnull GNBCUUPFunction gnbcuupfunction, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<GNBCUUPFunction> instanceIdentifier,
+            @Nonnull GNBCUUPFunction gnbcuupfunction, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, gnbcuupfunction);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<GNBCUUPFunction> id, @Nonnull GNBCUUPFunction dataBefore, @Nonnull GNBCUUPFunction dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<GNBCUUPFunction> id,
+            @Nonnull GNBCUUPFunction dataBefore, @Nonnull GNBCUUPFunction dataAfter, @Nonnull WriteContext writeContext)
+            throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<GNBCUUPFunction> instanceIdentifier, @Nonnull GNBCUUPFunction gnbcuupfunction, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<GNBCUUPFunction> instanceIdentifier,
+            @Nonnull GNBCUUPFunction gnbcuupfunction, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, gnbcuupfunction);
     }
 }

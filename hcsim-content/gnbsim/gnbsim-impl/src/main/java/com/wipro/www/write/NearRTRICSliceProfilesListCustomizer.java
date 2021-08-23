@@ -17,35 +17,44 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.SliceProfilesList;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.SliceProfilesListKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
-import javax.annotation.Nonnull;
-
-public class NearRTRICSliceProfilesListCustomizer implements ListWriterCustomizer<SliceProfilesList, SliceProfilesListKey> {
+public class NearRTRICSliceProfilesListCustomizer
+        implements ListWriterCustomizer<SliceProfilesList, SliceProfilesListKey> {
 
     private final CrudService<SliceProfilesList> crudService;
 
-    public NearRTRICSliceProfilesListCustomizer(@Nonnull final CrudService<SliceProfilesList> crudService){
+    public NearRTRICSliceProfilesListCustomizer(@Nonnull final CrudService<SliceProfilesList> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<SliceProfilesList> instanceIdentifier, @Nonnull SliceProfilesList sliceProfileList, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<SliceProfilesList> instanceIdentifier,
+            @Nonnull SliceProfilesList sliceProfileList, @Nonnull WriteContext writeContext)
+            throws WriteFailedException {
         crudService.writeData(instanceIdentifier, sliceProfileList);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<SliceProfilesList> id, @Nonnull SliceProfilesList dataBefore, @Nonnull SliceProfilesList dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<SliceProfilesList> id,
+            @Nonnull SliceProfilesList dataBefore, @Nonnull SliceProfilesList dataAfter,
+            @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<SliceProfilesList> instanceIdentifier, @Nonnull SliceProfilesList sliceProfileList, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<SliceProfilesList> instanceIdentifier,
+            @Nonnull SliceProfilesList sliceProfileList, @Nonnull WriteContext writeContext)
+            throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, sliceProfileList);
     }
 }

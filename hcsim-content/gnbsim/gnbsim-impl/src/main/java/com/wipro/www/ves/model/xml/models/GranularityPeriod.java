@@ -23,34 +23,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class GranularityPeriod {
     private String endTime;
     private String duration;
-   
+
     public GranularityPeriod() {
 
-}
-   
+    }
+
     public GranularityPeriod(String endTime, String duration) {
-super();
-this.endTime = endTime;
-this.duration = duration;
-}
-@XmlAttribute
-public String getEndTime() {
-return endTime;
-}
-public void setEndTime(String endTime) {
-this.endTime = endTime;
-}
-@XmlAttribute
-public String getDuration() {
-return duration;
-}
-public void setDuration(String duration) {
-this.duration = duration;
-}
-@Override
-public String toString() {
-return "GranularityPeriod [endTime=" + endTime + ", duration=" + duration + "]";
-}
-}
+        super();
+        this.endTime = endTime;
+        this.duration = duration;
+    }
 
+    @XmlAttribute
+    public String getEndTime() {
+        return endTime;
+    }
 
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    @XmlAttribute
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    @Override
+    public String toString() {
+        return "GranularityPeriod [endTime=" + endTime + ", duration=" + duration + "]";
+    }
+}

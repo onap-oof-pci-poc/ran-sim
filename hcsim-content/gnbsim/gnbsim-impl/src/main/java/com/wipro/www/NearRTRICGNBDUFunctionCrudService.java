@@ -18,31 +18,33 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetwork;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRIC;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.AttributesBuilder;
 
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetwork;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRIC;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.Attributes;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.AttributesBuilder;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NearRTRICGNBDUFunctionCrudService implements CrudService<GNBDUFunction> {
 
     private static final Logger LOG = LoggerFactory.getLogger(NearRTRICGNBDUFunctionCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<GNBDUFunction> identifier, @Nonnull GNBDUFunction data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<GNBDUFunction> identifier, @Nonnull GNBDUFunction data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -57,7 +59,8 @@ public class NearRTRICGNBDUFunctionCrudService implements CrudService<GNBDUFunct
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<GNBDUFunction> identifier, @Nonnull GNBDUFunction data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<GNBDUFunction> identifier, @Nonnull GNBDUFunction data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -72,7 +75,8 @@ public class NearRTRICGNBDUFunctionCrudService implements CrudService<GNBDUFunct
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<GNBDUFunction> identifier, @Nonnull GNBDUFunction dataOld, @Nonnull GNBDUFunction dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<GNBDUFunction> identifier, @Nonnull GNBDUFunction dataOld,
+            @Nonnull GNBDUFunction dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -87,53 +91,48 @@ public class NearRTRICGNBDUFunctionCrudService implements CrudService<GNBDUFunct
     }
 
     @Override
-    public GNBDUFunction readSpecific(@Nonnull InstanceIdentifier<GNBDUFunction> identifier) throws ReadFailedException {
+    public GNBDUFunction readSpecific(@Nonnull InstanceIdentifier<GNBDUFunction> identifier)
+            throws ReadFailedException {
 
         LOG.info("Read path[{}] ", identifier);
 
         final GNBDUFunctionKey key = identifier.firstKeyOf(GNBDUFunction.class);
 
-	String gNBId = null;
-	boolean isDataReady = false;
+        String gNBId = null;
+        boolean isDataReady = false;
 
-	List<com.wipro.www.websocket.models.nearRTRIC> nearRTRICList = InMemoryDataTree.getInstance().getNearRTRIC();
+        List<com.wipro.www.websocket.models.nearRTRIC> nearRTRICList = InMemoryDataTree.getInstance().getNearRTRIC();
 
-        for(int i=0; i < nearRTRICList.size() ; i++)
-        {
-                List<com.wipro.www.websocket.models.GNBDUFunction> inList = (nearRTRICList.get(i)).getgNBDUFunction();
+        for (int i = 0; i < nearRTRICList.size(); i++) {
+            List<com.wipro.www.websocket.models.GNBDUFunction> inList = (nearRTRICList.get(i)).getgNBDUFunction();
 
-                for(int j=0; j < inList.size(); j++)
-                {                                                                                                                                                                                 if((inList.get(j)).getIdGNBDUFunction() == key.getIdGNBDUFunction())
-                        {
-                                gNBId = (inList.get(j)).getAttributes().getgNBId();
-                                isDataReady = true;
-                                break;
-                        }
+            for (int j = 0; j < inList.size(); j++) {
+                if ((inList.get(j)).getIdGNBDUFunction() == key.getIdGNBDUFunction()) {
+                    gNBId = (inList.get(j)).getAttributes().getgNBId();
+                    isDataReady = true;
+                    break;
                 }
-		if(isDataReady == true)
-		{
-			break;
-		}
+            }
+            if (isDataReady == true) {
+                break;
+            }
         }
-		
-		
-       if(isDataReady)                                                                                                                                          {
-             LOG.info("gNBID value:[{}]", gNBId);
-             final Attributes attributes = new AttributesBuilder().setGNBId(Long.parseLong(gNBId)).build();
-             return new GNBDUFunctionBuilder()
-                .setIdGNBDUFunction(key.getIdGNBDUFunction())
-                .setAttributes(attributes)
-                .build();
+
+        if (isDataReady) {
+            LOG.info("gNBID value:[{}]", gNBId);
+            final Attributes attributes = new AttributesBuilder().setGNBId(Long.parseLong(gNBId)).build();
+            return new GNBDUFunctionBuilder().setIdGNBDUFunction(key.getIdGNBDUFunction()).setAttributes(attributes)
+                    .build();
         } else {
-             return null;
+            return null;
         }
 
-        //final Attributes attributes = new AttributesBuilder().setGNBId(2L).build();
+        // final Attributes attributes = new AttributesBuilder().setGNBId(2L).build();
 
-        //return new GNBDUFunctionBuilder()
-        //        .setIdGNBDUFunction(key.getIdGNBDUFunction())
-        //        .setAttributes(attributes)
-        //        .build();
+        // return new GNBDUFunctionBuilder()
+        // .setIdGNBDUFunction(key.getIdGNBDUFunction())
+        // .setAttributes(attributes)
+        // .build();
 
     }
 
@@ -142,32 +141,34 @@ public class NearRTRICGNBDUFunctionCrudService implements CrudService<GNBDUFunct
 
         List<com.wipro.www.websocket.models.nearRTRIC> listNearRTRIC = InMemoryDataTree.getInstance().getNearRTRIC();
         List<GNBDUFunction> outList = new ArrayList<GNBDUFunction>();
-        String idNearRTRIC=null;
-        String idGNBDUFunction=null;
+        String idNearRTRIC = null;
+        String idGNBDUFunction = null;
 
         try {
-                for(int i=0; i < listNearRTRIC.size(); i++)
-                {
-                        idNearRTRIC = (listNearRTRIC.get(i)).getIdNearRTRIC();
-                        List<com.wipro.www.websocket.models.GNBDUFunction> inputList = (listNearRTRIC.get(i)).getgNBDUFunction();
+            for (int i = 0; i < listNearRTRIC.size(); i++) {
+                idNearRTRIC = (listNearRTRIC.get(i)).getIdNearRTRIC();
+                List<com.wipro.www.websocket.models.GNBDUFunction> inputList =
+                        (listNearRTRIC.get(i)).getgNBDUFunction();
 
-			for(int j=0; j < inputList.size(); j++)
-			{
-                            idGNBDUFunction = (inputList.get(j)).getIdGNBDUFunction();
-     
-                            LOG.info("GNBDUFunction ID:[{}]",idGNBDUFunction);
+                for (int j = 0; j < inputList.size(); j++) {
+                    idGNBDUFunction = (inputList.get(j)).getIdGNBDUFunction();
 
-                            outList.add(readSpecific(InstanceIdentifier.create(RanNetwork.class).child(NearRTRIC.class, new NearRTRICKey(idNearRTRIC)).child(GNBDUFunction.class, new GNBDUFunctionKey(idGNBDUFunction))));
-			}
+                    LOG.info("GNBDUFunction ID:[{}]", idGNBDUFunction);
 
+                    outList.add(readSpecific(InstanceIdentifier.create(RanNetwork.class)
+                            .child(NearRTRIC.class, new NearRTRICKey(idNearRTRIC))
+                            .child(GNBDUFunction.class, new GNBDUFunctionKey(idGNBDUFunction))));
                 }
-                return outList;
+
+            }
+            return outList;
         } catch (Exception e) {
-                LOG.info("Exception:[{}]", e);
-                return null;
+            LOG.info("Exception:[{}]", e);
+            return null;
         }
-        
-        //return Collections.singletonList(
-        //                       readSpecific(InstanceIdentifier.create(RanNetwork.class).child(NearRTRIC.class, new NearRTRICKey("RTRIC2")).child(GNBDUFunction.class, new GNBDUFunctionKey("GNBDUFUN2"))));
+
+        // return Collections.singletonList(
+        // readSpecific(InstanceIdentifier.create(RanNetwork.class).child(NearRTRIC.class, new
+        // NearRTRICKey("RTRIC2")).child(GNBDUFunction.class, new GNBDUFunctionKey("GNBDUFUN2"))));
     }
 }

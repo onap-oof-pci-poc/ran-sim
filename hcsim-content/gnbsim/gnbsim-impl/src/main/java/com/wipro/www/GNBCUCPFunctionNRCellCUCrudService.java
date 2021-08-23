@@ -18,26 +18,28 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.NRCellCU;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.NRCellCUKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.NRCellCUBuilder;
 
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.NRCellCU;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.NRCellCUBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.NRCellCUKey;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GNBCUCPFunctionNRCellCUCrudService implements CrudService<NRCellCU> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GNBCUCPFunctionNRCellCUCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<NRCellCU> identifier, @Nonnull NRCellCU data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<NRCellCU> identifier, @Nonnull NRCellCU data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -52,7 +54,8 @@ public class GNBCUCPFunctionNRCellCUCrudService implements CrudService<NRCellCU>
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<NRCellCU> identifier, @Nonnull NRCellCU data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<NRCellCU> identifier, @Nonnull NRCellCU data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -67,7 +70,8 @@ public class GNBCUCPFunctionNRCellCUCrudService implements CrudService<NRCellCU>
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<NRCellCU> identifier, @Nonnull NRCellCU dataOld, @Nonnull NRCellCU dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<NRCellCU> identifier, @Nonnull NRCellCU dataOld,
+            @Nonnull NRCellCU dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify

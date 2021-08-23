@@ -19,29 +19,28 @@ package com.wipro.www.ves.model.xml.models;
 import javax.xml.bind.annotation.XmlAttribute;
 
 public class ReportingPeriod {
-@XmlAttribute
+    @XmlAttribute
     public String getDuration() {
-return duration;
-}
+        return duration;
+    }
 
-public void setDuration(String duration) {
-this.duration = duration;
-}
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 
-private String duration;
-public ReportingPeriod() {
-}
+    private String duration;
 
-public ReportingPeriod(String duration) {
-super();
-this.duration = duration;
-}
+    public ReportingPeriod() {
+    }
 
-@Override
-public String toString() {
-return "ReportingPeriod [duration=" + duration + "]";
-}
-   
+    public ReportingPeriod(String duration) {
+        super();
+        this.duration = duration;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportingPeriod [duration=" + duration + "]";
+    }
 
 }
-

@@ -17,35 +17,40 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoList;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoListKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
 
 public class NearRTRICpLMNInfoListCustomizer implements ListWriterCustomizer<PLMNInfoList, PLMNInfoListKey> {
 
     private final CrudService<PLMNInfoList> crudService;
 
-    public NearRTRICpLMNInfoListCustomizer(@Nonnull final CrudService<PLMNInfoList> crudService){
+    public NearRTRICpLMNInfoListCustomizer(@Nonnull final CrudService<PLMNInfoList> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<PLMNInfoList> instanceIdentifier, @Nonnull PLMNInfoList plmnInfoList, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<PLMNInfoList> instanceIdentifier,
+            @Nonnull PLMNInfoList plmnInfoList, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, plmnInfoList);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<PLMNInfoList> id, @Nonnull PLMNInfoList dataBefore, @Nonnull PLMNInfoList dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<PLMNInfoList> id, @Nonnull PLMNInfoList dataBefore,
+            @Nonnull PLMNInfoList dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<PLMNInfoList> instanceIdentifier, @Nonnull PLMNInfoList plmnInfoList, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<PLMNInfoList> instanceIdentifier,
+            @Nonnull PLMNInfoList plmnInfoList, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, plmnInfoList);
     }
 }

@@ -16,18 +16,6 @@
 
 package com.wipro.www;
 
-import io.fd.honeycomb.translate.read.ReadFailedException;
-import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoList;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoListKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoListBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
-
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wipro.www.websocket.WebsocketClient;
@@ -35,19 +23,33 @@ import com.wipro.www.websocket.models.DeviceData;
 import com.wipro.www.websocket.models.MessageType;
 import com.wipro.www.websocket.models.PLMNInfoModel;
 
-import javax.annotation.Nonnull;
+import io.fd.honeycomb.translate.read.ReadFailedException;
+import io.fd.honeycomb.translate.write.WriteFailedException;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoListBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcelldugroup.PLMNInfoListKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList> {
 
     private static final Logger LOG = LoggerFactory.getLogger(NRCellDUpLMNInfoListCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -55,78 +57,13 @@ public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList
 
             // Performs any logic needed for persisting such data
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
-	    ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
-	    int idNearRTRICIndex = identifier.toString().indexOf("_idNearRTRIC=");
-	    String idNearRTRICSubStr = identifier.toString().substring(idNearRTRICIndex + "_idNearRTRIC=".length());
-	    String idNearRTRIC = idNearRTRICSubStr.substring(0, idNearRTRICSubStr.indexOf("}"));
-	    int idGNBDUFunctionIndex = identifier.toString().indexOf("_idGNBDUFunction=");
-	    String idGNBDUFunctionSubStr = identifier.toString()
-					.substring(idGNBDUFunctionIndex + "_idGNBDUFunction=".length());
-	    String idGNBDUFunction = idGNBDUFunctionSubStr.substring(0, idGNBDUFunctionSubStr.indexOf("}"));
-	    int idNRCellDUIndex = identifier.toString().indexOf("_idNRCellDU=");
-	    String idNRCellDUSubStr = identifier.toString().substring(idNRCellDUIndex + "_idNRCellDU=".length());
-	    String idNRCellDU = idNRCellDUSubStr.substring(0, idNRCellDUSubStr.indexOf("}"));
-	    int mccIndex = identifier.toString().indexOf("_mcc=Mcc{_value=");
-	    String mccSubStr = identifier.toString().substring(mccIndex + "_mcc=Mcc{_value=".length());
-	    String mcc = mccSubStr.substring(0, mccSubStr.indexOf("}"));
-
-	    int mncIndex = identifier.toString().indexOf("mnc=Mnc{_value=");
-	    String mncSubStr = identifier.toString().substring(mncIndex + "mnc=Mnc{_value=".length());
-	    String mnc = mncSubStr.substring(0, mncSubStr.indexOf("}"));
-	    PLMNInfoModel plmnInfoModel = new PLMNInfoModel();
-	    plmnInfoModel.setpLMNId(mcc + "-" + mnc);
-	    plmnInfoModel.setNearrtricid(idNearRTRIC);
-	    plmnInfoModel.setGnbType("gnbdu");
-	    plmnInfoModel.setGnbId(idGNBDUFunction);
-	    plmnInfoModel.setNrCellId(Integer.parseInt(idNRCellDU));
-	    List<SNSSAIList> snssaiList = data.getSNSSAIList();
-	    for (SNSSAIList s : snssaiList) {
-		    List<com.wipro.www.websocket.models.ConfigData> dataList = new ArrayList<com.wipro.www.websocket.models.ConfigData>();
-                    List<ConfigData> configDataList = s.getConfigData();
-                    for (ConfigData c : configDataList) {
-			    if(!(Objects.isNull(c.getConfigValue()))){
-                            com.wipro.www.websocket.models.ConfigData configData = new com.wipro.www.websocket.models.ConfigData();
-                            configData.setConfigParameter(c.getConfigParameter());
-                            configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
-                            dataList.add(configData);
-			    }
-
-		    }
-		    plmnInfoModel.setConfigData(dataList);
-		    plmnInfoModel.setSnssai(s.getSNssai());
-		    plmnInfoModel.setStatus(s.getStatus());
-		    try {
-			    ObjectMapper obj = new ObjectMapper();
-			    String message = obj.writeValueAsString(plmnInfoModel);
-			    LOG.info("parsed message: " + message);
-		            configurationHandler.sendDatabaseUpdate(message,MessageType.HC_TO_RC_PLMN);
-		    } catch (JsonProcessingException jsonProcessingException) {
-			    LOG.error("Error parsing json");
-		    }
-	    }
-
-        } else {
-            throw new WriteFailedException.CreateFailedException(identifier, data,
-                    new NullPointerException("Provided data are null"));
-        }
-    }
-
-    @Override
-    public void deleteData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList data) throws WriteFailedException {
-        if (data != null) {
-
-            // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
-            // relationships such as to which parent these data are related to
-
-            // Performs any logic needed for persisting such data
-            LOG.info("Removing path[{}] / data [{}]", identifier, data);
-            WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
+            ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             int idNearRTRICIndex = identifier.toString().indexOf("_idNearRTRIC=");
             String idNearRTRICSubStr = identifier.toString().substring(idNearRTRICIndex + "_idNearRTRIC=".length());
             String idNearRTRIC = idNearRTRICSubStr.substring(0, idNearRTRICSubStr.indexOf("}"));
             int idGNBDUFunctionIndex = identifier.toString().indexOf("_idGNBDUFunction=");
-            String idGNBDUFunctionSubStr = identifier.toString()
-                                        .substring(idGNBDUFunctionIndex + "_idGNBDUFunction=".length());
+            String idGNBDUFunctionSubStr =
+                    identifier.toString().substring(idGNBDUFunctionIndex + "_idGNBDUFunction=".length());
             String idGNBDUFunction = idGNBDUFunctionSubStr.substring(0, idGNBDUFunctionSubStr.indexOf("}"));
             int idNRCellDUIndex = identifier.toString().indexOf("_idNRCellDU=");
             String idNRCellDUSubStr = identifier.toString().substring(idNRCellDUIndex + "_idNRCellDU=".length());
@@ -146,31 +83,101 @@ public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList
             plmnInfoModel.setNrCellId(Integer.parseInt(idNRCellDU));
             List<SNSSAIList> snssaiList = data.getSNSSAIList();
             for (SNSSAIList s : snssaiList) {
-		    List<com.wipro.www.websocket.models.ConfigData> dataList = new ArrayList<com.wipro.www.websocket.models.ConfigData>();
-                    List<ConfigData> configDataList = s.getConfigData();
-                    for (ConfigData c : configDataList) {
-			    if(!(Objects.isNull(c.getConfigValue()))){
-                            com.wipro.www.websocket.models.ConfigData configData = new com.wipro.www.websocket.models.ConfigData();
-                            configData.setConfigParameter(c.getConfigParameter());
-                            configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
-                            dataList.add(configData);
-			    }
+                List<com.wipro.www.websocket.models.ConfigData> dataList =
+                        new ArrayList<com.wipro.www.websocket.models.ConfigData>();
+                List<ConfigData> configDataList = s.getConfigData();
+                for (ConfigData c : configDataList) {
+                    if (!(Objects.isNull(c.getConfigValue()))) {
+                        com.wipro.www.websocket.models.ConfigData configData =
+                                new com.wipro.www.websocket.models.ConfigData();
+                        configData.setConfigParameter(c.getConfigParameter());
+                        configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
+                        dataList.add(configData);
+                    }
 
+                }
+                plmnInfoModel.setConfigData(dataList);
+                plmnInfoModel.setSnssai(s.getSNssai());
+                plmnInfoModel.setStatus(s.getStatus());
+                try {
+                    ObjectMapper obj = new ObjectMapper();
+                    String message = obj.writeValueAsString(plmnInfoModel);
+                    LOG.info("parsed message: " + message);
+                    configurationHandler.sendDatabaseUpdate(message, MessageType.HC_TO_RC_PLMN);
+                } catch (JsonProcessingException jsonProcessingException) {
+                    LOG.error("Error parsing json");
+                }
+            }
+
+        } else {
+            throw new WriteFailedException.CreateFailedException(identifier, data,
+                    new NullPointerException("Provided data are null"));
+        }
+    }
+
+    @Override
+    public void deleteData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList data)
+            throws WriteFailedException {
+        if (data != null) {
+
+            // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
+            // relationships such as to which parent these data are related to
+
+            // Performs any logic needed for persisting such data
+            LOG.info("Removing path[{}] / data [{}]", identifier, data);
+            WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
+            int idNearRTRICIndex = identifier.toString().indexOf("_idNearRTRIC=");
+            String idNearRTRICSubStr = identifier.toString().substring(idNearRTRICIndex + "_idNearRTRIC=".length());
+            String idNearRTRIC = idNearRTRICSubStr.substring(0, idNearRTRICSubStr.indexOf("}"));
+            int idGNBDUFunctionIndex = identifier.toString().indexOf("_idGNBDUFunction=");
+            String idGNBDUFunctionSubStr =
+                    identifier.toString().substring(idGNBDUFunctionIndex + "_idGNBDUFunction=".length());
+            String idGNBDUFunction = idGNBDUFunctionSubStr.substring(0, idGNBDUFunctionSubStr.indexOf("}"));
+            int idNRCellDUIndex = identifier.toString().indexOf("_idNRCellDU=");
+            String idNRCellDUSubStr = identifier.toString().substring(idNRCellDUIndex + "_idNRCellDU=".length());
+            String idNRCellDU = idNRCellDUSubStr.substring(0, idNRCellDUSubStr.indexOf("}"));
+            int mccIndex = identifier.toString().indexOf("_mcc=Mcc{_value=");
+            String mccSubStr = identifier.toString().substring(mccIndex + "_mcc=Mcc{_value=".length());
+            String mcc = mccSubStr.substring(0, mccSubStr.indexOf("}"));
+
+            int mncIndex = identifier.toString().indexOf("mnc=Mnc{_value=");
+            String mncSubStr = identifier.toString().substring(mncIndex + "mnc=Mnc{_value=".length());
+            String mnc = mncSubStr.substring(0, mncSubStr.indexOf("}"));
+            PLMNInfoModel plmnInfoModel = new PLMNInfoModel();
+            plmnInfoModel.setpLMNId(mcc + "-" + mnc);
+            plmnInfoModel.setNearrtricid(idNearRTRIC);
+            plmnInfoModel.setGnbType("gnbdu");
+            plmnInfoModel.setGnbId(idGNBDUFunction);
+            plmnInfoModel.setNrCellId(Integer.parseInt(idNRCellDU));
+            List<SNSSAIList> snssaiList = data.getSNSSAIList();
+            for (SNSSAIList s : snssaiList) {
+                List<com.wipro.www.websocket.models.ConfigData> dataList =
+                        new ArrayList<com.wipro.www.websocket.models.ConfigData>();
+                List<ConfigData> configDataList = s.getConfigData();
+                for (ConfigData c : configDataList) {
+                    if (!(Objects.isNull(c.getConfigValue()))) {
+                        com.wipro.www.websocket.models.ConfigData configData =
+                                new com.wipro.www.websocket.models.ConfigData();
+                        configData.setConfigParameter(c.getConfigParameter());
+                        configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
+                        dataList.add(configData);
                     }
-                    plmnInfoModel.setConfigData(dataList);
-                    plmnInfoModel.setSnssai(s.getSNssai());
-                    plmnInfoModel.setStatus(s.getStatus());
-                    DeviceData deviceData = new DeviceData();
-                    try {
-                            ObjectMapper obj = new ObjectMapper();
-                            String message = obj.writeValueAsString(plmnInfoModel);
-                            LOG.info("parsed message: " + message);
-                            deviceData.setMessage(message);
-                    } catch (JsonProcessingException jsonProcessingException) {
-                            LOG.error("Error parsing json");
-                    }
-                    deviceData.setMessageType(MessageType.HC_TO_RC_PLMN_DEL);
-                    websocketClient.sendMessage(deviceData);
+
+                }
+                plmnInfoModel.setConfigData(dataList);
+                plmnInfoModel.setSnssai(s.getSNssai());
+                plmnInfoModel.setStatus(s.getStatus());
+                DeviceData deviceData = new DeviceData();
+                try {
+                    ObjectMapper obj = new ObjectMapper();
+                    String message = obj.writeValueAsString(plmnInfoModel);
+                    LOG.info("parsed message: " + message);
+                    deviceData.setMessage(message);
+                } catch (JsonProcessingException jsonProcessingException) {
+                    LOG.error("Error parsing json");
+                }
+                deviceData.setMessageType(MessageType.HC_TO_RC_PLMN_DEL);
+                websocketClient.sendMessage(deviceData);
             }
 
         } else {
@@ -180,7 +187,8 @@ public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList dataOld, @Nonnull PLMNInfoList dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList dataOld,
+            @Nonnull PLMNInfoList dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify

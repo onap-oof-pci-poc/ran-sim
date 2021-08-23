@@ -17,35 +17,40 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.PLMNId;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.PLMNIdKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
 
 public class GNBCUCPFunctionPLMNIdCustomizer implements ListWriterCustomizer<PLMNId, PLMNIdKey> {
 
     private final CrudService<PLMNId> crudService;
 
-    public GNBCUCPFunctionPLMNIdCustomizer(@Nonnull final CrudService<PLMNId> crudService){
+    public GNBCUCPFunctionPLMNIdCustomizer(@Nonnull final CrudService<PLMNId> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<PLMNId> instanceIdentifier, @Nonnull PLMNId plmnid, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<PLMNId> instanceIdentifier, @Nonnull PLMNId plmnid,
+            @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, plmnid);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<PLMNId> id, @Nonnull PLMNId dataBefore, @Nonnull PLMNId dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<PLMNId> id, @Nonnull PLMNId dataBefore,
+            @Nonnull PLMNId dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<PLMNId> instanceIdentifier, @Nonnull PLMNId plmnid, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<PLMNId> instanceIdentifier, @Nonnull PLMNId plmnid,
+            @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, plmnid);
     }
 }

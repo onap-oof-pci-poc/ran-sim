@@ -17,35 +17,40 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIListKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
 
 public class NearRTRICpLMNSNSSAICustomizer implements ListWriterCustomizer<SNSSAIList, SNSSAIListKey> {
 
     private final CrudService<SNSSAIList> crudService;
 
-    public NearRTRICpLMNSNSSAICustomizer(@Nonnull final CrudService<SNSSAIList> crudService){
+    public NearRTRICpLMNSNSSAICustomizer(@Nonnull final CrudService<SNSSAIList> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<SNSSAIList> instanceIdentifier, @Nonnull SNSSAIList snssaiList, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<SNSSAIList> instanceIdentifier,
+            @Nonnull SNSSAIList snssaiList, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, snssaiList);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<SNSSAIList> id, @Nonnull SNSSAIList dataBefore, @Nonnull SNSSAIList dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<SNSSAIList> id, @Nonnull SNSSAIList dataBefore,
+            @Nonnull SNSSAIList dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<SNSSAIList> instanceIdentifier, @Nonnull SNSSAIList snssaiList, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<SNSSAIList> instanceIdentifier,
+            @Nonnull SNSSAIList snssaiList, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, snssaiList);
     }
 }

@@ -16,15 +16,6 @@
 
 package com.wipro.www;
 
-import io.fd.honeycomb.translate.read.ReadFailedException;
-import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.rrmpolicyratio.Attributes;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberList;
-
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wipro.www.websocket.WebsocketClient;
@@ -33,28 +24,40 @@ import com.wipro.www.websocket.models.MessageType;
 import com.wipro.www.websocket.models.RRMPolicyMember;
 import com.wipro.www.websocket.models.RRMPolicyRatioModel;
 
-import javax.annotation.Nonnull;
+import io.fd.honeycomb.translate.read.ReadFailedException;
+import io.fd.honeycomb.translate.write.WriteFailedException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcuupfunctiongroup.rrmpolicyratio.Attributes;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberList;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService<Attributes> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GNBCUUPFunctionRRMPolicyRatioAttrCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
             // relationships such as to which parent these data are related to
 
             // Performs any logic needed for persisting such data
-            //InMemoryDataTree.getInstance().setRanNetwork(data);
+            // InMemoryDataTree.getInstance().setRanNetwork(data);
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
             int idRRMPolicyRatioIndex = identifier.toString().indexOf("RRMPolicyRatioKey{_id=");
-            String idRRMPolicyRatioSubStr = identifier.toString().substring(idRRMPolicyRatioIndex + "RRMPolicyRatioKey{_id=".length());
+            String idRRMPolicyRatioSubStr =
+                    identifier.toString().substring(idRRMPolicyRatioIndex + "RRMPolicyRatioKey{_id=".length());
             String idRRMPolicyRatio = idRRMPolicyRatioSubStr.substring(0, idRRMPolicyRatioSubStr.indexOf("}"));
 
             RRMPolicyRatioModel rrmPolicyRatioModel = new RRMPolicyRatioModel();
@@ -63,34 +66,34 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
             List<RRMPolicyMember> rrmPolicyMemberList = new ArrayList<RRMPolicyMember>();
             List<RRMPolicyMemberList> rRMPolicyMemberDataList = data.getRRMPolicyMemberList();
             for (RRMPolicyMemberList rrmp : rRMPolicyMemberDataList) {
-                  RRMPolicyMember rrmPolicyMember = new RRMPolicyMember();
-                  String mcc = rrmp.getMcc().toString().substring(11,rrmp.getMcc().toString().length()-1);
-                  String mnc = rrmp.getMnc().toString().substring(11,rrmp.getMnc().toString().length()-1);
-                  rrmPolicyMember.setpLMNId(mcc + "-" + mnc);
-                  rrmPolicyMember.setsNSSAI(
-                  rrmp.getSNSSAI().toString().substring(14, rrmp.getSNSSAI().toString().length() - 1));
-                  rrmPolicyMemberList.add(rrmPolicyMember);
+                RRMPolicyMember rrmPolicyMember = new RRMPolicyMember();
+                String mcc = rrmp.getMcc().toString().substring(11, rrmp.getMcc().toString().length() - 1);
+                String mnc = rrmp.getMnc().toString().substring(11, rrmp.getMnc().toString().length() - 1);
+                rrmPolicyMember.setpLMNId(mcc + "-" + mnc);
+                rrmPolicyMember
+                        .setsNSSAI(rrmp.getSNSSAI().toString().substring(14, rrmp.getSNSSAI().toString().length() - 1));
+                rrmPolicyMemberList.add(rrmPolicyMember);
             }
             rrmPolicyRatioModel.setrRMPolicyMemberList(rrmPolicyMemberList);
             rrmPolicyRatioModel.setQuotaType(data.getQuotaType().toString());
-	    if(!(Objects.isNull(data.getRRMPolicyMaxRatio()))){
-            rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getRRMPolicyMaxRatio().intValue());
+            if (!(Objects.isNull(data.getRRMPolicyMaxRatio()))) {
+                rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getRRMPolicyMaxRatio().intValue());
             }
-            if(!(Objects.isNull(data.getRRMPolicyMinRatio()))){
-            rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getRRMPolicyMinRatio().intValue());
+            if (!(Objects.isNull(data.getRRMPolicyMinRatio()))) {
+                rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getRRMPolicyMinRatio().intValue());
             }
 
             rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getRRMPolicyDedicatedRatio().intValue());
-//            rrmPolicyRatioModel.setResourceID("");
-//            rrmPolicyRatioModel.setSliceType("");
+            // rrmPolicyRatioModel.setResourceID("");
+            // rrmPolicyRatioModel.setSliceType("");
             ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
-            try{
-                 ObjectMapper Obj = new ObjectMapper();
-                 String message = Obj.writeValueAsString(rrmPolicyRatioModel);
-                  LOG.info("parsed message: " + message);
-		  configurationHandler.sendDatabaseUpdate(message,MessageType.HC_TO_RC_RRM_POLICY);
-            }catch(JsonProcessingException jsonProcessingException){
-                 LOG.error("Error parsing json");
+            try {
+                ObjectMapper Obj = new ObjectMapper();
+                String message = Obj.writeValueAsString(rrmPolicyRatioModel);
+                LOG.info("parsed message: " + message);
+                configurationHandler.sendDatabaseUpdate(message, MessageType.HC_TO_RC_RRM_POLICY);
+            } catch (JsonProcessingException jsonProcessingException) {
+                LOG.error("Error parsing json");
             }
         } else {
             throw new WriteFailedException.CreateFailedException(identifier, data,
@@ -99,7 +102,8 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -108,7 +112,8 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
             // Performs any logic needed for persisting such data
             LOG.info("Removing path[{}] / data [{}]", identifier, data);
             int idRRMPolicyRatioIndex = identifier.toString().indexOf("RRMPolicyRatioKey{_id=");
-            String idRRMPolicyRatioSubStr = identifier.toString().substring(idRRMPolicyRatioIndex + "RRMPolicyRatioKey{_id=".length());
+            String idRRMPolicyRatioSubStr =
+                    identifier.toString().substring(idRRMPolicyRatioIndex + "RRMPolicyRatioKey{_id=".length());
             String idRRMPolicyRatio = idRRMPolicyRatioSubStr.substring(0, idRRMPolicyRatioSubStr.indexOf("}"));
 
             RRMPolicyRatioModel rrmPolicyRatioModel = new RRMPolicyRatioModel();
@@ -117,35 +122,35 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
             List<RRMPolicyMember> rrmPolicyMemberList = new ArrayList<RRMPolicyMember>();
             List<RRMPolicyMemberList> rRMPolicyMemberDataList = data.getRRMPolicyMemberList();
             for (RRMPolicyMemberList rrmp : rRMPolicyMemberDataList) {
-                  RRMPolicyMember rrmPolicyMember = new RRMPolicyMember();
-                  String mcc = rrmp.getMcc().toString().substring(11,rrmp.getMcc().toString().length()-1);
-                  String mnc = rrmp.getMnc().toString().substring(11,rrmp.getMnc().toString().length()-1);
-                  rrmPolicyMember.setpLMNId(mcc + "-" + mnc);
-                  rrmPolicyMember.setsNSSAI(
-                  rrmp.getSNSSAI().toString().substring(14, rrmp.getSNSSAI().toString().length() - 1));
-                  rrmPolicyMemberList.add(rrmPolicyMember);
+                RRMPolicyMember rrmPolicyMember = new RRMPolicyMember();
+                String mcc = rrmp.getMcc().toString().substring(11, rrmp.getMcc().toString().length() - 1);
+                String mnc = rrmp.getMnc().toString().substring(11, rrmp.getMnc().toString().length() - 1);
+                rrmPolicyMember.setpLMNId(mcc + "-" + mnc);
+                rrmPolicyMember
+                        .setsNSSAI(rrmp.getSNSSAI().toString().substring(14, rrmp.getSNSSAI().toString().length() - 1));
+                rrmPolicyMemberList.add(rrmPolicyMember);
             }
             rrmPolicyRatioModel.setrRMPolicyMemberList(rrmPolicyMemberList);
             rrmPolicyRatioModel.setQuotaType(data.getQuotaType().toString());
-	    if(!(Objects.isNull(data.getRRMPolicyMaxRatio()))){
-            rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getRRMPolicyMaxRatio().intValue());
+            if (!(Objects.isNull(data.getRRMPolicyMaxRatio()))) {
+                rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getRRMPolicyMaxRatio().intValue());
             }
-            if(!(Objects.isNull(data.getRRMPolicyMinRatio()))){
-            rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getRRMPolicyMinRatio().intValue());
+            if (!(Objects.isNull(data.getRRMPolicyMinRatio()))) {
+                rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getRRMPolicyMinRatio().intValue());
             }
 
             rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getRRMPolicyDedicatedRatio().intValue());
-//            rrmPolicyRatioModel.setResourceID("");
-//            rrmPolicyRatioModel.setSliceType("");
+            // rrmPolicyRatioModel.setResourceID("");
+            // rrmPolicyRatioModel.setSliceType("");
             WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
             DeviceData deviceData = new DeviceData();
-            try{
-                 ObjectMapper Obj = new ObjectMapper();
-                 String message = Obj.writeValueAsString(rrmPolicyRatioModel);
-                  LOG.info("parsed message: " + message);
-                 deviceData.setMessage(message);
-            }catch(JsonProcessingException jsonProcessingException){
-                 LOG.error("Error parsing json");
+            try {
+                ObjectMapper Obj = new ObjectMapper();
+                String message = Obj.writeValueAsString(rrmPolicyRatioModel);
+                LOG.info("parsed message: " + message);
+                deviceData.setMessage(message);
+            } catch (JsonProcessingException jsonProcessingException) {
+                LOG.error("Error parsing json");
             }
             deviceData.setMessageType(MessageType.HC_TO_RC_RRM_POLICY_DEL);
             websocketClient.sendMessage(deviceData);
@@ -156,7 +161,8 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes dataOld, @Nonnull Attributes dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes dataOld,
+            @Nonnull Attributes dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify

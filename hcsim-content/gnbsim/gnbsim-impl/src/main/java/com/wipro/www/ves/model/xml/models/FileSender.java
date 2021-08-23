@@ -21,33 +21,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class FileSender {
-private String localDn;
-//private String elementType;
-public FileSender() {
+    private String localDn;
 
-}
-public FileSender(String localDn) {
-super();
-this.localDn = localDn;
-}
-@XmlAttribute
-public String getLocalDn() {
-return localDn;
-}
-public void setLocalDn(String localDn) {
-this.localDn = localDn;
-}
-/*@XmlAttribute
-public String getElementType() {
-return elementType;
-}
-public void setElementType(String elementType) {
-this.elementType = elementType;
-}*/
-@Override
-public String toString() {
-return "FileSender [localDn=" + localDn + "]";
-}
-}
+    // private String elementType;
+    public FileSender() {
 
+    }
 
+    public FileSender(String localDn) {
+        super();
+        this.localDn = localDn;
+    }
+
+    @XmlAttribute
+    public String getLocalDn() {
+        return localDn;
+    }
+
+    public void setLocalDn(String localDn) {
+        this.localDn = localDn;
+    }
+
+    /*
+     * @XmlAttribute
+     * public String getElementType() {
+     * return elementType;
+     * }
+     * public void setElementType(String elementType) {
+     * this.elementType = elementType;
+     * }
+     */
+    @Override
+    public String toString() {
+        return "FileSender [localDn=" + localDn + "]";
+    }
+}

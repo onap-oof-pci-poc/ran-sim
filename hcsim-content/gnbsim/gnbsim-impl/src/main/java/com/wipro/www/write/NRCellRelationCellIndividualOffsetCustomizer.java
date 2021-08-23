@@ -17,34 +17,42 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.WriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellrelationgroup.CellIndividualOffset;
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
 import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nrcellrelationgroup.CellIndividualOffset;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
 public class NRCellRelationCellIndividualOffsetCustomizer implements WriterCustomizer<CellIndividualOffset> {
 
     private final CrudService<CellIndividualOffset> crudService;
 
-    public  NRCellRelationCellIndividualOffsetCustomizer(@Nonnull final CrudService<CellIndividualOffset> crudService){
+    public NRCellRelationCellIndividualOffsetCustomizer(@Nonnull final CrudService<CellIndividualOffset> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<CellIndividualOffset> instanceIdentifier, @Nonnull CellIndividualOffset cellindividualoffset, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<CellIndividualOffset> instanceIdentifier,
+            @Nonnull CellIndividualOffset cellindividualoffset, @Nonnull WriteContext writeContext)
+            throws WriteFailedException {
         crudService.writeData(instanceIdentifier, cellindividualoffset);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<CellIndividualOffset> instanceIdentifier, @Nonnull CellIndividualOffset cellindividualoffset, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<CellIndividualOffset> instanceIdentifier,
+            @Nonnull CellIndividualOffset cellindividualoffset, @Nonnull WriteContext writeContext)
+            throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, cellindividualoffset);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<CellIndividualOffset> id, @Nonnull CellIndividualOffset dataBefore, @Nonnull CellIndividualOffset dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<CellIndividualOffset> id,
+            @Nonnull CellIndividualOffset dataBefore, @Nonnull CellIndividualOffset dataAfter,
+            @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 }

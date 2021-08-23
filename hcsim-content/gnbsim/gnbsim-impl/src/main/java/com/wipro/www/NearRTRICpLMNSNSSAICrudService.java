@@ -16,42 +16,41 @@
 
 package com.wipro.www;
 
-import io.fd.honeycomb.translate.read.ReadFailedException;
-import io.fd.honeycomb.translate.write.WriteFailedException;
-
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIListKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIListBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
-
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wipro.www.websocket.WebsocketClient;
+import com.wipro.www.websocket.models.ConfigPLMNInfo;
 import com.wipro.www.websocket.models.DeviceData;
 import com.wipro.www.websocket.models.MessageType;
-import com.wipro.www.websocket.models.ConfigPLMNInfo;
-import com.wipro.www.websocket.models.SNSSAI;
-//import com.wipro.www.websocket.models.ConfigData;
 import com.wipro.www.websocket.models.PLMNInfoModel;
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.wipro.www.websocket.models.SNSSAI;
 
-import javax.annotation.Nonnull;
+import io.fd.honeycomb.translate.read.ReadFailedException;
+import io.fd.honeycomb.translate.write.WriteFailedException;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIListBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIListKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class NearRTRICpLMNSNSSAICrudService implements CrudService<SNSSAIList> {
 
     private static final Logger LOG = LoggerFactory.getLogger(NearRTRICpLMNSNSSAICrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<SNSSAIList> identifier, @Nonnull SNSSAIList data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<SNSSAIList> identifier, @Nonnull SNSSAIList data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -59,7 +58,7 @@ public class NearRTRICpLMNSNSSAICrudService implements CrudService<SNSSAIList> {
 
             // Performs any logic needed for persisting such data
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
-	    ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
+            ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             int idNearRTRICIndex = identifier.toString().indexOf("_idNearRTRIC=");
             String idNearRTRICSubStr = identifier.toString().substring(idNearRTRICIndex + "_idNearRTRIC=".length());
             String idNearRTRIC = idNearRTRICSubStr.substring(0, idNearRTRICSubStr.indexOf("}"));
@@ -71,56 +70,59 @@ public class NearRTRICpLMNSNSSAICrudService implements CrudService<SNSSAIList> {
             int mncIndex = identifier.toString().indexOf("mnc=Mnc{_value=");
             String mncSubStr = identifier.toString().substring(mncIndex + "mnc=Mnc{_value=".length());
             String mnc = mncSubStr.substring(0, mncSubStr.indexOf("}"));
-            
-/*	    ConfigPLMNInfo configPLMNInfo = new ConfigPLMNInfo();
-            configPLMNInfo.setMcc(mnc);
-            configPLMNInfo.setMnc(mcc);
-            List<SNSSAI>  nSSAIList = new ArrayList<>();
-            //for(SNSSAIList sNSSAIList : data.getSNSSAIList())
-            //{
-            SNSSAI sNSSAI = new SNSSAI();
-            sNSSAI.setSNssai(data.getSNssai());
-            List<ConfigData> configDataList = new ArrayList<>();
-             for(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData configData : data.getConfigData())
-             {
-		     if(!(Objects.isNull(configData.getConfigValue()))){
-                          ConfigData info = new ConfigData(configData.getConfigParameter(),configData.getConfigValue().intValue());
-                           configDataList.add(info);
-		     }
-             }
-             sNSSAI.setConfigData(configDataList);
-             nSSAIList.add(sNSSAI);
-             configPLMNInfo.setSNSSAI(nSSAIList);
-           // }
 
-          //  ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
-	   */
+            /*
+             * ConfigPLMNInfo configPLMNInfo = new ConfigPLMNInfo();
+             * configPLMNInfo.setMcc(mnc);
+             * configPLMNInfo.setMnc(mcc);
+             * List<SNSSAI> nSSAIList = new ArrayList<>();
+             * //for(SNSSAIList sNSSAIList : data.getSNSSAIList())
+             * //{
+             * SNSSAI sNSSAI = new SNSSAI();
+             * sNSSAI.setSNssai(data.getSNssai());
+             * List<ConfigData> configDataList = new ArrayList<>();
+             * for(org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.
+             * snssaiconfig.ConfigData configData : data.getConfigData())
+             * {
+             * if(!(Objects.isNull(configData.getConfigValue()))){
+             * ConfigData info = new ConfigData(configData.getConfigParameter(),configData.getConfigValue().intValue());
+             * configDataList.add(info);
+             * }
+             * }
+             * sNSSAI.setConfigData(configDataList);
+             * nSSAIList.add(sNSSAI);
+             * configPLMNInfo.setSNSSAI(nSSAIList);
+             * // }
+             * 
+             * // ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
+             */
 
-	    PLMNInfoModel plmnInfoModel = new PLMNInfoModel();
+            PLMNInfoModel plmnInfoModel = new PLMNInfoModel();
             plmnInfoModel.setpLMNId(mcc + "-" + mnc);
             plmnInfoModel.setNearrtricid(idNearRTRIC);
             plmnInfoModel.setGnbId("");
-            List<com.wipro.www.websocket.models.ConfigData> dataList = new ArrayList<com.wipro.www.websocket.models.ConfigData>();
-                    List<ConfigData> configDataList = data.getConfigData();
-                    for (ConfigData c : configDataList) {
-                            com.wipro.www.websocket.models.ConfigData configData = new com.wipro.www.websocket.models.ConfigData();
-                            if(!(Objects.isNull(c.getConfigValue()))){
-                            configData.setConfigParameter(c.getConfigParameter());
-                            configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
-                            dataList.add(configData);
-                            }
-		    }
+            List<com.wipro.www.websocket.models.ConfigData> dataList =
+                    new ArrayList<com.wipro.www.websocket.models.ConfigData>();
+            List<ConfigData> configDataList = data.getConfigData();
+            for (ConfigData c : configDataList) {
+                com.wipro.www.websocket.models.ConfigData configData = new com.wipro.www.websocket.models.ConfigData();
+                if (!(Objects.isNull(c.getConfigValue()))) {
+                    configData.setConfigParameter(c.getConfigParameter());
+                    configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
+                    dataList.add(configData);
+                }
+            }
             plmnInfoModel.setConfigData(dataList);
-            if(!(Objects.isNull(data.getSNssai()))){
-                 plmnInfoModel.setSnssai(data.getSNssai());
-	    }
-            if(!(Objects.isNull(data.getStatus()))){
-                  plmnInfoModel.setStatus(data.getStatus());
-	    }
+            if (!(Objects.isNull(data.getSNssai()))) {
+                plmnInfoModel.setSnssai(data.getSNssai());
+            }
+            if (!(Objects.isNull(data.getStatus()))) {
+                plmnInfoModel.setStatus(data.getStatus());
+            }
 
-           if(!(identifier.toString().contains("_idNRCell")) && Objects.isNull(data.getStatus())){ 
-	    configurationHandler.sendRTRICConfig(plmnInfoModel);
-	   }
+            if (!(identifier.toString().contains("_idNRCell")) && Objects.isNull(data.getStatus())) {
+                configurationHandler.sendRTRICConfig(plmnInfoModel);
+            }
 
         } else {
             throw new WriteFailedException.CreateFailedException(identifier, data,
@@ -129,7 +131,8 @@ public class NearRTRICpLMNSNSSAICrudService implements CrudService<SNSSAIList> {
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<SNSSAIList> identifier, @Nonnull SNSSAIList data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<SNSSAIList> identifier, @Nonnull SNSSAIList data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -144,7 +147,8 @@ public class NearRTRICpLMNSNSSAICrudService implements CrudService<SNSSAIList> {
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<SNSSAIList> identifier, @Nonnull SNSSAIList dataOld, @Nonnull SNSSAIList dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<SNSSAIList> identifier, @Nonnull SNSSAIList dataOld,
+            @Nonnull SNSSAIList dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify

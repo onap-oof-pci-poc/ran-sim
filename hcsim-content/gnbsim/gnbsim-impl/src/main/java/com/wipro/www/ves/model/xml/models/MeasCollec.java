@@ -21,26 +21,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class MeasCollec {
-private String beginTime;
+    private String beginTime;
 
-public MeasCollec() {
+    public MeasCollec() {
 
-}
-public MeasCollec(String beginTime) {
-super();
-this.beginTime = beginTime;
-}
-@XmlAttribute
-public String getBeginTime() {
-return beginTime;
-}
-public void setBeginTime(String beginTime) {
-this.beginTime = beginTime;
-}
+    }
 
-@Override
-public String toString() {
-return "MeasCollec [beginTime=" + beginTime + "]";
-}
-}
+    public MeasCollec(String beginTime) {
+        super();
+        this.beginTime = beginTime;
+    }
 
+    @XmlAttribute
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    @Override
+    public String toString() {
+        return "MeasCollec [beginTime=" + beginTime + "]";
+    }
+}

@@ -17,34 +17,39 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.WriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetwork;
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
 import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetwork;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
 public class RanNetworkCustomizer implements WriterCustomizer<RanNetwork> {
 
     private final CrudService<RanNetwork> crudService;
 
-    public  RanNetworkCustomizer(@Nonnull final CrudService<RanNetwork> crudService){
+    public RanNetworkCustomizer(@Nonnull final CrudService<RanNetwork> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<RanNetwork> instanceIdentifier, @Nonnull RanNetwork rannetwork, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<RanNetwork> instanceIdentifier,
+            @Nonnull RanNetwork rannetwork, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, rannetwork);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<RanNetwork> instanceIdentifier, @Nonnull RanNetwork rannetwork, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<RanNetwork> instanceIdentifier,
+            @Nonnull RanNetwork rannetwork, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, rannetwork);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<RanNetwork> id, @Nonnull RanNetwork dataBefore, @Nonnull RanNetwork dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<RanNetwork> id, @Nonnull RanNetwork dataBefore,
+            @Nonnull RanNetwork dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 }

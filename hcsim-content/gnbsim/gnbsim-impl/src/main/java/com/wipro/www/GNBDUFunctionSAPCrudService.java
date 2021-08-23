@@ -18,19 +18,20 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAP;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAPKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAPBuilder;
 
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAP;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAPBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAPKey;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GNBDUFunctionSAPCrudService implements CrudService<SAP> {
 
@@ -67,7 +68,8 @@ public class GNBDUFunctionSAPCrudService implements CrudService<SAP> {
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<SAP> identifier, @Nonnull SAP dataOld, @Nonnull SAP dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<SAP> identifier, @Nonnull SAP dataOld, @Nonnull SAP dataNew)
+            throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify

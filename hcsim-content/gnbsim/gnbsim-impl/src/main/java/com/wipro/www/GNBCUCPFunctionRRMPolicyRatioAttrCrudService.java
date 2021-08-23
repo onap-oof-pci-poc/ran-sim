@@ -18,27 +18,30 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.gnbcucpfunctiongroup.rrmpolicyratio.Attributes;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public class GNBCUCPFunctionRRMPolicyRatioAttrCrudService implements CrudService<Attributes> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GNBCUCPFunctionRRMPolicyRatioAttrCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
             // relationships such as to which parent these data are related to
 
             // Performs any logic needed for persisting such data
-            //InMemoryDataTree.getInstance().setRanNetwork(data);
+            // InMemoryDataTree.getInstance().setRanNetwork(data);
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
         } else {
             throw new WriteFailedException.CreateFailedException(identifier, data,
@@ -47,7 +50,8 @@ public class GNBCUCPFunctionRRMPolicyRatioAttrCrudService implements CrudService
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -62,7 +66,8 @@ public class GNBCUCPFunctionRRMPolicyRatioAttrCrudService implements CrudService
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes dataOld, @Nonnull Attributes dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes dataOld,
+            @Nonnull Attributes dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify

@@ -16,9 +16,6 @@
 
 package com.wipro.www.ves.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,21 +23,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "version",
-    "vesEventListenerVersion",
-    "domain",
-    "eventName",
-    "eventId",
-    "lastEpochMicrosec",
-    "priority",
-    "reportingEntityName",
-    "sequence",
-    "sourceName",
-    "startEpochMicrosec",
-    "timeZoneOffset"
-})
+@JsonPropertyOrder({"version", "vesEventListenerVersion", "domain", "eventName", "eventId", "lastEpochMicrosec",
+        "priority", "reportingEntityName", "sequence", "sourceName", "startEpochMicrosec", "timeZoneOffset"})
 public class CommonEventHeader {
 
     @JsonProperty("version")
@@ -109,7 +97,6 @@ public class CommonEventHeader {
     public void setLastEpochMicrosec(Double lastEpochMicrosec) {
         this.lastEpochMicrosec = lastEpochMicrosec;
     }
-
 
     @JsonProperty("priority")
     public String getPriority() {
@@ -180,7 +167,7 @@ public class CommonEventHeader {
     public void setVesEventListenerVersion(String vesEventListenerVersion) {
         this.vesEventListenerVersion = vesEventListenerVersion;
     }
-   
+
     @JsonProperty("timeZoneOffset")
     public String getTimeZoneOffset() {
         return timeZoneOffset;

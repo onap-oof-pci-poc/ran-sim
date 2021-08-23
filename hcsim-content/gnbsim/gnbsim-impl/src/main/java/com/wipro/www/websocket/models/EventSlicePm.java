@@ -18,7 +18,6 @@ package com.wipro.www.websocket.models;
 
 public class EventSlicePm {
 
-
     private CommonEventHeaderPm commonEventHeader;
     private Measurement measurement;
 

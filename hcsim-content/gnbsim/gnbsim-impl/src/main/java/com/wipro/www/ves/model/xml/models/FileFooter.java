@@ -20,23 +20,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class FileFooter {
-private MeasCollecEnd measCollec;
-public FileFooter() {
+    private MeasCollecEnd measCollec;
 
-}
-public FileFooter(MeasCollecEnd measCollec) {
-super();
-this.measCollec = measCollec;
-}
-public MeasCollecEnd getMeasCollec() {
-return measCollec;
-}
-public void setMeasCollec(MeasCollecEnd measCollec) {
-this.measCollec = measCollec;
-}
-@Override
-public String toString() {
-return "FileFooter [measCollec=" + measCollec + "]";
-}
-}
+    public FileFooter() {
 
+    }
+
+    public FileFooter(MeasCollecEnd measCollec) {
+        super();
+        this.measCollec = measCollec;
+    }
+
+    public MeasCollecEnd getMeasCollec() {
+        return measCollec;
+    }
+
+    public void setMeasCollec(MeasCollecEnd measCollec) {
+        this.measCollec = measCollec;
+    }
+
+    @Override
+    public String toString() {
+        return "FileFooter [measCollec=" + measCollec + "]";
+    }
+}

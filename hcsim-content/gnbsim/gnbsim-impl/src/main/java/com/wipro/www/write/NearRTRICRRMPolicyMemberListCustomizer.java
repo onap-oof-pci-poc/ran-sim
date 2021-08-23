@@ -17,35 +17,44 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberList;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberListKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
-import javax.annotation.Nonnull;
-
-public class NearRTRICRRMPolicyMemberListCustomizer implements ListWriterCustomizer<RRMPolicyMemberList, RRMPolicyMemberListKey> {
+public class NearRTRICRRMPolicyMemberListCustomizer
+        implements ListWriterCustomizer<RRMPolicyMemberList, RRMPolicyMemberListKey> {
 
     private final CrudService<RRMPolicyMemberList> crudService;
 
-    public NearRTRICRRMPolicyMemberListCustomizer(@Nonnull final CrudService<RRMPolicyMemberList> crudService){
+    public NearRTRICRRMPolicyMemberListCustomizer(@Nonnull final CrudService<RRMPolicyMemberList> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyMemberList> instanceIdentifier, @Nonnull RRMPolicyMemberList rrmPolicyMemberList, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyMemberList> instanceIdentifier,
+            @Nonnull RRMPolicyMemberList rrmPolicyMemberList, @Nonnull WriteContext writeContext)
+            throws WriteFailedException {
         crudService.writeData(instanceIdentifier, rrmPolicyMemberList);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyMemberList> id, @Nonnull RRMPolicyMemberList dataBefore, @Nonnull RRMPolicyMemberList dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyMemberList> id,
+            @Nonnull RRMPolicyMemberList dataBefore, @Nonnull RRMPolicyMemberList dataAfter,
+            @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyMemberList> instanceIdentifier, @Nonnull RRMPolicyMemberList RRMPolicyMemberList, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<RRMPolicyMemberList> instanceIdentifier,
+            @Nonnull RRMPolicyMemberList RRMPolicyMemberList, @Nonnull WriteContext writeContext)
+            throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, RRMPolicyMemberList);
     }
 }

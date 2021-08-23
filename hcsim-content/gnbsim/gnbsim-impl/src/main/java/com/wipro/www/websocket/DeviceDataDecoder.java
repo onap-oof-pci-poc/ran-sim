@@ -28,17 +28,15 @@ public class DeviceDataDecoder implements Decoder.Text<DeviceData> {
     @Override
     public DeviceData decode(String s) throws DecodeException {
         DeviceData deviceData = new DeviceData();
-        String[] msg = s.split(":",2);
-        if (msg.length < 2){
+        String[] msg = s.split(":", 2);
+        if (msg.length < 2) {
             deviceData.setMessage("");
-        }
-        else{
+        } else {
             deviceData.setMessage(msg[1]);
         }
         deviceData.setMessageType(MessageType.valueOf(msg[0]));
         return deviceData;
     }
-
 
     @Override
     public boolean willDecode(String s) {

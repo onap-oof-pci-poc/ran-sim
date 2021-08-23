@@ -17,25 +17,29 @@
 package com.wipro.www.read;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.read.ReadContext;
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.spi.read.Initialized;
 import io.fd.honeycomb.translate.spi.read.InitializingListReaderCustomizer;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetworkBuilder;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRIC;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICKey;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICKey;
 import org.opendaylight.yangtools.concepts.Builder;
 import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NearRTRICCustomizer implements InitializingListReaderCustomizer<NearRTRIC, NearRTRICKey, NearRTRICBuilder> {
+public class NearRTRICCustomizer
+        implements InitializingListReaderCustomizer<NearRTRIC, NearRTRICKey, NearRTRICBuilder> {
 
     private final CrudService<NearRTRIC> crudService;
 
@@ -45,17 +49,15 @@ public class NearRTRICCustomizer implements InitializingListReaderCustomizer<Nea
 
     @Nonnull
     @Override
-    public List<NearRTRICKey> getAllIds(@Nonnull final InstanceIdentifier<NearRTRIC> id, @Nonnull final ReadContext context)
-            throws ReadFailedException {
+    public List<NearRTRICKey> getAllIds(@Nonnull final InstanceIdentifier<NearRTRIC> id,
+            @Nonnull final ReadContext context) throws ReadFailedException {
         // perform read operation and extract keys from data
         try {
-        return crudService.readAll()
-                .stream()
-                .map(a -> new NearRTRICKey(a.getIdNearRTRIC()))
-                .collect(Collectors.toList());
-	} catch (Exception E) {
-                return null;
-	}
+            return crudService.readAll().stream().map(a -> new NearRTRICKey(a.getIdNearRTRIC()))
+                    .collect(Collectors.toList());
+        } catch (Exception E) {
+            return null;
+        }
     }
 
     @Override
@@ -65,7 +67,6 @@ public class NearRTRICCustomizer implements InitializingListReaderCustomizer<Nea
         ((RanNetworkBuilder) builder).setNearRTRIC(readData);
     }
 
-    
     @Nonnull
     @Override
     public NearRTRICBuilder getBuilder(@Nonnull final InstanceIdentifier<NearRTRIC> id) {
@@ -75,8 +76,7 @@ public class NearRTRICCustomizer implements InitializingListReaderCustomizer<Nea
 
     @Override
     public void readCurrentAttributes(@Nonnull final InstanceIdentifier<NearRTRIC> id,
-                                      @Nonnull final NearRTRICBuilder builder,
-                                      @Nonnull final ReadContext ctx) throws ReadFailedException {
+            @Nonnull final NearRTRICBuilder builder, @Nonnull final ReadContext ctx) throws ReadFailedException {
         // this stage is used after reading all ids by getAllIds,to read specific details about data
 
         // perform read of details of data specified by key of Element in id
@@ -84,9 +84,10 @@ public class NearRTRICCustomizer implements InitializingListReaderCustomizer<Nea
 
         // and sets it to builder
         builder.setIdNearRTRIC(data.getIdNearRTRIC());
-        //builder.setKey("RTRIC2");
+        // builder.setKey("RTRIC2");
         builder.setAttributes(data.getAttributes());
     }
+
     /**
      *
      * Initialize configuration data based on operational data.
@@ -98,8 +99,7 @@ public class NearRTRICCustomizer implements InitializingListReaderCustomizer<Nea
     @Nonnull
     @Override
     public Initialized<? extends DataObject> init(@Nonnull final InstanceIdentifier<NearRTRIC> id,
-                                                  @Nonnull final NearRTRIC readValue,
-                                                  @Nonnull final ReadContext ctx) {
+            @Nonnull final NearRTRIC readValue, @Nonnull final ReadContext ctx) {
         return Initialized.create(id, readValue);
     }
 }

@@ -24,13 +24,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpRequester {
 
@@ -41,14 +40,12 @@ public class HttpRequester {
     private static final String FAILMSG = "Post failed";
     private static final String AUTH = "Authorization";
 
-    private static final Logger LOG = LoggerFactory
-            .getLogger(HttpRequester.class);
-
+    private static final Logger LOG = LoggerFactory.getLogger(HttpRequester.class);
 
     private static class NullHostnameVerifier implements HostnameVerifier {
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
     }
 
     /**
@@ -60,23 +57,20 @@ public class HttpRequester {
         BufferedReader br = null;
         try {
             URL url = new URL(requestUrl);
-            connection = (HttpsURLConnection) url
-                    .openConnection();
+            connection = (HttpsURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty(ACCEPT, JSON);
             connection.setRequestProperty(CONTENT, JSON);
-       	    connection.setHostnameVerifier(new NullHostnameVerifier());
-	    String userCredentials = "sample1:sample1";
+            connection.setHostnameVerifier(new NullHostnameVerifier());
+            String userCredentials = "sample1:sample1";
             String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-            connection.setRequestProperty ("Authorization", basicAuth);
-            OutputStreamWriter writer = new OutputStreamWriter(
-                    connection.getOutputStream(), UTF);
+            connection.setRequestProperty("Authorization", basicAuth);
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), UTF);
             writer.write(requestBody);
             writer.close();
-            br = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
+            br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String temp;
             int responseCode = connection.getResponseCode();
             LOG.info("response code: {}", responseCode);
@@ -93,12 +87,12 @@ public class HttpRequester {
             LOG.error("Exc in post {}", e.toString());
             response = FAILMSG;
         } finally {
-            try{
-                if(br != null)
+            try {
+                if (br != null)
                     br.close();
-                if(connection != null)
+                if (connection != null)
                     connection.disconnect();
-            }catch(Exception exToIgnore) {
+            } catch (Exception exToIgnore) {
                 LOG.debug("Exc in finally block {}", exToIgnore.toString());
             }
         }
@@ -127,8 +121,7 @@ public class HttpRequester {
             InputStream connectionIn = null;
             if (returnCode == 200) {
                 connectionIn = connection.getInputStream();
-                br = new BufferedReader(
-                        new InputStreamReader(connectionIn));
+                br = new BufferedReader(new InputStreamReader(connectionIn));
                 String inputLine;
                 while ((inputLine = br.readLine()) != null) {
                     response = response.concat(inputLine);
@@ -145,12 +138,12 @@ public class HttpRequester {
             LOG.error("Get failed,Exception : {}", e.toString());
             response = "";
         } finally {
-            try{
-                if(br != null)
+            try {
+                if (br != null)
                     br.close();
-                if(connection != null)
+                if (connection != null)
                     connection.disconnect();
-            }catch(Exception exToIgnore) {
+            } catch (Exception exToIgnore) {
                 LOG.debug("Exc in finally block {}", exToIgnore.toString());
             }
         }

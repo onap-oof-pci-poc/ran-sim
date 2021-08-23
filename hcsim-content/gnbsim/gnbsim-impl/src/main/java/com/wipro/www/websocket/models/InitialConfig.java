@@ -37,4 +37,3 @@ public class InitialConfig {
         this.uuid = uuid;
     }
 }
-

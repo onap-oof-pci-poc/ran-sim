@@ -24,45 +24,48 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class MeasCollecFile {
-@XmlAttribute 
-private String xmlns;
- @XmlElement
-private FileHeader fileHeader;
- @XmlElement
-private List<MeasData> measData;
- @XmlElement
-private FileFooter fileFooter;
-public MeasCollecFile() {
+    @XmlAttribute
+    private String xmlns;
+    @XmlElement
+    private FileHeader fileHeader;
+    @XmlElement
+    private List<MeasData> measData;
+    @XmlElement
+    private FileFooter fileFooter;
 
-}
-public MeasCollecFile(FileHeader fileHeader, List<MeasData> measData, FileFooter fileFooter,String xmlns) {
-super();
-this.fileHeader = fileHeader;
-this.measData = measData;
-this.fileFooter = fileFooter;
-this.xmlns = xmlns;
-}
-// public FileHeader getFileHeader() {
-// return fileHeader;
-// }
-// public void setFileHeader(FileHeader fileHeader) {
-// this.fileHeader = fileHeader;
-// }
-// public List<MeasData> getMeasData() {
-// return measData;
-// }
-// public void setMeasData(List<MeasData> measData) {
-// this.measData = measData;
-// }
-// public FileFooter getFileFooter() {
-// return fileFooter;
-// }
-// public void setFileFooter(FileFooter fileFooter) {
-// this.fileFooter = fileFooter;
-// }
-@Override
-public String toString() {
-return "MeasCollecFile [fileHeader=" + fileHeader + ", measData=" + measData + ", fileFooter=" + fileFooter
-+ "]";
-}
+    public MeasCollecFile() {
+
+    }
+
+    public MeasCollecFile(FileHeader fileHeader, List<MeasData> measData, FileFooter fileFooter, String xmlns) {
+        super();
+        this.fileHeader = fileHeader;
+        this.measData = measData;
+        this.fileFooter = fileFooter;
+        this.xmlns = xmlns;
+    }
+
+    // public FileHeader getFileHeader() {
+    // return fileHeader;
+    // }
+    // public void setFileHeader(FileHeader fileHeader) {
+    // this.fileHeader = fileHeader;
+    // }
+    // public List<MeasData> getMeasData() {
+    // return measData;
+    // }
+    // public void setMeasData(List<MeasData> measData) {
+    // this.measData = measData;
+    // }
+    // public FileFooter getFileFooter() {
+    // return fileFooter;
+    // }
+    // public void setFileFooter(FileFooter fileFooter) {
+    // this.fileFooter = fileFooter;
+    // }
+    @Override
+    public String toString() {
+        return "MeasCollecFile [fileHeader=" + fileHeader + ", measData=" + measData + ", fileFooter=" + fileFooter
+                + "]";
+    }
 }

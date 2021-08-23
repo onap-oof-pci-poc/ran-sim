@@ -17,26 +17,28 @@
 package com.wipro.www.read;
 
 import static com.wipro.www.ModuleConfiguration.NEARRTRIC_SERVICE_NAME;
-import static com.wipro.www.ModuleConfiguration.RANNETWORK_NRTRIC_GNBDUFUNCTION_SERVICE_NAME;
-import static com.wipro.www.ModuleConfiguration.RANNETWORK_NRTRIC_GNBDUFUNCTION_NRCELLDU_SERVICE_NAME;
 import static com.wipro.www.ModuleConfiguration.RANNETWORK_NRTRIC_GNBCUUPFUNCTION_SERVICE_NAME;
+import static com.wipro.www.ModuleConfiguration.RANNETWORK_NRTRIC_GNBDUFUNCTION_NRCELLDU_SERVICE_NAME;
+import static com.wipro.www.ModuleConfiguration.RANNETWORK_NRTRIC_GNBDUFUNCTION_SERVICE_NAME;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.impl.read.GenericListReader;
 import io.fd.honeycomb.translate.read.ReaderFactory;
 import io.fd.honeycomb.translate.read.registry.ModifiableReaderRegistryBuilder;
+
 import javax.annotation.Nonnull;
 
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetwork;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetworkBuilder;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRIC;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUUPFunction;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUUPFunctionKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionKey;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDU;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
@@ -45,9 +47,11 @@ import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
  */
 public final class ModuleStateReaderFactory implements ReaderFactory {
 
-    private static final InstanceIdentifier<RanNetwork> ROOT_STATE_CONTAINER_ID = InstanceIdentifier.create(RanNetwork.class);
+    private static final InstanceIdentifier<RanNetwork> ROOT_STATE_CONTAINER_ID =
+            InstanceIdentifier.create(RanNetwork.class);
 
-    private static final InstanceIdentifier<NearRTRIC> ROOT_NEARRTRIC_CONTAINER_ID = InstanceIdentifier.create(NearRTRIC.class);
+    private static final InstanceIdentifier<NearRTRIC> ROOT_NEARRTRIC_CONTAINER_ID =
+            InstanceIdentifier.create(NearRTRIC.class);
 
     /**
      * Injected crud service to be passed to customizers instantiated in this factory.
@@ -60,7 +64,7 @@ public final class ModuleStateReaderFactory implements ReaderFactory {
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBDUFUNCTION_SERVICE_NAME)
     private CrudService<GNBDUFunction> nearRtRicGNBDUFunctionCrudService;
-  
+
     @Inject
     @Named(RANNETWORK_NRTRIC_GNBDUFUNCTION_NRCELLDU_SERVICE_NAME)
     private CrudService<NRCellDU> gNBDUFunctionNRCellDUCrudService;
@@ -77,13 +81,22 @@ public final class ModuleStateReaderFactory implements ReaderFactory {
 
         // just adds reader to the structure
         // use addAfter/addBefore if you want to add specific order to readers on the same level of tree
-        // use subtreeAdd if you want to handle multiple nodes in single customizer/subtreeAddAfter/subtreeAddBefore if you also want to add order
-        // be aware that instance identifier passes to subtreeAdd/subtreeAddAfter/subtreeAddBefore should define subtree,
-        // therefore it should be relative from handled node down - InstanceIdentifier.create(HandledNode), not parent.child(HandledNode.class)
+        // use subtreeAdd if you want to handle multiple nodes in single customizer/subtreeAddAfter/subtreeAddBefore if
+        // you also want to add order
+        // be aware that instance identifier passes to subtreeAdd/subtreeAddAfter/subtreeAddBefore should define
+        // subtree,
+        // therefore it should be relative from handled node down - InstanceIdentifier.create(HandledNode), not
+        // parent.child(HandledNode.class)
 
-        registry.add(new GenericListReader<>(ROOT_STATE_CONTAINER_ID.child(NearRTRIC.class), new NearRTRICCustomizer(nearrtricCrudService)));
-	registry.add(new GenericListReader<>(ROOT_STATE_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class), new NearRTRICGNBDUFunctionCustomizer(nearRtRicGNBDUFunctionCrudService)));
-        registry.add(new GenericListReader<>(ROOT_STATE_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class), new GNBDUFunctionNRCellDUCustomizer(gNBDUFunctionNRCellDUCrudService)));
-        registry.add(new GenericListReader<>(ROOT_STATE_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class), new NearRTRICGNBCUUPFunctionCustomizer(nearRTRICGNBCUUPFunctionCrudService)));
-   }
+        registry.add(new GenericListReader<>(ROOT_STATE_CONTAINER_ID.child(NearRTRIC.class),
+                new NearRTRICCustomizer(nearrtricCrudService)));
+        registry.add(new GenericListReader<>(ROOT_STATE_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class),
+                new NearRTRICGNBDUFunctionCustomizer(nearRtRicGNBDUFunctionCrudService)));
+        registry.add(new GenericListReader<>(
+                ROOT_STATE_CONTAINER_ID.child(NearRTRIC.class).child(GNBDUFunction.class).child(NRCellDU.class),
+                new GNBDUFunctionNRCellDUCustomizer(gNBDUFunctionNRCellDUCrudService)));
+        registry.add(
+                new GenericListReader<>(ROOT_STATE_CONTAINER_ID.child(NearRTRIC.class).child(GNBCUUPFunction.class),
+                        new NearRTRICGNBCUUPFunctionCustomizer(nearRTRICGNBCUUPFunctionCrudService)));
+    }
 }

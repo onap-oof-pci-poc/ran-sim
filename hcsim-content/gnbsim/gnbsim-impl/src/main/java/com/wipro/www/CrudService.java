@@ -18,8 +18,11 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
 import java.util.List;
+
 import javax.annotation.Nonnull;
+
 import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
@@ -35,21 +38,17 @@ public interface CrudService<T extends DataObject> {
     /**
      * Perform write of provided data.
      */
-    void writeData(@Nonnull final InstanceIdentifier<T> identifier, @Nonnull final T data)
-            throws WriteFailedException;
-
+    void writeData(@Nonnull final InstanceIdentifier<T> identifier, @Nonnull final T data) throws WriteFailedException;
 
     /**
      * Perform delete of existing data.
      */
-    void deleteData(@Nonnull final InstanceIdentifier<T> identifier, @Nonnull final T data)
-            throws WriteFailedException;
+    void deleteData(@Nonnull final InstanceIdentifier<T> identifier, @Nonnull final T data) throws WriteFailedException;
 
     /**
      * Perform update of existing data.
      */
-    void updateData(@Nonnull final InstanceIdentifier<T> identifier, @Nonnull final T dataOld,
-                           @Nonnull final T dataNew)
+    void updateData(@Nonnull final InstanceIdentifier<T> identifier, @Nonnull final T dataOld, @Nonnull final T dataNew)
             throws WriteFailedException;
 
     /**

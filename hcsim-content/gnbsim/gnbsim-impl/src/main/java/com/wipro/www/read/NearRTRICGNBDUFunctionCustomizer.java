@@ -17,26 +17,30 @@
 package com.wipro.www.read;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.read.ReadContext;
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.spi.read.Initialized;
 import io.fd.honeycomb.translate.spi.read.InitializingListReaderCustomizer;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetworkBuilder;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICBuilder;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionKey;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionKey;
 import org.opendaylight.yangtools.concepts.Builder;
 import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NearRTRICGNBDUFunctionCustomizer implements InitializingListReaderCustomizer<GNBDUFunction, GNBDUFunctionKey, GNBDUFunctionBuilder> {
+public class NearRTRICGNBDUFunctionCustomizer
+        implements InitializingListReaderCustomizer<GNBDUFunction, GNBDUFunctionKey, GNBDUFunctionBuilder> {
 
     private final CrudService<GNBDUFunction> crudService;
 
@@ -48,28 +52,26 @@ public class NearRTRICGNBDUFunctionCustomizer implements InitializingListReaderC
 
     @Nonnull
     @Override
-    public List<GNBDUFunctionKey> getAllIds(@Nonnull final InstanceIdentifier<GNBDUFunction> id, @Nonnull final ReadContext context)
-            throws ReadFailedException {
+    public List<GNBDUFunctionKey> getAllIds(@Nonnull final InstanceIdentifier<GNBDUFunction> id,
+            @Nonnull final ReadContext context) throws ReadFailedException {
         // perform read operation and extract keys from data
         try {
-        return crudService.readAll()
-                .stream()
-                .map(a -> new GNBDUFunctionKey(a.getIdGNBDUFunction()))
-                .collect(Collectors.toList());
-	} catch (Exception E) {
-		LOG.info("Exception in getAllIds:[{}]", E);
-                return null;
-	}
+            return crudService.readAll().stream().map(a -> new GNBDUFunctionKey(a.getIdGNBDUFunction()))
+                    .collect(Collectors.toList());
+        } catch (Exception E) {
+            LOG.info("Exception in getAllIds:[{}]", E);
+            return null;
+        }
     }
 
     @Override
-    public void merge(@Nonnull final Builder<? extends DataObject> builder, @Nonnull final List<GNBDUFunction> readData) {
+    public void merge(@Nonnull final Builder<? extends DataObject> builder,
+            @Nonnull final List<GNBDUFunction> readData) {
         // merge children data to parent builder
         // used by infrastructure to merge data loaded in separated customizers
         ((NearRTRICBuilder) builder).setGNBDUFunction(readData);
     }
 
-    
     @Nonnull
     @Override
     public GNBDUFunctionBuilder getBuilder(@Nonnull final InstanceIdentifier<GNBDUFunction> id) {
@@ -79,8 +81,7 @@ public class NearRTRICGNBDUFunctionCustomizer implements InitializingListReaderC
 
     @Override
     public void readCurrentAttributes(@Nonnull final InstanceIdentifier<GNBDUFunction> id,
-                                      @Nonnull final GNBDUFunctionBuilder builder,
-                                      @Nonnull final ReadContext ctx) throws ReadFailedException {
+            @Nonnull final GNBDUFunctionBuilder builder, @Nonnull final ReadContext ctx) throws ReadFailedException {
         // this stage is used after reading all ids by getAllIds,to read specific details about data
 
         // perform read of details of data specified by key of Element in id
@@ -88,9 +89,10 @@ public class NearRTRICGNBDUFunctionCustomizer implements InitializingListReaderC
 
         // and sets it to builder
         builder.setIdGNBDUFunction(data.getIdGNBDUFunction());
-        //builder.setKey(data.getKey());
+        // builder.setKey(data.getKey());
         builder.setAttributes(data.getAttributes());
     }
+
     /**
      *
      * Initialize configuration data based on operational data.
@@ -102,8 +104,7 @@ public class NearRTRICGNBDUFunctionCustomizer implements InitializingListReaderC
     @Nonnull
     @Override
     public Initialized<? extends DataObject> init(@Nonnull final InstanceIdentifier<GNBDUFunction> id,
-                                                  @Nonnull final GNBDUFunction readValue,
-                                                  @Nonnull final ReadContext ctx) {
+            @Nonnull final GNBDUFunction readValue, @Nonnull final ReadContext ctx) {
         return Initialized.create(id, readValue);
     }
 }

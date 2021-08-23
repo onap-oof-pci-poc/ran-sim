@@ -15,40 +15,47 @@
  */
 
 package com.wipro.www.ves.model.xml.models;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
+
 @XmlRootElement
 public class MeasType {
 
-private String measType;
-private int p;
-public MeasType(String measType, int p) {
-super();
-this.measType = measType;
-this.p = p;
-}
-public MeasType() {
-}
+    private String measType;
+    private int p;
 
-@XmlValue
-public String getMeasType() {
-return measType;
-}
-public void setMeasType(String measType) {
-this.measType = measType;
-}
-@XmlAttribute
-public int getP() {
-return p;
-}
-public void setP(int p) {
-this.p = p;
-}
-@Override
-public String toString() {
-return "MeasType [measType=" + measType + ", p=" + p + "]";
-}
+    public MeasType(String measType, int p) {
+        super();
+        this.measType = measType;
+        this.p = p;
+    }
+
+    public MeasType() {
+    }
+
+    @XmlValue
+    public String getMeasType() {
+        return measType;
+    }
+
+    public void setMeasType(String measType) {
+        this.measType = measType;
+    }
+
+    @XmlAttribute
+    public int getP() {
+        return p;
+    }
+
+    public void setP(int p) {
+        this.p = p;
+    }
+
+    @Override
+    public String toString() {
+        return "MeasType [measType=" + measType + ", p=" + p + "]";
+    }
 
 }
-

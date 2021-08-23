@@ -19,26 +19,27 @@ package com.wipro.www;
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
 
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberList;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberListKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberListBuilder;
-
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberListBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.rrmpolicy_group.RRMPolicyMemberListKey;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NearRTRICRRMPolicyMemberListCrudService implements CrudService<RRMPolicyMemberList> {
 
     private static final Logger LOG = LoggerFactory.getLogger(NearRTRICRRMPolicyMemberListCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<RRMPolicyMemberList> identifier, @Nonnull RRMPolicyMemberList data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<RRMPolicyMemberList> identifier,
+            @Nonnull RRMPolicyMemberList data) throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -53,7 +54,8 @@ public class NearRTRICRRMPolicyMemberListCrudService implements CrudService<RRMP
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<RRMPolicyMemberList> identifier, @Nonnull RRMPolicyMemberList data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<RRMPolicyMemberList> identifier,
+            @Nonnull RRMPolicyMemberList data) throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -68,7 +70,8 @@ public class NearRTRICRRMPolicyMemberListCrudService implements CrudService<RRMP
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<RRMPolicyMemberList> identifier, @Nonnull RRMPolicyMemberList dataOld, @Nonnull RRMPolicyMemberList dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<RRMPolicyMemberList> identifier,
+            @Nonnull RRMPolicyMemberList dataOld, @Nonnull RRMPolicyMemberList dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -83,7 +86,8 @@ public class NearRTRICRRMPolicyMemberListCrudService implements CrudService<RRMP
     }
 
     @Override
-    public RRMPolicyMemberList readSpecific(@Nonnull InstanceIdentifier<RRMPolicyMemberList> identifier) throws ReadFailedException {
+    public RRMPolicyMemberList readSpecific(@Nonnull InstanceIdentifier<RRMPolicyMemberList> identifier)
+            throws ReadFailedException {
 
         LOG.info("Read path[{}] ", identifier);
         return null;

@@ -16,14 +16,6 @@
 
 package com.wipro.www;
 
-import io.fd.honeycomb.translate.read.ReadFailedException;
-import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoList;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoListKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoListBuilder;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wipro.www.websocket.WebsocketClient;
@@ -31,24 +23,33 @@ import com.wipro.www.websocket.models.DeviceData;
 import com.wipro.www.websocket.models.MessageType;
 import com.wipro.www.websocket.models.PLMNInfoModel;
 
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.fd.honeycomb.translate.read.ReadFailedException;
+import io.fd.honeycomb.translate.write.WriteFailedException;
 
-import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoListBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.nearrtricgroup.PLMNInfoListKey;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.plmninfo.SNSSAIList;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NearRTRICpLMNInfoListCrudService implements CrudService<PLMNInfoList> {
 
     private static final Logger LOG = LoggerFactory.getLogger(NearRTRICpLMNInfoListCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -56,7 +57,7 @@ public class NearRTRICpLMNInfoListCrudService implements CrudService<PLMNInfoLis
 
             // Performs any logic needed for persisting such data
             LOG.info("Writing path[{}] / data [{}]", identifier, data);
-	    ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
+            ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             int idNearRTRICIndex = identifier.toString().indexOf("_idNearRTRIC=");
             String idNearRTRICSubStr = identifier.toString().substring(idNearRTRICIndex + "_idNearRTRIC=".length());
             String idNearRTRIC = idNearRTRICSubStr.substring(0, idNearRTRICSubStr.indexOf("}"));
@@ -76,33 +77,35 @@ public class NearRTRICpLMNInfoListCrudService implements CrudService<PLMNInfoLis
             plmnInfoModel.setGnbId("");
             List<SNSSAIList> snssaiList = data.getSNSSAIList();
             for (SNSSAIList s : snssaiList) {
-		    List<com.wipro.www.websocket.models.ConfigData> dataList = new ArrayList<com.wipro.www.websocket.models.ConfigData>();
-                    List<ConfigData> configDataList = s.getConfigData();
-                    for (ConfigData c : configDataList) {
-			    com.wipro.www.websocket.models.ConfigData configData = new com.wipro.www.websocket.models.ConfigData();
-			    if(!(Objects.isNull(c.getConfigValue()))){
-			    configData.setConfigParameter(c.getConfigParameter());
-			    configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
-			    dataList.add(configData);
-			    }
-	            
-		    plmnInfoModel.setConfigData(dataList);
+                List<com.wipro.www.websocket.models.ConfigData> dataList =
+                        new ArrayList<com.wipro.www.websocket.models.ConfigData>();
+                List<ConfigData> configDataList = s.getConfigData();
+                for (ConfigData c : configDataList) {
+                    com.wipro.www.websocket.models.ConfigData configData =
+                            new com.wipro.www.websocket.models.ConfigData();
+                    if (!(Objects.isNull(c.getConfigValue()))) {
+                        configData.setConfigParameter(c.getConfigParameter());
+                        configData.setConfigValue(Integer.valueOf(c.getConfigValue().intValue()));
+                        dataList.add(configData);
+                    }
+
+                    plmnInfoModel.setConfigData(dataList);
                     plmnInfoModel.setSnssai(s.getSNssai());
                     plmnInfoModel.setStatus(s.getStatus());
                     try {
-			    if(!(c.getConfigParameter().equalsIgnoreCase("maxNumberOfConns"))
-					    && !(c.getConfigParameter().equalsIgnoreCase("dLThptPerSlice"))
-					    && !(c.getConfigParameter().equalsIgnoreCase("uLThptPerSlice"))){
-                               plmnInfoModel.setNrCellId(Integer.parseInt(c.getConfigParameter()));
-			       ObjectMapper obj = new ObjectMapper();
-                               String message = obj.writeValueAsString(plmnInfoModel);
-                               LOG.info("parsed message: " + message);
-                               configurationHandler.sendDatabaseUpdate(message,MessageType.HC_TO_RC_PLMN);
-			    }
+                        if (!(c.getConfigParameter().equalsIgnoreCase("maxNumberOfConns"))
+                                && !(c.getConfigParameter().equalsIgnoreCase("dLThptPerSlice"))
+                                && !(c.getConfigParameter().equalsIgnoreCase("uLThptPerSlice"))) {
+                            plmnInfoModel.setNrCellId(Integer.parseInt(c.getConfigParameter()));
+                            ObjectMapper obj = new ObjectMapper();
+                            String message = obj.writeValueAsString(plmnInfoModel);
+                            LOG.info("parsed message: " + message);
+                            configurationHandler.sendDatabaseUpdate(message, MessageType.HC_TO_RC_PLMN);
+                        }
                     } catch (JsonProcessingException jsonProcessingException) {
-                            LOG.error("Error parsing json");
+                        LOG.error("Error parsing json");
                     }
-		    }
+                }
 
             }
 
@@ -113,7 +116,8 @@ public class NearRTRICpLMNInfoListCrudService implements CrudService<PLMNInfoLis
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -128,7 +132,8 @@ public class NearRTRICpLMNInfoListCrudService implements CrudService<PLMNInfoLis
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList dataOld, @Nonnull PLMNInfoList dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<PLMNInfoList> identifier, @Nonnull PLMNInfoList dataOld,
+            @Nonnull PLMNInfoList dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify

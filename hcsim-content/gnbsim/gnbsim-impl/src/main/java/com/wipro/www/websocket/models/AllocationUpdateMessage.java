@@ -25,7 +25,6 @@ public class AllocationUpdateMessage {
     private String slice;
     private String timeInterval;
     private BigDecimal bwAllocation;
-    
 
     public String getCell() {
         return cell;

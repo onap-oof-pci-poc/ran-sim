@@ -18,26 +18,28 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUCPFunction;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUCPFunctionKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUCPFunctionBuilder;
 
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUCPFunction;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUCPFunctionBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBCUCPFunctionKey;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NearRTRICGNBCUCPFunctionCrudService implements CrudService<GNBCUCPFunction> {
 
     private static final Logger LOG = LoggerFactory.getLogger(NearRTRICGNBCUCPFunctionCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<GNBCUCPFunction> identifier, @Nonnull GNBCUCPFunction data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<GNBCUCPFunction> identifier, @Nonnull GNBCUCPFunction data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -52,7 +54,8 @@ public class NearRTRICGNBCUCPFunctionCrudService implements CrudService<GNBCUCPF
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<GNBCUCPFunction> identifier, @Nonnull GNBCUCPFunction data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<GNBCUCPFunction> identifier, @Nonnull GNBCUCPFunction data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -67,7 +70,8 @@ public class NearRTRICGNBCUCPFunctionCrudService implements CrudService<GNBCUCPF
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<GNBCUCPFunction> identifier, @Nonnull GNBCUCPFunction dataOld, @Nonnull GNBCUCPFunction dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<GNBCUCPFunction> identifier, @Nonnull GNBCUCPFunction dataOld,
+            @Nonnull GNBCUCPFunction dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -82,7 +86,8 @@ public class NearRTRICGNBCUCPFunctionCrudService implements CrudService<GNBCUCPF
     }
 
     @Override
-    public GNBCUCPFunction readSpecific(@Nonnull InstanceIdentifier<GNBCUCPFunction> identifier) throws ReadFailedException {
+    public GNBCUCPFunction readSpecific(@Nonnull InstanceIdentifier<GNBCUCPFunction> identifier)
+            throws ReadFailedException {
 
         LOG.info("Read path[{}] ", identifier);
         return null;

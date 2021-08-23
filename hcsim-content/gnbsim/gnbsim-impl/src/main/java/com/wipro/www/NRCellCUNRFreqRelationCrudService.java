@@ -18,26 +18,28 @@ package com.wipro.www;
 
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.write.WriteFailedException;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRFreqRelation;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRFreqRelationKey;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRFreqRelationBuilder;
 
-import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRFreqRelation;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRFreqRelationBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRFreqRelationKey;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NRCellCUNRFreqRelationCrudService implements CrudService<NRFreqRelation> {
 
     private static final Logger LOG = LoggerFactory.getLogger(NRCellCUNRFreqRelationCrudService.class);
 
     @Override
-    public void writeData(@Nonnull InstanceIdentifier<NRFreqRelation> identifier, @Nonnull NRFreqRelation data) throws WriteFailedException {
+    public void writeData(@Nonnull InstanceIdentifier<NRFreqRelation> identifier, @Nonnull NRFreqRelation data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -52,7 +54,8 @@ public class NRCellCUNRFreqRelationCrudService implements CrudService<NRFreqRela
     }
 
     @Override
-    public void deleteData(@Nonnull InstanceIdentifier<NRFreqRelation> identifier, @Nonnull NRFreqRelation data) throws WriteFailedException {
+    public void deleteData(@Nonnull InstanceIdentifier<NRFreqRelation> identifier, @Nonnull NRFreqRelation data)
+            throws WriteFailedException {
         if (data != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -67,7 +70,8 @@ public class NRCellCUNRFreqRelationCrudService implements CrudService<NRFreqRela
     }
 
     @Override
-    public void updateData(@Nonnull InstanceIdentifier<NRFreqRelation> identifier, @Nonnull NRFreqRelation dataOld, @Nonnull NRFreqRelation dataNew) throws WriteFailedException {
+    public void updateData(@Nonnull InstanceIdentifier<NRFreqRelation> identifier, @Nonnull NRFreqRelation dataOld,
+            @Nonnull NRFreqRelation dataNew) throws WriteFailedException {
         if (dataOld != null && dataNew != null) {
 
             // identifier.firstKeyOf(SomeClassUpperInHierarchy.class) can be used to identify
@@ -82,7 +86,8 @@ public class NRCellCUNRFreqRelationCrudService implements CrudService<NRFreqRela
     }
 
     @Override
-    public NRFreqRelation readSpecific(@Nonnull InstanceIdentifier<NRFreqRelation> identifier) throws ReadFailedException {
+    public NRFreqRelation readSpecific(@Nonnull InstanceIdentifier<NRFreqRelation> identifier)
+            throws ReadFailedException {
 
         LOG.info("Read path[{}] ", identifier);
         return null;

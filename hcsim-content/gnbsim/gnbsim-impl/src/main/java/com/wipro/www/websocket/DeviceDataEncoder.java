@@ -16,7 +16,6 @@
 
 package com.wipro.www.websocket;
 
-
 import com.wipro.www.websocket.models.DeviceData;
 
 import javax.websocket.EncodeException;

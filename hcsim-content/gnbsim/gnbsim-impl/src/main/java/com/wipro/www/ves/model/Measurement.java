@@ -37,8 +37,7 @@ public class Measurement {
         return additionalMeasurements;
     }
 
-    public void setAdditionalMeasurements(
-            List<AdditionalMeasurements> additionalMeasurements) {
+    public void setAdditionalMeasurements(List<AdditionalMeasurements> additionalMeasurements) {
         this.additionalMeasurements = additionalMeasurements;
     }
 

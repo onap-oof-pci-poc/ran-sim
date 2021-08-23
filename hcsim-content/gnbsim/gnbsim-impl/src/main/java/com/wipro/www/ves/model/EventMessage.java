@@ -16,7 +16,6 @@
 
 package com.wipro.www.ves.model;
 
-
 public class EventMessage {
 
     private Event event;

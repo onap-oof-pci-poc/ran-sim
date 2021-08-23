@@ -17,35 +17,40 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigData;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.snssaiconfig.ConfigDataKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
 
 public class NearRTRICConfigCustomizer implements ListWriterCustomizer<ConfigData, ConfigDataKey> {
 
     private final CrudService<ConfigData> crudService;
 
-    public NearRTRICConfigCustomizer(@Nonnull final CrudService<ConfigData> crudService){
+    public NearRTRICConfigCustomizer(@Nonnull final CrudService<ConfigData> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<ConfigData> instanceIdentifier, @Nonnull ConfigData configData, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<ConfigData> instanceIdentifier,
+            @Nonnull ConfigData configData, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, configData);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<ConfigData> id, @Nonnull ConfigData dataBefore, @Nonnull ConfigData dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<ConfigData> id, @Nonnull ConfigData dataBefore,
+            @Nonnull ConfigData dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<ConfigData> instanceIdentifier, @Nonnull ConfigData configData, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<ConfigData> instanceIdentifier,
+            @Nonnull ConfigData configData, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, configData);
     }
 }

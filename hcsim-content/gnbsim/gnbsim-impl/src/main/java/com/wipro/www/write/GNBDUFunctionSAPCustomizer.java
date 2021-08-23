@@ -17,35 +17,40 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAP;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.managednfservicegroup.SAPKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
 
 public class GNBDUFunctionSAPCustomizer implements ListWriterCustomizer<SAP, SAPKey> {
 
     private final CrudService<SAP> crudService;
 
-    public GNBDUFunctionSAPCustomizer(@Nonnull final CrudService<SAP> crudService){
+    public GNBDUFunctionSAPCustomizer(@Nonnull final CrudService<SAP> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<SAP> instanceIdentifier, @Nonnull SAP sap, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<SAP> instanceIdentifier, @Nonnull SAP sap,
+            @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, sap);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<SAP> id, @Nonnull SAP dataBefore, @Nonnull SAP dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<SAP> id, @Nonnull SAP dataBefore,
+            @Nonnull SAP dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<SAP> instanceIdentifier, @Nonnull SAP sap, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<SAP> instanceIdentifier, @Nonnull SAP sap,
+            @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, sap);
     }
 }

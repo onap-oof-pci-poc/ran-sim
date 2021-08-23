@@ -17,28 +17,32 @@
 package com.wipro.www.read;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.read.ReadContext;
 import io.fd.honeycomb.translate.read.ReadFailedException;
 import io.fd.honeycomb.translate.spi.read.Initialized;
 import io.fd.honeycomb.translate.spi.read.InitializingListReaderCustomizer;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.RanNetworkBuilder;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.NearRTRICBuilder;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunction;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.GNBDUFunctionBuilder;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDU;
-import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDUKey;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDUBuilder;
+import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbdufunction.NRCellDUKey;
 import org.opendaylight.yangtools.concepts.Builder;
 import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GNBDUFunctionNRCellDUCustomizer implements InitializingListReaderCustomizer<NRCellDU, NRCellDUKey, NRCellDUBuilder> {
+public class GNBDUFunctionNRCellDUCustomizer
+        implements InitializingListReaderCustomizer<NRCellDU, NRCellDUKey, NRCellDUBuilder> {
 
     private final CrudService<NRCellDU> crudService;
 
@@ -50,18 +54,16 @@ public class GNBDUFunctionNRCellDUCustomizer implements InitializingListReaderCu
 
     @Nonnull
     @Override
-    public List<NRCellDUKey> getAllIds(@Nonnull final InstanceIdentifier<NRCellDU> id, @Nonnull final ReadContext context)
-            throws ReadFailedException {
+    public List<NRCellDUKey> getAllIds(@Nonnull final InstanceIdentifier<NRCellDU> id,
+            @Nonnull final ReadContext context) throws ReadFailedException {
         // perform read operation and extract keys from data
         try {
-        return crudService.readAll()
-                .stream()
-                .map(a -> new NRCellDUKey(a.getIdNRCellDU()))
-                .collect(Collectors.toList());
-	} catch (Exception E) {
-		LOG.info("Exception in getAllIds:[{}]", E);
-                return null;
-	}
+            return crudService.readAll().stream().map(a -> new NRCellDUKey(a.getIdNRCellDU()))
+                    .collect(Collectors.toList());
+        } catch (Exception E) {
+            LOG.info("Exception in getAllIds:[{}]", E);
+            return null;
+        }
     }
 
     @Override
@@ -71,7 +73,6 @@ public class GNBDUFunctionNRCellDUCustomizer implements InitializingListReaderCu
         ((GNBDUFunctionBuilder) builder).setNRCellDU(readData);
     }
 
-    
     @Nonnull
     @Override
     public NRCellDUBuilder getBuilder(@Nonnull final InstanceIdentifier<NRCellDU> id) {
@@ -81,8 +82,7 @@ public class GNBDUFunctionNRCellDUCustomizer implements InitializingListReaderCu
 
     @Override
     public void readCurrentAttributes(@Nonnull final InstanceIdentifier<NRCellDU> id,
-                                      @Nonnull final NRCellDUBuilder builder,
-                                      @Nonnull final ReadContext ctx) throws ReadFailedException {
+            @Nonnull final NRCellDUBuilder builder, @Nonnull final ReadContext ctx) throws ReadFailedException {
         // this stage is used after reading all ids by getAllIds,to read specific details about data
 
         // perform read of details of data specified by key of Element in id
@@ -90,9 +90,10 @@ public class GNBDUFunctionNRCellDUCustomizer implements InitializingListReaderCu
 
         // and sets it to builder
         builder.setIdNRCellDU(data.getIdNRCellDU());
-        //builder.setKey(data.getKey());
+        // builder.setKey(data.getKey());
         builder.setAttributes(data.getAttributes());
     }
+
     /**
      *
      * Initialize configuration data based on operational data.
@@ -104,8 +105,7 @@ public class GNBDUFunctionNRCellDUCustomizer implements InitializingListReaderCu
     @Nonnull
     @Override
     public Initialized<? extends DataObject> init(@Nonnull final InstanceIdentifier<NRCellDU> id,
-                                                  @Nonnull final NRCellDU readValue,
-                                                  @Nonnull final ReadContext ctx) {
+            @Nonnull final NRCellDU readValue, @Nonnull final ReadContext ctx) {
         return Initialized.create(id, readValue);
     }
 }

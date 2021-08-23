@@ -66,7 +66,6 @@ public class CommonEventHeaderPm {
         this.lastEpochMicrosec = lastEpochMicrosec;
     }
 
-
     public String getPriority() {
         return priority;
     }

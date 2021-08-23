@@ -40,5 +40,4 @@ public class AdditionalMeasurements {
         this.hashMap = hashMap;
     }
 
-
 }

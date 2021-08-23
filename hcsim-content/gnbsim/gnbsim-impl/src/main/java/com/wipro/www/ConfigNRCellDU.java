@@ -15,19 +15,18 @@
  */
 
 package com.wipro.www;
+
 import java.util.List;
 
 public class ConfigNRCellDU {
 
     public enum operationalState {
-       DISABLED,
-       ENABLED
+        DISABLED, ENABLED
     }
     public enum cellState {
-       IDLE,
-       INACTIVE,
-       ACTIVE
+        IDLE, INACTIVE, ACTIVE
     }
+
     public operationalState eoperationalState;
     public cellState ecellState;
 
@@ -36,7 +35,7 @@ public class ConfigNRCellDU {
     }
 
     public void setoperationalState(operationalState valoperationalState) {
-       this.eoperationalState = valoperationalState;
+        this.eoperationalState = valoperationalState;
     }
 
     public cellState getcellState() {
@@ -44,7 +43,7 @@ public class ConfigNRCellDU {
     }
 
     public void setcellState(cellState valcellState) {
-       this.ecellState = valcellState;
+        this.ecellState = valcellState;
     }
 
     public ConfigNRCellDU() {

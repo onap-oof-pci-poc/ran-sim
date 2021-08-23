@@ -17,35 +17,41 @@
 package com.wipro.www.write;
 
 import com.wipro.www.CrudService;
+
 import io.fd.honeycomb.translate.spi.write.ListWriterCustomizer;
 import io.fd.honeycomb.translate.write.WriteContext;
 import io.fd.honeycomb.translate.write.WriteFailedException;
+
+import javax.annotation.Nonnull;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRFreqRelation;
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.NRFreqRelationKey;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-
-import javax.annotation.Nonnull;
 
 public class NRCellCUNRFreqRelationCustomizer implements ListWriterCustomizer<NRFreqRelation, NRFreqRelationKey> {
 
     private final CrudService<NRFreqRelation> crudService;
 
-    public NRCellCUNRFreqRelationCustomizer (@Nonnull final CrudService<NRFreqRelation> crudService){
+    public NRCellCUNRFreqRelationCustomizer(@Nonnull final CrudService<NRFreqRelation> crudService) {
         this.crudService = crudService;
     }
 
     @Override
-    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<NRFreqRelation> instanceIdentifier, @Nonnull NRFreqRelation nrfreqrelation, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void writeCurrentAttributes(@Nonnull InstanceIdentifier<NRFreqRelation> instanceIdentifier,
+            @Nonnull NRFreqRelation nrfreqrelation, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.writeData(instanceIdentifier, nrfreqrelation);
     }
 
     @Override
-    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<NRFreqRelation> id, @Nonnull NRFreqRelation dataBefore, @Nonnull NRFreqRelation dataAfter, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void updateCurrentAttributes(@Nonnull InstanceIdentifier<NRFreqRelation> id,
+            @Nonnull NRFreqRelation dataBefore, @Nonnull NRFreqRelation dataAfter, @Nonnull WriteContext writeContext)
+            throws WriteFailedException {
         crudService.updateData(id, dataBefore, dataAfter);
     }
 
     @Override
-    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<NRFreqRelation> instanceIdentifier, @Nonnull NRFreqRelation nrfreqrelation, @Nonnull WriteContext writeContext) throws WriteFailedException {
+    public void deleteCurrentAttributes(@Nonnull InstanceIdentifier<NRFreqRelation> instanceIdentifier,
+            @Nonnull NRFreqRelation nrfreqrelation, @Nonnull WriteContext writeContext) throws WriteFailedException {
         crudService.deleteData(instanceIdentifier, nrfreqrelation);
     }
 }

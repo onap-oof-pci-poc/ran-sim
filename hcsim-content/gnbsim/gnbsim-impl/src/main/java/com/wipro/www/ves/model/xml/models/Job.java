@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package com.wipro.www.ves.model.xml.models;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -22,29 +21,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Job {
-private String jobId;
-public Job() {
+    private String jobId;
+
+    public Job() {
+
+    }
+
+    public Job(String jobId) {
+        super();
+        this.jobId = jobId;
+    }
+
+    @XmlAttribute
+    public String getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
+
+    @Override
+    public String toString() {
+        return "Job [jobId=" + jobId + "]";
+    }
 
 }
-
-public Job(String jobId) {
-super();
-this.jobId = jobId;
-}
-
-@XmlAttribute
-public String getJobId() {
-return jobId;
-}
-
-public void setJobId(String jobId) {
-this.jobId = jobId;
-}
-
-@Override
-public String toString() {
-return "Job [jobId=" + jobId + "]";
-}
-
-}
-
