@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.fd.honeycomb.common</groupId>
     <artifactId>minimal-distribution-parent</artifactId>
-    <version>1.18.07</version>
+    <version>1.19.08-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -16,7 +16,7 @@
     <exec.parameters>-Xms128m -Xmx512m</exec.parameters>
     <main.class>org.onap.ransim.Main</main.class>
     <interfaces.mapping.version>1.0.0-SNAPSHOT</interfaces.mapping.version>
-    <honeycomb.min.distro.version>1.18.07</honeycomb.min.distro.version>
+    <honeycomb.min.distro.version>1.19.08-SNAPSHOT</honeycomb.min.distro.version>
     <docker.image.name>onap/honeycomb</docker.image.name>
     <distribution.modules>
       org.onap.ransim.Module

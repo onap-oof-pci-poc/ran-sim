@@ -19,7 +19,7 @@ package org.onap.ransim.websocket.model;
 public class MessageTypes {
     public final static String RC_TO_HC_FMDATA = "FmData";
     public final static String RC_TO_HC_PMDATA = "PmData";
-    public final static String RC_TO_HC_SETCONFIGTOPO = "SetConfigTopology";
+    public final static String RC_TO_HC_SETCONFIGTOPO = "INITIAL_CONFIG";
     public final static String RC_TO_HC_UPDCELL = "UpdateCell";
     public final static String RC_TO_HC_PING = "ping";
 

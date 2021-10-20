@@ -76,7 +76,7 @@ public class RansimClientWebSocket {
                     return;
                 }
                 type = msgObject.getType();
-                LOG.info("Message Received: Type:{}, msg:{}, Session Id:{}",
+                LOG.info("Message Received with: Type:{}, msg:{}, Session Id:{}",
                         type, msgObject.getMessage(), session.getId());
                 if (type.equals(MessageTypes.RC_TO_HC_PMDATA)) {
                     PmMessage pmdata = new Gson().fromJson(

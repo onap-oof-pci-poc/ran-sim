@@ -22,7 +22,7 @@ sed -i "s/50000/$enodebsimPort/g" config/netconf.json
 while [ $STATUS -eq 100 ]
 do
   echo "{}" > var/lib/honeycomb/persist/config/data.json
-  java -Xms128m -Xmx512m -jar $(dirname $0)/enodebsim-distribution-1.18.10.jar
+  java -Xms128m -Xmx512m -Djavax.net.ssl.trustStore=/opt/app/honeycomb/jssecacerts  -jar $(dirname $0)/enodebsim-distribution-1.18.10.jar
   STATUS=$?
   echo "Honeycomb exited with status: $STATUS"
   if [ $STATUS -eq 100 ]

@@ -26,6 +26,38 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Base64;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import javax.net.ssl.HttpsURLConnection;
+import java.net.URL;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.*;
+import java.io.*;
+import java.security.KeyStore;
+import java.security.MessageDigest;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+
 public class HttpRequester {
 
     private static final String ACCEPT = "Accept";
@@ -38,22 +70,36 @@ public class HttpRequester {
     private static final Logger LOG = LoggerFactory
             .getLogger(HttpRequester.class);
 
+    private static class NullHostnameVerifier implements HostnameVerifier {
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        }
+
+
     /**
      * Send Post Request.
      */
     public static String sendPostRequest(String requestUrl, String requestBody) {
         String response = "";
-        HttpURLConnection connection = null;
+        HttpsURLConnection connection = null;
         BufferedReader br = null;
         try {
+            LOG.info("requestBody: {}", requestBody);
             URL url = new URL(requestUrl);
-            connection = (HttpURLConnection) url
+            connection = (HttpsURLConnection) url
                     .openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty(ACCEPT, JSON);
             connection.setRequestProperty(CONTENT, JSON);
+	    connection.setHostnameVerifier(new NullHostnameVerifier());
+            String userCredentials = "sample1:sample1";
+            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+
+            connection.setRequestProperty ("Authorization", basicAuth);
+
             OutputStreamWriter writer = new OutputStreamWriter(
                     connection.getOutputStream(), UTF);
             writer.write(requestBody);
@@ -95,16 +141,21 @@ public class HttpRequester {
     public static String sendGetRequest(String requestUrl) {
         String response = "";
         int returnCode = 0;
-        HttpURLConnection connection = null;
+        HttpsURLConnection connection = null;
         BufferedReader br = null;
         LOG.debug("Request URL is {}", requestUrl);
         try {
             URL url = new URL(requestUrl);
             connection = null;
-            connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpsURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.setRequestMethod("GET");
             connection.setRequestProperty(ACCEPT, JSON);
+	    connection.setHostnameVerifier(new NullHostnameVerifier());
+            String userCredentials = "sample1:sample1";
+            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+	    connection.setRequestProperty ("Authorization", basicAuth);
+
             returnCode = connection.getResponseCode();
             LOG.info("response code: {}", returnCode);
             InputStream connectionIn = null;
@@ -141,3 +192,4 @@ public class HttpRequester {
 
     }
 }
+

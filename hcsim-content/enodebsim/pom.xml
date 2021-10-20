@@ -19,7 +19,7 @@
   <parent>
     <artifactId>honeycomb-aggregator</artifactId>
     <groupId>io.fd.honeycomb</groupId>
-    <version>1.18.10-SNAPSHOT</version>
+    <version>1.19.08-SNAPSHOT</version>
   </parent>
   <artifactId>enodebsim-aggregator</artifactId>
   <version>1.0.0-SNAPSHOT</version>
