@@ -102,8 +102,8 @@ public class NRCellDUpLMNInfoListCrudService implements CrudService<PLMNInfoList
                 try {
                     ObjectMapper obj = new ObjectMapper();
                     String message = obj.writeValueAsString(plmnInfoModel);
-                    LOG.info("parsed message: " + message);
-                    configurationHandler.sendDatabaseUpdate(message, MessageType.HC_TO_RC_PLMN);
+                  //  LOG.info("parsed message: " + message);
+                  //  configurationHandler.sendDatabaseUpdate(message, MessageType.HC_TO_RC_PLMN);
                 } catch (JsonProcessingException jsonProcessingException) {
                     LOG.error("Error parsing json");
                 }

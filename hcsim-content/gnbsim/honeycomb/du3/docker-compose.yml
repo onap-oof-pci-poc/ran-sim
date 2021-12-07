@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+   honeycomb:
+      container_name: "330"
+      image: gn:latest
+      ports:
+        - "2858:2831"
+      hostname: honeycomb
+      command: honeycomb
+      volumes:
+        - ./config:/opt/app/honeycomb/config
+      environment:
+        - enodebsimIp=10.31.4.14
+        - enodebsimPort=2858
+      restart: on-failure

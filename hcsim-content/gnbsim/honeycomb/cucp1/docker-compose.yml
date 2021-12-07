@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+   honeycomb:
+      container_name: cucpserver1
+      image: gn:latest
+      ports:
+        - "2852:2831"
+      hostname: honeycomb
+      command: honeycomb
+      volumes:
+        - ./config:/opt/app/honeycomb/config
+      environment:
+        - enodebsimIp=10.31.4.14
+        - enodebsimPort=2852
+      restart: on-failure

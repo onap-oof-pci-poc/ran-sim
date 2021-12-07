@@ -64,7 +64,7 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
                 sliceProfile.setsNSSAI(snssai);
             }
             // sliceProfile.setsNSSAI(snssaiString.substring(14,snssaiString.length()));
-            sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
+       /*     sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
             if (!(Objects.isNull(data.getCoverageAreaList()))) {
                 sliceProfile.setCoverageareaList(data.getCoverageAreaList().toString());
             }
@@ -72,6 +72,31 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
             sliceProfile.setdLThptPerSlice(data.getDLThptPerSlice().intValue());
             sliceProfile.setuLThptPerSlice(data.getULThptPerSlice().intValue());
             sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
+            if (!(Objects.isNull(data.getResourceSharingLevel()))) {
+                sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
+            }
+            if (!(Objects.isNull(data.getUEMobilityLevel()))) {
+                sliceProfile.setUemobilitylevel(data.getUEMobilityLevel());
+            }*/
+
+            if (!(Objects.isNull(data.getMaxNumberofUEs()))) {
+                sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
+            }
+            if (!(Objects.isNull(data.getCoverageAreaList()))) {
+                sliceProfile.setCoverageareaList(data.getCoverageAreaList().toString());
+            }
+            if (!(Objects.isNull(data.getLatency()))) {
+                sliceProfile.setLatency(data.getLatency().intValue());
+            }
+            if (!(Objects.isNull(data.getDLThptPerSlice()))) {
+                sliceProfile.setdLThptPerSlice(data.getDLThptPerSlice().intValue());
+            }
+            if (!(Objects.isNull(data.getULThptPerSlice()))) {
+                sliceProfile.setuLThptPerSlice(data.getULThptPerSlice().intValue());
+            }
+            if (!(Objects.isNull(data.getMaxNumberofConns()))) {
+                sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
+            }
             if (!(Objects.isNull(data.getResourceSharingLevel()))) {
                 sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
             }
