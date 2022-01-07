@@ -42,7 +42,7 @@
 		<snapshots.path>content/repositories/snapshots/</snapshots.path>
 		<staging.path>content/repositories/staging/</staging.path>
 
-		<h2.version>1.4.186</h2.version>
+		<h2.version>2.0.206</h2.version>
 		<!-- Project common dependency versions -->
 		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
 		<dmaap.version>1.0.0</dmaap.version>
