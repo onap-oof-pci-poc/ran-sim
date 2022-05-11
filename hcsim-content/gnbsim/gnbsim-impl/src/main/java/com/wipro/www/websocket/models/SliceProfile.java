@@ -28,7 +28,7 @@ public class SliceProfile {
     private Integer dLThptPerSlice;
     private Integer uLThptPerSlice;
     private Integer maxNumberofConns;
-    private String resourcesharinglevel;
+    private String resourceSharingLevel;
     private String uemobilitylevel;
     private String rannfnssiid;
 
@@ -108,12 +108,12 @@ public class SliceProfile {
         this.maxNumberofConns = maxNumberofConns;
     }
 
-    public String getResourcesharinglevel() {
-        return resourcesharinglevel;
+    public String getResourceSharingLevel() {
+        return resourceSharingLevel;
     }
 
-    public void setResourcesharinglevel(String resourcesharinglevel) {
-        this.resourcesharinglevel = resourcesharinglevel;
+    public void setResourceSharingLevel(String resourceSharingLevel) {
+        this.resourceSharingLevel = resourceSharingLevel;
     }
 
     public String getUemobilitylevel() {

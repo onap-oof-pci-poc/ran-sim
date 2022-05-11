@@ -64,20 +64,22 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
                 sliceProfile.setsNSSAI(snssai);
             }
             // sliceProfile.setsNSSAI(snssaiString.substring(14,snssaiString.length()));
-       /*     sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
-            if (!(Objects.isNull(data.getCoverageAreaList()))) {
-                sliceProfile.setCoverageareaList(data.getCoverageAreaList().toString());
-            }
-            sliceProfile.setLatency(data.getLatency().intValue());
-            sliceProfile.setdLThptPerSlice(data.getDLThptPerSlice().intValue());
-            sliceProfile.setuLThptPerSlice(data.getULThptPerSlice().intValue());
-            sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
-            if (!(Objects.isNull(data.getResourceSharingLevel()))) {
-                sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
-            }
-            if (!(Objects.isNull(data.getUEMobilityLevel()))) {
-                sliceProfile.setUemobilitylevel(data.getUEMobilityLevel());
-            }*/
+            /*
+             * sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
+             * if (!(Objects.isNull(data.getCoverageAreaList()))) {
+             * sliceProfile.setCoverageareaList(data.getCoverageAreaList().toString());
+             * }
+             * sliceProfile.setLatency(data.getLatency().intValue());
+             * sliceProfile.setdLThptPerSlice(data.getDLThptPerSlice().intValue());
+             * sliceProfile.setuLThptPerSlice(data.getULThptPerSlice().intValue());
+             * sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
+             * if (!(Objects.isNull(data.getResourceSharingLevel()))) {
+             * sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
+             * }
+             * if (!(Objects.isNull(data.getUEMobilityLevel()))) {
+             * sliceProfile.setUemobilitylevel(data.getUEMobilityLevel());
+             * }
+             */
 
             if (!(Objects.isNull(data.getMaxNumberofUEs()))) {
                 sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
@@ -98,7 +100,7 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
                 sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
             }
             if (!(Objects.isNull(data.getResourceSharingLevel()))) {
-                sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
+                sliceProfile.setResourceSharingLevel(data.getResourceSharingLevel());
             }
             if (!(Objects.isNull(data.getUEMobilityLevel()))) {
                 sliceProfile.setUemobilitylevel(data.getUEMobilityLevel());
@@ -144,7 +146,7 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
             sliceProfile.setuLThptPerSlice(data.getULThptPerSlice().intValue());
             sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
             if (!(Objects.isNull(data.getResourceSharingLevel()))) {
-                sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
+                sliceProfile.setResourceSharingLevel(data.getResourceSharingLevel());
             }
             if (!(Objects.isNull(data.getUEMobilityLevel()))) {
                 sliceProfile.setUemobilitylevel(data.getUEMobilityLevel());
@@ -175,6 +177,67 @@ public class NearRTRICSliceProfilesListCrudService implements CrudService<SliceP
 
             // Performs any logic needed for persisting such data
             LOG.info("Update path[{}] from [{}] to [{}]", identifier, dataOld, dataNew);
+            SliceProfile sliceProfile = new SliceProfile();
+            sliceProfile.setSliceProfileId(dataNew.getSliceProfileId());
+            if (!(Objects.isNull(dataNew.getSNSSAI()))) {
+                String snssaiString = dataNew.getSNSSAI().toString();
+
+                int snssaiIndex = snssaiString.indexOf("{_value=");
+                String snssaiSubStr = snssaiString.substring(snssaiIndex + "{_value=".length());
+                String snssai = snssaiSubStr.substring(0, snssaiSubStr.indexOf("}"));
+                sliceProfile.setsNSSAI(snssai);
+            }
+            // sliceProfile.setsNSSAI(snssaiString.substring(14,snssaiString.length()));
+            /*
+             * sliceProfile.setMaxNumberofUEs(data.getMaxNumberofUEs().intValue());
+             * if (!(Objects.isNull(data.getCoverageAreaList()))) {
+             * sliceProfile.setCoverageareaList(data.getCoverageAreaList().toString());
+             * }
+             * sliceProfile.setLatency(data.getLatency().intValue());
+             * sliceProfile.setdLThptPerSlice(data.getDLThptPerSlice().intValue());
+             * sliceProfile.setuLThptPerSlice(data.getULThptPerSlice().intValue());
+             * sliceProfile.setMaxNumberofConns(data.getMaxNumberofConns().intValue());
+             * if (!(Objects.isNull(data.getResourceSharingLevel()))) {
+             * sliceProfile.setResourcesharinglevel(data.getResourceSharingLevel());
+             * }
+             * if (!(Objects.isNull(data.getUEMobilityLevel()))) {
+             * sliceProfile.setUemobilitylevel(data.getUEMobilityLevel());
+             * }
+             */
+
+            if (!(Objects.isNull(dataNew.getMaxNumberofUEs()))) {
+                sliceProfile.setMaxNumberofUEs(dataNew.getMaxNumberofUEs().intValue());
+            }
+            if (!(Objects.isNull(dataNew.getCoverageAreaList()))) {
+                sliceProfile.setCoverageareaList(dataNew.getCoverageAreaList().toString());
+            }
+            if (!(Objects.isNull(dataNew.getLatency()))) {
+                sliceProfile.setLatency(dataNew.getLatency().intValue());
+            }
+            if (!(Objects.isNull(dataNew.getDLThptPerSlice()))) {
+                sliceProfile.setdLThptPerSlice(dataNew.getDLThptPerSlice().intValue());
+            }
+            if (!(Objects.isNull(dataNew.getULThptPerSlice()))) {
+                sliceProfile.setuLThptPerSlice(dataNew.getULThptPerSlice().intValue());
+            }
+            if (!(Objects.isNull(dataNew.getMaxNumberofConns()))) {
+                sliceProfile.setMaxNumberofConns(dataNew.getMaxNumberofConns().intValue());
+            }
+            if (!(Objects.isNull(dataNew.getResourceSharingLevel()))) {
+                sliceProfile.setResourceSharingLevel(dataNew.getResourceSharingLevel());
+            }
+            if (!(Objects.isNull(dataNew.getUEMobilityLevel()))) {
+                sliceProfile.setUemobilitylevel(dataNew.getUEMobilityLevel());
+            }
+            ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
+            try {
+                ObjectMapper obj = new ObjectMapper();
+                String message = obj.writeValueAsString(sliceProfile);
+                LOG.info("parsed message: " + message);
+                configurationHandler.sendDatabaseUpdate(message, MessageType.HC_TO_RC_SLICE_PROFILE);
+            } catch (JsonProcessingException jsonProcessingException) {
+                LOG.error("Error parsing json");
+            }
         } else {
             throw new WriteFailedException.DeleteFailedException(identifier,
                     new NullPointerException("Provided data are null"));

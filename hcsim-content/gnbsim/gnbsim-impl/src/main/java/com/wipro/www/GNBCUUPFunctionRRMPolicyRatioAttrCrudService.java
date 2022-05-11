@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
 public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService<Attributes> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GNBCUUPFunctionRRMPolicyRatioAttrCrudService.class);
+    private static final ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
 
     @Override
     public void writeData(@Nonnull InstanceIdentifier<Attributes> identifier, @Nonnull Attributes data)
@@ -62,7 +63,9 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
 
             RRMPolicyRatioModel rrmPolicyRatioModel = new RRMPolicyRatioModel();
             rrmPolicyRatioModel.setRrmPolicyID(idRRMPolicyRatio);
-            rrmPolicyRatioModel.setResourceType(data.getResourceType());
+            if (Objects.nonNull(data.getResourceType())) {
+                rrmPolicyRatioModel.setResourceType(data.getResourceType());
+            }
             List<RRMPolicyMember> rrmPolicyMemberList = new ArrayList<RRMPolicyMember>();
             List<RRMPolicyMemberList> rRMPolicyMemberDataList = data.getRRMPolicyMemberList();
             for (RRMPolicyMemberList rrmp : rRMPolicyMemberDataList) {
@@ -75,18 +78,20 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
                 rrmPolicyMemberList.add(rrmPolicyMember);
             }
             rrmPolicyRatioModel.setrRMPolicyMemberList(rrmPolicyMemberList);
-            rrmPolicyRatioModel.setQuotaType(data.getQuotaType().toString());
-            if (!(Objects.isNull(data.getRRMPolicyMaxRatio()))) {
+            if (Objects.nonNull(data.getQuotaType())) {
+                rrmPolicyRatioModel.setQuotaType(data.getQuotaType().toString());
+            }
+            if (Objects.nonNull(data.getRRMPolicyMaxRatio())) {
                 rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getRRMPolicyMaxRatio().intValue());
             }
-            if (!(Objects.isNull(data.getRRMPolicyMinRatio()))) {
+            if (Objects.nonNull(data.getRRMPolicyMinRatio())) {
                 rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getRRMPolicyMinRatio().intValue());
             }
-
-            rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getRRMPolicyDedicatedRatio().intValue());
+            if (Objects.nonNull(data.getRRMPolicyDedicatedRatio())) {
+                rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getRRMPolicyDedicatedRatio().intValue());
+            }
             // rrmPolicyRatioModel.setResourceID("");
             // rrmPolicyRatioModel.setSliceType("");
-            ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
             try {
                 ObjectMapper Obj = new ObjectMapper();
                 String message = Obj.writeValueAsString(rrmPolicyRatioModel);
@@ -118,7 +123,9 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
 
             RRMPolicyRatioModel rrmPolicyRatioModel = new RRMPolicyRatioModel();
             rrmPolicyRatioModel.setRrmPolicyID(idRRMPolicyRatio);
-            rrmPolicyRatioModel.setResourceType(data.getResourceType());
+            if (Objects.nonNull(data.getResourceType())) {
+                rrmPolicyRatioModel.setResourceType(data.getResourceType());
+            }
             List<RRMPolicyMember> rrmPolicyMemberList = new ArrayList<RRMPolicyMember>();
             List<RRMPolicyMemberList> rRMPolicyMemberDataList = data.getRRMPolicyMemberList();
             for (RRMPolicyMemberList rrmp : rRMPolicyMemberDataList) {
@@ -131,18 +138,21 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
                 rrmPolicyMemberList.add(rrmPolicyMember);
             }
             rrmPolicyRatioModel.setrRMPolicyMemberList(rrmPolicyMemberList);
-            rrmPolicyRatioModel.setQuotaType(data.getQuotaType().toString());
-            if (!(Objects.isNull(data.getRRMPolicyMaxRatio()))) {
+            if (Objects.nonNull(data.getQuotaType())) {
+                rrmPolicyRatioModel.setQuotaType(data.getQuotaType().toString());
+            }
+            if (Objects.nonNull(data.getRRMPolicyMaxRatio())) {
                 rrmPolicyRatioModel.setrRMPolicyMaxRatio(data.getRRMPolicyMaxRatio().intValue());
             }
-            if (!(Objects.isNull(data.getRRMPolicyMinRatio()))) {
+            if (Objects.nonNull(data.getRRMPolicyMinRatio())) {
                 rrmPolicyRatioModel.setrRMPolicyMinRatio(data.getRRMPolicyMinRatio().intValue());
             }
-
-            rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getRRMPolicyDedicatedRatio().intValue());
+            if (Objects.nonNull(data.getRRMPolicyDedicatedRatio())) {
+                rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(data.getRRMPolicyDedicatedRatio().intValue());
+            }
             // rrmPolicyRatioModel.setResourceID("");
             // rrmPolicyRatioModel.setSliceType("");
-            WebsocketClient websocketClient = ConfigurationHandler.getInstance().getWebsocketClient();
+            WebsocketClient websocketClient = configurationHandler.getWebsocketClient();
             DeviceData deviceData = new DeviceData();
             try {
                 ObjectMapper Obj = new ObjectMapper();
@@ -170,6 +180,50 @@ public class GNBCUUPFunctionRRMPolicyRatioAttrCrudService implements CrudService
 
             // Performs any logic needed for persisting such data
             LOG.info("Update path[{}] from [{}] to [{}]", identifier, dataOld, dataNew);
+            int idRRMPolicyRatioIndex = identifier.toString().indexOf("RRMPolicyRatioKey{_id=");
+            String idRRMPolicyRatioSubStr =
+                    identifier.toString().substring(idRRMPolicyRatioIndex + "RRMPolicyRatioKey{_id=".length());
+            String idRRMPolicyRatio = idRRMPolicyRatioSubStr.substring(0, idRRMPolicyRatioSubStr.indexOf("}"));
+
+            RRMPolicyRatioModel rrmPolicyRatioModel = new RRMPolicyRatioModel();
+            rrmPolicyRatioModel.setRrmPolicyID(idRRMPolicyRatio);
+            if (Objects.nonNull(dataNew.getResourceType())) {
+                rrmPolicyRatioModel.setResourceType(dataNew.getResourceType());
+            }
+            List<RRMPolicyMember> rrmPolicyMemberList = new ArrayList<RRMPolicyMember>();
+            List<RRMPolicyMemberList> rRMPolicyMemberDataList = dataNew.getRRMPolicyMemberList();
+            for (RRMPolicyMemberList rrmp : rRMPolicyMemberDataList) {
+                RRMPolicyMember rrmPolicyMember = new RRMPolicyMember();
+                String mcc = rrmp.getMcc().toString().substring(11, rrmp.getMcc().toString().length() - 1);
+                String mnc = rrmp.getMnc().toString().substring(11, rrmp.getMnc().toString().length() - 1);
+                rrmPolicyMember.setpLMNId(mcc + "-" + mnc);
+                rrmPolicyMember
+                        .setsNSSAI(rrmp.getSNSSAI().toString().substring(14, rrmp.getSNSSAI().toString().length() - 1));
+                rrmPolicyMemberList.add(rrmPolicyMember);
+            }
+            rrmPolicyRatioModel.setrRMPolicyMemberList(rrmPolicyMemberList);
+            if (Objects.nonNull(dataNew.getQuotaType())) {
+                rrmPolicyRatioModel.setQuotaType(dataNew.getQuotaType().toString());
+            }
+            if (Objects.nonNull(dataNew.getRRMPolicyMaxRatio())) {
+                rrmPolicyRatioModel.setrRMPolicyMaxRatio(dataNew.getRRMPolicyMaxRatio().intValue());
+            }
+            if (Objects.nonNull(dataNew.getRRMPolicyMinRatio())) {
+                rrmPolicyRatioModel.setrRMPolicyMinRatio(dataNew.getRRMPolicyMinRatio().intValue());
+            }
+            if (Objects.nonNull(dataNew.getRRMPolicyDedicatedRatio())) {
+                rrmPolicyRatioModel.setrRMPolicyDedicatedRatio(dataNew.getRRMPolicyDedicatedRatio().intValue());
+            }
+            // rrmPolicyRatioModel.setResourceID("");
+            // rrmPolicyRatioModel.setSliceType("");
+            try {
+                ObjectMapper Obj = new ObjectMapper();
+                String message = Obj.writeValueAsString(rrmPolicyRatioModel);
+                LOG.info("parsed message: " + message);
+                configurationHandler.sendDatabaseUpdate(message, MessageType.HC_TO_RC_RRM_POLICY);
+            } catch (JsonProcessingException jsonProcessingException) {
+                LOG.error("Error parsing json");
+            }
         } else {
             throw new WriteFailedException.DeleteFailedException(identifier,
                     new NullPointerException("Provided data are null"));

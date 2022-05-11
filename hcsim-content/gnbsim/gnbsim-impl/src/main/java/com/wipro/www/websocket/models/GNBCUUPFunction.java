@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package com.wipro.www.websocket.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
