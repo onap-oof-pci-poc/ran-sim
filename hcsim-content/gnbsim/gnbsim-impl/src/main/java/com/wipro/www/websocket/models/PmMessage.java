@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Cisco and/or its affiliates.
+ * Copyright (C) 2022 Wipro Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,18 @@
 
 package com.wipro.www.websocket.models;
 
-public enum MessageType {
-    INITIAL_CONFIG, RC_TO_HC_PMFILEDATA, ALLOCATION_UPDATE, PING, SLICE_DETAILS, NSSAI_DETAILS, HC_TO_RC_RRM_POLICY, HC_TO_RC_PLMN, HC_TO_RC_SLICE_PROFILE, HC_TO_RC_RRM_POLICY_DEL, HC_TO_RC_PLMN_DEL, HC_TO_RC_SLICE_PROFILE_DEL, RTRIC_CONFIG, FmData, PmData, ModifyPci, ModifyAnr, UpdateCell
+import java.util.List;
+
+public class PmMessage {
+
+    List<EventPm> eventPmList;
+
+    public void setEventPmList(List<EventPm> data) {
+        this.eventPmList = data;
+    }
+
+    public List<EventPm> getEventPmList() {
+        return eventPmList;
+    }
+
 }

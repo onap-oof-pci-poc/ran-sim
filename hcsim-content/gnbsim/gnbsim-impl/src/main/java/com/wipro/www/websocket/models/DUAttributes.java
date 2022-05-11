@@ -20,42 +20,48 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class NRCellDU {
+public class DUAttributes {
 
-    private String idNRCellDU;
+    private int nRPCI;
+    private String operationalState;
+    private String cellState;
 
-    private DUAttributes attributes;
-
-    public String getIdNRCellDU() {
-        return idNRCellDU;
+    @JsonProperty("nRPCI")
+    public int getNRPCI() {
+        return nRPCI;
     }
 
-    public void setIdNRCellDU(String idNRCellDU) {
-        this.idNRCellDU = idNRCellDU;
+    public void setNRPCI(int nRPCI) {
+        this.nRPCI = nRPCI;
     }
 
-    @JsonProperty("attributes")
-    public DUAttributes getAttributes() {
-        return attributes;
+    public String getOperationalState() {
+        return operationalState;
     }
 
-    public void setAttributes(DUAttributes attributes) {
-        this.attributes = attributes;
+    public void setOperationalState(String operationalState) {
+        this.operationalState = operationalState;
     }
 
-    public NRCellDU(String idNRCellDU, DUAttributes attributes) {
+    public String getCellState() {
+        return cellState;
+    }
+
+    public void setCellState(String cellState) {
+        this.cellState = cellState;
+    }
+
+    public DUAttributes() {
+
+    }
+
+    public DUAttributes(int nRPCI) {
         super();
-	this.idNRCellDU = idNRCellDU;
-        this.attributes = attributes;
-    }
-
-    public NRCellDU() {
-
+        this.nRPCI = nRPCI;
     }
 
     @Override
     public String toString() {
-        return "NRCellDU [idNRCellDU=" + idNRCellDU + ", Attributes=" + attributes + "]";
+        return "Attributes [ nRPCI=" + nRPCI + "]";
     }
-
 }

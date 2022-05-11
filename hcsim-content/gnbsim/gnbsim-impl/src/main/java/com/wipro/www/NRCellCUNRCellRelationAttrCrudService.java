@@ -23,6 +23,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wipro.www.websocket.models.MessageType;
+import com.wipro.www.websocket.models.NRCellRel;
+import com.wipro.www.websocket.models.NRCellRelAttributes;
+
 import org.opendaylight.yang.gen.v1.org.onap.ccsdk.features.sdnr.northbound.ran.network.rev200806.ran.network.nearrtric.gnbcucpfunction.nrcellcu.nrcellrelation.Attributes;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.slf4j.Logger;
@@ -75,6 +81,29 @@ public class NRCellCUNRCellRelationAttrCrudService implements CrudService<Attrib
 
             // Performs any logic needed for persisting such data
             LOG.info("Update path[{}] from [{}] to [{}]", identifier, dataOld, dataNew);
+	    int idNRCellCUIndex = identifier.toString().indexOf("_idNRCellCU=");
+            String idNRCellCUSubStr = identifier.toString().substring(idNRCellCUIndex + "_idNRCellCU=".length());
+            String idNRCellCU = idNRCellCUSubStr.substring(0, idNRCellCUSubStr.indexOf("}"));
+	    NRCellRel nRCellRelation = new NRCellRel();
+	    int idNRCellRelationIndex = identifier.toString().indexOf("NRCellRelationKey{_idNRCellRelation=");
+            String idNRCellRelationSubStr = identifier.toString().substring(idNRCellRelationIndex + "NRCellRelationKey{_idNRCellRelation=".length());
+            String idNRCellRelation = idNRCellRelationSubStr.substring(0, idNRCellRelationSubStr.indexOf("}"));
+	    nRCellRelation.setIdNRCellCU(idNRCellCU);
+            nRCellRelation.setIdNRCellRelation(idNRCellRelation);
+            NRCellRelAttributes nRCellRelAttributes =  new NRCellRelAttributes();
+            nRCellRelAttributes.setNRTCI(dataOld.getNRTCI().intValue());
+            nRCellRelAttributes.setHOAllowed(dataNew.isIsHOAllowed());
+            nRCellRelation.setAttributes(nRCellRelAttributes);
+
+	    ConfigurationHandler configurationHandler = ConfigurationHandler.getInstance();
+            try {
+                ObjectMapper Obj = new ObjectMapper();
+                String message = Obj.writeValueAsString(nRCellRelation);
+                LOG.info("parsed message: " + message);
+                configurationHandler.sendDatabaseUpdate(message, MessageType.ModifyAnr);
+            } catch (JsonProcessingException jsonProcessingException) {
+                LOG.error("Error parsing json");
+            }
         } else {
             throw new WriteFailedException.DeleteFailedException(identifier,
                     new NullPointerException("Provided data are null"));

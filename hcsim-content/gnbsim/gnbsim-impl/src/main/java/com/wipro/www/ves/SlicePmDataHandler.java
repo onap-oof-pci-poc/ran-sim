@@ -23,8 +23,8 @@ import com.jcraft.jsch.ChannelSftp.LsEntry;
 import com.wipro.www.Configuration;
 import com.wipro.www.InMemoryDataTree;
 import com.wipro.www.ves.model.CommonEventHeader;
-import com.wipro.www.ves.model.Event;
-import com.wipro.www.ves.model.EventMessage;
+import com.wipro.www.ves.model.SliceEvent;
+import com.wipro.www.ves.model.SliceEventMessage;
 import com.wipro.www.ves.model.Measurement;
 import com.wipro.www.ves.model.NamedHashMap;
 import com.wipro.www.ves.model.NotificationFields;
@@ -92,9 +92,9 @@ public class SlicePmDataHandler {
         // LOG.info("SFTPhost: " + Configuration.getInstance().getHcIp().trim());
         // for (EventSlicePm pmEvent : slicePmdata.getEventPmList()) {
 
-        Event event = convertToVesFormatSlicePmData(slicePmdata);
-        EventMessage evMsg = new EventMessage();
-        evMsg.setEvent(event);
+        SliceEvent event = convertToVesFormatSlicePmData(slicePmdata);
+        SliceEventMessage evMsg = new SliceEventMessage();
+        evMsg.setSliceEvent(event);
         // evtMsgs.add(evMsg);
 
         String requestBody = mapper.writeValueAsString(evMsg);
@@ -171,7 +171,7 @@ public class SlicePmDataHandler {
         return true;
     }
 
-    Event convertToVesFormatSlicePmData(SlicingPmMessage slicePmdata) {
+    SliceEvent convertToVesFormatSlicePmData(SlicingPmMessage slicePmdata) {
         String inputFile = slicePmdata.getFileName();
         String compressedFileName = inputFile + ".gz";
         try {
@@ -219,7 +219,7 @@ public class SlicePmDataHandler {
             LOG.info("Exception occurred : {} " + e);
         }
 
-        Event pmEvent = new Event();
+        SliceEvent pmEvent = new SliceEvent();
         CommonEventHeader eventHeader = new CommonEventHeader();
         String pmFileName = slicePmdata.getFileName();
 

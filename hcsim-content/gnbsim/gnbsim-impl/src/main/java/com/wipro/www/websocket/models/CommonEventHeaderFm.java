@@ -16,7 +16,7 @@
 
 package com.wipro.www.websocket.models;
 
-public class CommonEventHeaderPm {
+public class CommonEventHeaderFm {
 
     private String sourceName;
     private String sourceUuid;

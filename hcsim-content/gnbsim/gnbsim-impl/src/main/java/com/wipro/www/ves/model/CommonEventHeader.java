@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wipro Limited.
+ * Copyright (C) 2022 Wipro Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 
 package com.wipro.www.ves.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,24 +26,36 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"version", "vesEventListenerVersion", "domain", "eventName", "eventId", "lastEpochMicrosec",
-        "priority", "reportingEntityName", "sequence", "sourceName", "startEpochMicrosec", "timeZoneOffset"})
+@JsonPropertyOrder({
+    "domain",
+    "eventId",
+    "eventName",
+    "lastEpochMicrosec",
+    "priority",
+    "reportingEntityName",
+    "sequence",
+    "sourceName",
+    "startEpochMicrosec",
+    "version",
+    "eventType",
+    "internalHeaderFields",
+    "nfcNamingCode",
+    "nfNamingCode",
+    "reportingEntityId",
+    "sourceId",
+    "nfVendorName",
+    "vesEventListenerVersion",
+    "timeZoneOffset"
+})
 public class CommonEventHeader {
 
-    @JsonProperty("version")
-    private String version;
-    @JsonProperty("vesEventListenerVersion")
-    private String vesEventListenerVersion;
     @JsonProperty("domain")
     private String domain;
-    @JsonProperty("eventName")
-    private String eventName;
     @JsonProperty("eventId")
     private String eventId;
+    @JsonProperty("eventName")
+    private String eventName;
     @JsonProperty("lastEpochMicrosec")
     private Double lastEpochMicrosec;
     @JsonProperty("priority")
@@ -53,6 +68,20 @@ public class CommonEventHeader {
     private String sourceName;
     @JsonProperty("startEpochMicrosec")
     private Double startEpochMicrosec;
+    @JsonProperty("version")
+    private String version;
+    @JsonProperty("eventType")
+    private String eventType;
+    @JsonProperty("nfNamingCode")
+    private String nfNamingCode;
+    @JsonProperty("reportingEntityId")
+    private String reportingEntityId;
+    @JsonProperty("sourceId")
+    private String sourceId;
+    @JsonProperty("nfVendorName")
+    private String nfVendorName;
+    @JsonProperty("vesEventListenerVersion")
+    private String vesEventListenerVersion;
     @JsonProperty("timeZoneOffset")
     private String timeZoneOffset;
     @JsonIgnore
@@ -158,6 +187,66 @@ public class CommonEventHeader {
         this.version = version;
     }
 
+    @JsonProperty("eventType")
+    public String getEventType() {
+        return eventType;
+    }
+
+    @JsonProperty("eventType")
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    @JsonProperty("nfNamingCode")
+    public String getNfNamingCode() {
+        return nfNamingCode;
+    }
+
+    @JsonProperty("nfNamingCode")
+    public void setNfNamingCode(String nfNamingCode) {
+        this.nfNamingCode = nfNamingCode;
+    }
+
+    @JsonProperty("reportingEntityId")
+    public String getReportingEntityId() {
+        return reportingEntityId;
+    }
+
+    @JsonProperty("reportingEntityId")
+    public void setReportingEntityId(String reportingEntityId) {
+        this.reportingEntityId = reportingEntityId;
+    }
+
+    @JsonProperty("sourceId")
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    @JsonProperty("sourceId")
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+    @JsonProperty("nfVendorName")
+    public String getNfVendorName() {
+        return nfVendorName;
+    }
+
+    @JsonProperty("nfVendorName")
+    public void setNfVendorName(String nfVendorName) {
+        this.nfVendorName = nfVendorName;
+    }
+
     @JsonProperty("vesEventListenerVersion")
     public String getVesEventListenerVersion() {
         return vesEventListenerVersion;
@@ -173,7 +262,9 @@ public class CommonEventHeader {
         return timeZoneOffset;
     }
 
+    @JsonProperty("timeZoneOffset")
     public void setTimeZoneOffset(String timeZoneOffset) {
         this.timeZoneOffset = timeZoneOffset;
     }
+
 }

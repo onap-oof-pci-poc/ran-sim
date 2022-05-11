@@ -20,42 +20,29 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class NRCellDU {
+public class CUAttributes {
 
-    private String idNRCellDU;
+    private int cellLocalId;
 
-    private DUAttributes attributes;
-
-    public String getIdNRCellDU() {
-        return idNRCellDU;
+    public int getCellLocalId() {
+        return cellLocalId;
     }
 
-    public void setIdNRCellDU(String idNRCellDU) {
-        this.idNRCellDU = idNRCellDU;
+    public void setCellLocalId(int cellLocalId) {
+        this.cellLocalId = cellLocalId;
     }
 
-    @JsonProperty("attributes")
-    public DUAttributes getAttributes() {
-        return attributes;
+    public CUAttributes() {
+
     }
 
-    public void setAttributes(DUAttributes attributes) {
-        this.attributes = attributes;
-    }
-
-    public NRCellDU(String idNRCellDU, DUAttributes attributes) {
+    public CUAttributes(int cellLocalId) {
         super();
-	this.idNRCellDU = idNRCellDU;
-        this.attributes = attributes;
-    }
-
-    public NRCellDU() {
-
+        this.cellLocalId = cellLocalId;
     }
 
     @Override
     public String toString() {
-        return "NRCellDU [idNRCellDU=" + idNRCellDU + ", Attributes=" + attributes + "]";
+        return "Attributes [ cellLocalId = " + cellLocalId + "]";
     }
-
 }

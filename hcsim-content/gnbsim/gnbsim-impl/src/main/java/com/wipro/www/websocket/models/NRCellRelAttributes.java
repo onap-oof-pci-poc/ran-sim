@@ -20,42 +20,42 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class NRCellDU {
+public class NRCellRelAttributes {
 
-    private String idNRCellDU;
+    private int nRTCI;
+    private boolean isHOAllowed;
 
-    private DUAttributes attributes;
-
-    public String getIdNRCellDU() {
-        return idNRCellDU;
+    @JsonProperty("nRTCI")
+    public int getNRTCI() {
+        return nRTCI;
     }
 
-    public void setIdNRCellDU(String idNRCellDU) {
-        this.idNRCellDU = idNRCellDU;
+    public void setNRTCI(int nRTCI) {
+        this.nRTCI = nRTCI;
     }
 
-    @JsonProperty("attributes")
-    public DUAttributes getAttributes() {
-        return attributes;
+    @JsonProperty("isHOAllowed")
+    public boolean isHOAllowed() {
+        return isHOAllowed;
     }
 
-    public void setAttributes(DUAttributes attributes) {
-        this.attributes = attributes;
+    public void setHOAllowed(boolean isHOAllowed) {
+        this.isHOAllowed = isHOAllowed;
     }
 
-    public NRCellDU(String idNRCellDU, DUAttributes attributes) {
+    public NRCellRelAttributes() {
+
+    }
+
+    public NRCellRelAttributes(int nRTCI,boolean isHOAllowed) {
         super();
-	this.idNRCellDU = idNRCellDU;
-        this.attributes = attributes;
-    }
-
-    public NRCellDU() {
-
+        this.nRTCI = nRTCI;
+        this.isHOAllowed = isHOAllowed;
     }
 
     @Override
     public String toString() {
-        return "NRCellDU [idNRCellDU=" + idNRCellDU + ", Attributes=" + attributes + "]";
+        return "Attributes [ nRTCI=" + nRTCI + ", isHOAllowed="+ isHOAllowed + "]";
     }
 
 }

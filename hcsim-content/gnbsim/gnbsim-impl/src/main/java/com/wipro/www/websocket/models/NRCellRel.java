@@ -20,42 +20,49 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class NRCellDU {
+public class NRCellRel {
 
-    private String idNRCellDU;
+    private String idNRCellCU;
+    private String idNRCellRelation;
+    private NRCellRelAttributes attributes;
 
-    private DUAttributes attributes;
-
-    public String getIdNRCellDU() {
-        return idNRCellDU;
+    public String getIdNRCellCU() {
+	    return idNRCellCU;
     }
 
-    public void setIdNRCellDU(String idNRCellDU) {
-        this.idNRCellDU = idNRCellDU;
+    public void setIdNRCellCU(String idNRCellCU) {
+	    this.idNRCellCU = idNRCellCU;
+    }
+
+    public String getIdNRCellRelation() {
+        return idNRCellRelation;
+    }
+
+    public void setIdNRCellRelation(String idNRCellRelation) {
+        this.idNRCellRelation = idNRCellRelation;
     }
 
     @JsonProperty("attributes")
-    public DUAttributes getAttributes() {
+    public NRCellRelAttributes getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(DUAttributes attributes) {
+    public void setAttributes(NRCellRelAttributes attributes) {
         this.attributes = attributes;
     }
 
-    public NRCellDU(String idNRCellDU, DUAttributes attributes) {
+    public NRCellRel(String idNRCellCU, String idNRCellRelation, NRCellRelAttributes attributes) {
         super();
-	this.idNRCellDU = idNRCellDU;
+	this.idNRCellCU = idNRCellCU;
+	this.idNRCellRelation = idNRCellRelation; 
         this.attributes = attributes;
     }
 
-    public NRCellDU() {
-
+    public NRCellRel() {
     }
 
     @Override
     public String toString() {
-        return "NRCellDU [idNRCellDU=" + idNRCellDU + ", Attributes=" + attributes + "]";
+        return "NRCellRel [ idNRCellCU=" + idNRCellCU +  ", idNRCellRelation=" + idNRCellRelation + ", Attributes="+ attributes + "]";
     }
-
 }

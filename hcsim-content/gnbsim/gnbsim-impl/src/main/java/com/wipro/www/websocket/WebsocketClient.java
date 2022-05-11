@@ -20,9 +20,13 @@ import com.google.gson.Gson;
 import com.wipro.www.ConfigurationHandler;
 import com.wipro.www.InMemoryDataTree;
 import com.wipro.www.ves.SlicePmDataHandler;
+import com.wipro.www.ves.FmDataHandler;
+import com.wipro.www.ves.PmDataHandler;
 import com.wipro.www.websocket.models.DeviceData;
 import com.wipro.www.websocket.models.MessageType;
 import com.wipro.www.websocket.models.SlicingPmMessage;
+import com.wipro.www.websocket.models.FmMessage;
+import com.wipro.www.websocket.models.PmMessage;
 
 import java.net.URI;
 
@@ -84,6 +88,19 @@ public class WebsocketClient {
                         LOG.info("Initial config from ransim ctlr");
                         ConfigurationHandler.getInstance().handleInitialConfig(deviceData.getMessage());
                         break;
+		    case PmData:
+			PmMessage pmdata = new Gson().fromJson(deviceData.getMessage(), PmMessage.class);
+			LOG.info("PmData retrieved" + pmdata);
+			PmDataHandler pmDataHandler = new PmDataHandler(vesEventListenerUrl);
+			pmDataHandler.handlePmData(pmdata);
+                    case FmData:
+			FmMessage fmdata = new Gson().fromJson(deviceData.getMessage(), FmMessage.class);
+			LOG.info("FmData retrieved" + fmdata);
+                        FmDataHandler fmDataHandler = new FmDataHandler(vesEventListenerUrl);
+                        fmDataHandler.handleFmData(fmdata);
+	            case UpdateCell:
+			LOG.info(deviceData.getMessage());
+
                     default:
                         LOG.info("Invalid message type {}. Ignoring", type);
                 }
