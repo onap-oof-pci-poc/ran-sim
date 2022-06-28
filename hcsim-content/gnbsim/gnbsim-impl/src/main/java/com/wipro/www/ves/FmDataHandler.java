@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wipro.www.ves.NumberUtil;
-import com.wipro.www.ves.model.CommonEventHeader;
-import com.wipro.www.ves.model.Event;
-import com.wipro.www.ves.model.EventMessage;
+import com.wipro.www.ves.model.CmnEvntHeader;
+import com.wipro.www.ves.model.Evnt;
+import com.wipro.www.ves.model.EvntMsg;
 import com.wipro.www.ves.model.FaultFields;
-import com.wipro.www.ves.model.VesMessage;
+import com.wipro.www.ves.model.VesMsg;
 import com.wipro.www.ves.restclient.HttpRequester;
 import com.wipro.www.websocket.models.EventFm;
 import com.wipro.www.websocket.models.FmMessage;
@@ -44,8 +44,8 @@ public class FmDataHandler {
 
     public void handleFmData(FmMessage fmdata) throws Exception {
 
-        VesMessage vesMsg = new VesMessage();
-        List<EventMessage> evtMsgs = new ArrayList<EventMessage>();
+        VesMsg vesMsg = new VesMsg();
+        List<EvntMsg> evtMsgs = new ArrayList<EvntMsg>();
         List<EventFm> FmList = fmdata.getFmEventList();
 
         if(FmList.size() == 0) {
@@ -55,8 +55,8 @@ public class FmDataHandler {
         ObjectMapper mapper = new ObjectMapper();
 
         for (EventFm fmEvent : FmList) {
-            Event event = convertToVesFormatFmData(fmEvent);
-            EventMessage evMsg = new EventMessage();
+            Evnt event = convertToVesFormatFmData(fmEvent);
+            EvntMsg evMsg = new EvntMsg();
             evMsg.setEvent(event);
             evtMsgs.add(evMsg);
             
@@ -92,9 +92,9 @@ public class FmDataHandler {
         */
     }
 
-    Event convertToVesFormatFmData(EventFm fmdata) {
-        Event fmEvent = new Event();
-        CommonEventHeader eventHeader = new CommonEventHeader();
+    Evnt convertToVesFormatFmData(EventFm fmdata) {
+        Evnt fmEvent = new Evnt();
+        CmnEvntHeader eventHeader = new CmnEvntHeader();
 
         eventHeader.setDomain("fault");
         String evId = "fault" + NumberUtil.intToString(NumberUtil.getAndIncreamentFaultEventIdSequence(), 6);

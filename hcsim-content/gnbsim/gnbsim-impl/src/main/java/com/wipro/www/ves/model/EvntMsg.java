@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package com.wipro.www.websocket.models;
+package com.wipro.www.ves.model;
 
-public class EventPm {
+public class EvntMsg {
 
-    private CmnEvntHeaderPm commonEventHeader;
-    private Measurement measurement;
+    private Evnt event;
 
-    public CmnEvntHeaderPm getCommonEventHeader() {
-        return commonEventHeader;
+    public EvntMsg() {
+        super();
     }
 
-    public void setCommonEventHeader(CmnEvntHeaderPm commonEventHeader) {
-        this.commonEventHeader = commonEventHeader;
+    public EvntMsg(Evnt event) {
+        this.event = event;
     }
 
-    public Measurement getMeasurement() {
-        return measurement;
+    public Evnt getEvent() {
+        return event;
     }
 
-    public void setMeasurement(Measurement measurement) {
-        this.measurement = measurement;
+    public void setEvent(Evnt event) {
+        this.event = event;
     }
 
 }

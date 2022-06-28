@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Wipro Limited.
+ * Copyright (C) 2018 Wipro Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,44 +16,62 @@
 
 package com.wipro.www.websocket.models;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CommonEventHeaderPm {
 
-    private String sourceName;
-    private String sourceUuid;
+    private String version;
+    private String vesEventListenerVersion;
+    private String domain;
+    private String eventName;
+    private String eventId;
+    private Double lastEpochMicrosec;
+    private String priority;
     private String reportingEntityName;
-    private long startEpochMicrosec;
-    private long lastEpochMicrosec;
+    private Long sequence;
+    private String sourceName;
+    private Double startEpochMicrosec;
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public String getSourceName() {
-        return sourceName;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setSourceName(String sourceName) {
-        this.sourceName = sourceName;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
-    public String getSourceUuid() {
-        return sourceUuid;
+    public String getEventId() {
+        return eventId;
     }
 
-    public void setSourceUuid(String sourceUuid) {
-        this.sourceUuid = sourceUuid;
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
-    public long getStartEpochMicrosec() {
-        return startEpochMicrosec;
+    public String getEventName() {
+        return eventName;
     }
 
-    public void setStartEpochMicrosec(long startEpochMicrosec) {
-        this.startEpochMicrosec = startEpochMicrosec;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
-    public long getLastEpochMicrosec() {
+    public Double getLastEpochMicrosec() {
         return lastEpochMicrosec;
     }
 
-    public void setLastEpochMicrosec(long lastEpochMicrosec) {
+    public void setLastEpochMicrosec(Double lastEpochMicrosec) {
         this.lastEpochMicrosec = lastEpochMicrosec;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 
     public String getReportingEntityName() {
@@ -64,4 +82,43 @@ public class CommonEventHeaderPm {
         this.reportingEntityName = reportingEntityName;
     }
 
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public Double getStartEpochMicrosec() {
+        return startEpochMicrosec;
+    }
+
+    public void setStartEpochMicrosec(Double startEpochMicrosec) {
+        this.startEpochMicrosec = startEpochMicrosec;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getVesEventListenerVersion() {
+        return vesEventListenerVersion;
+    }
+
+    public void setVesEventListenerVersion(String vesEventListenerVersion) {
+        this.vesEventListenerVersion = vesEventListenerVersion;
+    }
 }

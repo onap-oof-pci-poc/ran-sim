@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wipro Limited.
+ * Copyright (C) 2022 Wipro Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,26 @@
 
 package com.wipro.www.ves.model;
 
-public class SliceEventMessage {
+import java.util.List;
 
-    private SliceEvent sliceEvent;
+public class VesMsg {
 
-    public SliceEventMessage() {
+    private List<EvntMsg> events;
+
+    public VesMsg() {
         super();
     }
 
-    public SliceEventMessage(SliceEvent sliceEvent) {
-        this.sliceEvent = sliceEvent;
+    public VesMsg(List<EvntMsg> events) {
+        this.events = events;
     }
 
-    public SliceEvent getSliceEvent() {
-        return sliceEvent;
+    public List<EvntMsg> getEvents() {
+        return events;
     }
 
-    public void setSliceEvent(SliceEvent sliceEvent) {
-        this.sliceEvent = sliceEvent;
+    public void setEvents(List<EvntMsg> events) {
+        this.events = events;
     }
 
 }

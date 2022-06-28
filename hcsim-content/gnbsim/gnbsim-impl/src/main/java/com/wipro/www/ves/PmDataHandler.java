@@ -22,11 +22,11 @@ import java.util.List;
 import com.wipro.www.ConfigurationHandler;
 
 import com.wipro.www.ves.NumberUtil;
-import com.wipro.www.ves.model.CommonEventHeader;
-import com.wipro.www.ves.model.Event;
-import com.wipro.www.ves.model.EventMessage;
+import com.wipro.www.ves.model.CmnEvntHeader;
+import com.wipro.www.ves.model.Evnt;
+import com.wipro.www.ves.model.EvntMsg;
 import com.wipro.www.ves.model.FaultFields;
-import com.wipro.www.ves.model.VesMessage;
+import com.wipro.www.ves.model.VesMsg;
 import com.wipro.www.ves.model.Measurement;
 import com.wipro.www.ves.restclient.HttpRequester;
 import com.wipro.www.websocket.models.AdditionalMeasurements;
@@ -48,8 +48,8 @@ public class PmDataHandler {
 
     public void handlePmData(PmMessage pmdata) throws Exception {
 
-        VesMessage vesMsg = new VesMessage();
-        List<EventMessage> evtMsgs = new ArrayList<EventMessage>();
+        VesMsg vesMsg = new VesMsg();
+        List<EvntMsg> evtMsgs = new ArrayList<EvntMsg>();
         List<EventPm> EventList = pmdata.getEventPmList();
 
         if(EventList.size() == 0) {
@@ -60,8 +60,8 @@ public class PmDataHandler {
         ObjectMapper mapper = new ObjectMapper();
 
         for (EventPm pmEvent : EventList) {
-            Event event = convertToVesFormatPmData(pmEvent);
-            EventMessage evMsg = new EventMessage();
+            Evnt event = convertToVesFormatPmData(pmEvent);
+            EvntMsg evMsg = new EvntMsg();
             evMsg.setEvent(event);
             evtMsgs.add(evMsg);
 
@@ -90,9 +90,9 @@ public class PmDataHandler {
     }
 
 
-    Event convertToVesFormatPmData(EventPm pmdata) {
-        Event pmEvent = new Event();
-        CommonEventHeader eventHeader = new CommonEventHeader();
+    Evnt convertToVesFormatPmData(EventPm pmdata) {
+        Evnt pmEvent = new Evnt();
+        CmnEvntHeader eventHeader = new CmnEvntHeader();
 
         eventHeader.setDomain("measurement");
         String evId = "measurement" + NumberUtil.intToString(NumberUtil.getAndIncreamentMeasEventIdSequence(), 6);

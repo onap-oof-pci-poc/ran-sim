@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wipro Limited.
+ * Copyright (C) 2022 Wipro Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,33 +21,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"commonEventHeader", "notificationFields"})
+@JsonPropertyOrder({
+    "commonEventHeader",
+    "faultFields",
+    "measurement"
+})
 
-public class SliceEvent {
+public class Evnt {
 
     @JsonProperty("commonEventHeader")
-    private CommonEventHeader commonEventHeader;
-    @JsonProperty("notificationFields")
-    private NotificationFields notificationFields;
+    private CmnEvntHeader commonEventHeader;
+    @JsonProperty("faultFields")
+    private FaultFields faultFields;
+    @JsonProperty("measurementFields")
+    private Measurement measurementFields;
 
     @JsonProperty("commonEventHeader")
-    public CommonEventHeader getCommonEventHeader() {
+    public CmnEvntHeader getCommonEventHeader() {
         return commonEventHeader;
     }
 
     @JsonProperty("commonEventHeader")
-    public void setCommonEventHeader(CommonEventHeader commonEventHeader) {
+    public void setCommonEventHeader(CmnEvntHeader commonEventHeader) {
         this.commonEventHeader = commonEventHeader;
     }
 
-    @JsonProperty("notificationFields")
-    public NotificationFields getNotificationFields() {
-        return notificationFields;
+    @JsonProperty("faultFields")
+    public FaultFields getFaultFields() {
+        return faultFields;
     }
 
-    @JsonProperty("notificationFields")
-    public void setNotificationFields(NotificationFields notificationFields) {
-        this.notificationFields = notificationFields;
+    @JsonProperty("faultFields")
+    public void setFaultFields(FaultFields faultFields) {
+        this.faultFields = faultFields;
+    }
+
+    @JsonProperty("measurementFields")
+    public Measurement getMeasurement() {
+        return measurementFields;
+    }
+
+    @JsonProperty("measurementFields")
+    public void setMeasurement(Measurement measurementFields) {
+        this.measurementFields = measurementFields;
     }
 
 }
