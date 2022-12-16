@@ -27,7 +27,7 @@ language governing permissions and limitations under the License.
 	<description>RANSIM CTRLR</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<springframework.version>4.3.3.RELEASE</springframework.version>
+		<springframework.version>5.2.20.RELEASE</springframework.version>
 		<eclipselink.version>2.6.0</eclipselink.version>
 		<javax.persistence.version>2.1.0</javax.persistence.version>
 		<mariadb.jdbc.version>1.2.3</mariadb.jdbc.version>
